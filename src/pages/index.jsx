@@ -1,5 +1,16 @@
-export default function Home() {
+import React from 'react'
+import { Heading } from '@chakra-ui/react'
+
+import withAuth from '@/hoc/withAuth'
+
+export function Home() {
   return (
-    <h1 className="text-center my-5">Home Page</h1>
+    <div>
+      <Heading>
+        Home
+      </Heading>
+    </div>
+
   )
 }
+export default withAuth(Home)
