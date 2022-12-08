@@ -21,13 +21,14 @@ const createSchema = yup.object({
   tips: yup.array().of(yup.object({
     city: yup.string().required(),
     content: yup.string().required()
-  })).default(undefined)
+  }))
+  // .default(undefined)
 })
 
 const controllersMyVisitedCountriesCreate = async (req, res) => {
   try {
     const session = await getSession({ req })
-    console.log(session?.user)
+    // console.log(session?.user)
 
     const { body } = req
     const verifiedData = await createSchema.validate(body, { abortEarly: false, stripUnknown: true })
