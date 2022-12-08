@@ -33,11 +33,12 @@ model Follows {
 }
 
 model Profile {
-  id     Int    @id @default(autoincrement())
-  avatar String
-  about  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  id       Int    @id @default(autoincrement())
+  avatar   String
+  fullName String
+  about    String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
 }
 
 model VisitedCountry {

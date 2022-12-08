@@ -1,213 +1,76 @@
-// import React from 'react'
-// import { Link, Box, Flex, Text, Button, Stack } from '@chakra-ui/react'
+import { Image } from 'react-bootstrap'
+import Container from 'react-bootstrap/Container'
+import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 
-// const NavBar = (props) => {
-//   const [isOpen, setIsOpen] = React.useState(false)
+import { signOut } from 'next-auth/react'
 
-//   const toggle = () => setIsOpen(!isOpen)
-
-//   return (
-//     <NavBarContainer {...props}>
-//       <Logo
-//         w="100px"
-//         color={['black', 'black', 'primary.500', 'primary.500']}
-//       />
-//       <MenuToggle toggle={toggle} isOpen={isOpen} />
-//       <MenuLinks isOpen={isOpen} />
-//     </NavBarContainer>
-//   )
-// }
-
-// const CloseIcon = () => (
-//   <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-//     <title>Close</title>
-//     <path
-//       fill="black"
-//       d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
-//     />
-//   </svg>
-// )
-
-// const MenuIcon = () => (
-//   <svg
-//     width="24px"
-//     viewBox="0 0 20 20"
-//     xmlns="http://www.w3.org/2000/svg"
-//     fill="black"
-//   >
-//     <title>Menu</title>
-//     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-//   </svg>
-// )
-
-// const MenuToggle = ({ toggle, isOpen }) => (
-//   <Box display={{ base: 'block', md: 'none' }} onClick={toggle}>
-//     {isOpen ? <CloseIcon /> : <MenuIcon />}
-//   </Box>
-// )
-
-// const MenuItem = ({ children, isLast, to = '/', ...rest }) => (
-//   <Link href={to}>
-//     <Text display="block" {...rest}>
-//       {children}
-//     </Text>
-//   </Link>
-// )
-
-// const MenuLinks = ({ isOpen }) => (
-//   <Box
-//     display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
-//     flexBasis={{ base: '100%', md: 'auto' }}
-//   >
-//     <Stack
-//       spacing={8}
-//       align="center"
-//       justify={['center', 'space-between', 'flex-end', 'flex-end']}
-//       direction={['column', 'row', 'row', 'row']}
-//       pt={[4, 4, 0, 0]}
-//     >
-//       <MenuItem to="/">Home</MenuItem>
-//       <MenuItem to="/how">How It works </MenuItem>
-//       <MenuItem to="/faetures">Features </MenuItem>
-//       <MenuItem to="/pricing">Pricing </MenuItem>
-//       <MenuItem to="/signup" isLast>
-//         <Button
-//           size="sm"
-//           rounded="md"
-//           color={['primary.500', 'primary.500', 'black']}
-//           bg={['black', 'black', 'primary.500', 'primary.500']}
-//           _hover={{
-//             bg: ['primary.100', 'primary.100', 'primary.600', 'primary.600']
-//           }}
-//         >
-//           Create Account
-//         </Button>
-//       </MenuItem>
-//     </Stack>
-//   </Box>
-// )
-
-// const NavBarContainer = ({ children, ...props }) => (
-//   <Flex
-//     as="nav"
-//     align="center"
-//     justify="space-between"
-//     wrap="wrap"
-//     w="100%"
-//     mb={8}
-//     p={8}
-//     bg={['primary.500', 'primary.500', 'transparent', 'transparent']}
-//     color={['gray', 'gray', 'primary.700', 'primary.700']}
-//     {...props}
-//   >
-//     {children}
-//   </Flex>
-// )
-
-// export default NavBar
-
-import React from 'react'
-import { Link, Box, Flex, Text, Button, Stack } from '@chakra-ui/react'
-import Logo from './Logo'
-
-const NavBar = (props) => {
-  const [isOpen, setIsOpen] = React.useState(false)
-
-  const toggle = () => setIsOpen(!isOpen)
-
+function OffcanvasExample() {
   return (
-    <NavBarContainer {...props}>
-      <Logo />
-      <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks isOpen={isOpen} />
-    </NavBarContainer>
+    <>
+      {['md'].map((expand) => (
+        <Navbar key={expand} bg="light" expand={expand} className="mb-3">
+          <Container fluid>
+            <Image src="/images/world.png" alt="world-image" className="my-2 mx-3" style={{ height: '40px', width: '40px' }} />
+            <Navbar.Brand href="#">At Your Fingertips</Navbar.Brand>
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+            <Navbar.Offcanvas
+              id={`offcanvasNavbar-expand-${expand}`}
+              aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+              placement="end"
+            >
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                  Offcanvas
+                </Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav className="justify-content-end flex-grow-1 pe-3 gap-2">
+                  <Nav.Link href="#action1">Home</Nav.Link>
+                  <Nav.Link href="#action2">Countries</Nav.Link>
+                  <Nav.Link href="#action3">Users</Nav.Link>
+                  <Nav.Link href="#action5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-envelope-heart" viewBox="0 0 16 16">
+                      <path fillRule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l3.235 1.94a2.76 2.76 0 0 0-.233 1.027L1 5.384v5.721l3.453-2.124c.146.277.329.556.55.835l-3.97 2.443A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741l-3.968-2.442c.22-.28.403-.56.55-.836L15 11.105V5.383l-3.002 1.801a2.76 2.76 0 0 0-.233-1.026L15 4.217V4a1 1 0 0 0-1-1H2Zm6 2.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z" />
+                    </svg>
+                  </Nav.Link>
+                  <Nav.Link href="#action4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-bell" viewBox="0 0 16 16">
+                      <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
+                    </svg>
+                  </Nav.Link>
+                  <NavDropdown
+                    title={(
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                      </svg>
+                    )}
+                    id={`offcanvasNavbarDropdown-expand-${expand}`}
+                    align="end"
+                  >
+                    <NavDropdown.Item href="#action3">Profile</NavDropdown.Item>
+                    <NavDropdown.Item href="#action4">
+                      My Account
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item
+                      onClick={signOut}
+                    >
+                      Log Out
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Container>
+        </Navbar>
+      ))}
+    </>
   )
 }
 
-const CloseIcon = () => (
-  <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-    <title>Close</title>
-    <path
-      fill="black"
-      d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
-    />
-  </svg>
-)
-
-const MenuIcon = () => (
-  <svg
-    width="24px"
-    viewBox="0 0 20 20"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="black"
-  >
-    <title>Menu</title>
-    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-  </svg>
-)
-
-const MenuToggle = ({ toggle, isOpen }) => (
-  <Box display={{ base: 'block', md: 'none' }} onClick={toggle}>
-    {isOpen ? <CloseIcon /> : <MenuIcon />}
-  </Box>
-)
-
-const MenuItem = ({ children, isLast, to = '/', ...rest }) => (
-  <Link href={to}>
-    <Text display="block" {...rest}>
-      {children}
-    </Text>
-  </Link>
-)
-
-const MenuLinks = ({ isOpen }) => (
-  <Box
-    display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
-    flexBasis={{ base: '100%', md: 'auto' }}
-  >
-    <Stack
-      spacing={8}
-      align="center"
-      justify={['center', 'space-between', 'flex-end', 'flex-end']}
-      direction={['column', 'row', 'row', 'row']}
-      pt={[4, 4, 0, 0]}
-    >
-      <MenuItem to="/">Minha Conta</MenuItem>
-      <MenuItem to="/how"> Meus Pedidos </MenuItem>
-      <MenuItem to="/faetures"> Favoritos </MenuItem>
-      <MenuItem to="/pricing"> Recomendados </MenuItem>
-      <MenuItem to="/signup" isLast>
-        <Button
-          size="sm"
-          rounded="md"
-          color={['primary.500', 'primary.500', 'black', 'black']}
-          bg={['gray', 'gray', 'primary.500', 'primary.500']}
-          _hover={{
-            bg: ['primary.100', 'primary.100', 'primary.600', 'primary.600']
-          }}
-        >
-          Sair
-        </Button>
-      </MenuItem>
-    </Stack>
-  </Box>
-)
-
-const NavBarContainer = ({ children, ...props }) => (
-  <Flex
-    as="nav"
-    align="center"
-    justify="space-between"
-    wrap="wrap"
-    w="100%"
-    mb={8}
-    p={8}
-    bg={['primary.500', 'primary.500', 'transparent', 'transparent']}
-    color={['gray', 'gray', 'primary.700', 'primary.700']}
-    {...props}
-  >
-    {children}
-  </Flex>
-)
-
-export default NavBar
+export default OffcanvasExample

@@ -1,5 +1,5 @@
 import '@/styles/globals.scss'
-import { ChakraProvider } from '@chakra-ui/react'
+import SSRProvider from 'react-bootstrap/SSRProvider'
 import { ToastContainer } from 'react-toastify'
 import { appWithTranslation } from 'next-i18next'
 // import { useRouter } from 'next/router'
@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
   // }
 
   return (
-    <ChakraProvider>
+    <SSRProvider>
       <NavBar />
       <Component {...pageProps} />
       <ToastContainer
@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }) {
         draggable
         pauseOnHover
       />
-    </ChakraProvider>
+    </SSRProvider>
   )
 }
 

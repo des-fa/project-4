@@ -1,8 +1,6 @@
 import React from 'react'
 import { Heading } from '@chakra-ui/react'
 
-import withAuth from '@/hoc/withAuth'
-
 export function Home() {
   return (
     <div>
@@ -13,4 +11,4 @@ export function Home() {
 
   )
 }
-export default withAuth(Home)
+export default Home
