@@ -2,9 +2,11 @@ import nc from '@/controllers/_helpers/nc'
 import prisma from '@/controllers/_helpers/prisma'
 import handleErrors from '@/controllers/_helpers/handleErrors'
 import authenticateUser from '@/controllers/_middlewares/authenticateUser'
+import { getSession } from 'next-auth/react'
 
 const controllersUsersPlansIndex = async (req, res) => {
   try {
+    const session = await getSession({ req })
     const { query: { userId } } = req
 
     // Pagination
@@ -13,7 +15,12 @@ const controllersUsersPlansIndex = async (req, res) => {
     const skip = (page - 1) * take
 
     // Common Where Query
-    const where = { userId }
+    const where = {
+      userId,
+      NOT: {
+        userId: session.user.id
+      }
+    }
 
     const totalPlans = await prisma.travelPlan.count({ where })
     const foundPlans = await prisma.travelPlan.findMany({

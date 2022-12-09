@@ -8,8 +8,8 @@ const controllersMyFollowingCreate = async (req, res) => {
   try {
     const session = await getSession({ req })
 
-    const { query: { userId } } = req
-    // userId=user's profile page you're on HOW TO GET
+    const { query: { followingId } } = req
+    // userId=user's profile page you're on
     // session.user.id=current logged in user
 
     const newFollowing = await prisma.follows.create({
@@ -21,7 +21,7 @@ const controllersMyFollowingCreate = async (req, res) => {
         },
         following: {
           connect: {
-            id: Number(userId)
+            id: followingId
           }
         }
       }
