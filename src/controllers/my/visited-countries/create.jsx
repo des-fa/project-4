@@ -6,7 +6,7 @@ import authenticateUser from '@/controllers/_middlewares/authenticateUser'
 import { getSession } from 'next-auth/react'
 
 const createSchema = yup.object({
-  iso2: yup.string().required(),
+  iso2: yup.string().uppercase().required(),
   month: yup
     .number()
     .integer()
