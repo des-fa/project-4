@@ -8,7 +8,7 @@ export function Profile() {
     return (
       <div>
         <h1>hello</h1>
-        <button type="button" onClick={() => (console.log('hi'))}>Create</button>
+        <button type="button" onClick={createMyProfile}>Create</button>
 
       </div>
     )
@@ -17,13 +17,15 @@ export function Profile() {
     return <div>{errorMessage}</div>
   }
 
-  // return (
-  //   <div>
-  //     <h1>Profile</h1>
-  //     {/* {myProfile} */}
-  //     {/* <button type="button" onClick={updateMyProfile}>Update</button> */}
-  //   </div>
-  // )
+  return (
+    <div>
+      <h1>Profile</h1>
+      {myProfile.fullName}
+      {myProfile.about}
+      <img src={myProfile.avatar} alt="profile-picture" className="w-25" />
+      <button type="button" onClick={updateMyProfile}>Update</button>
+    </div>
+  )
 }
 
 export default withAuth(Profile)

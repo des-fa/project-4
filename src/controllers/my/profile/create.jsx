@@ -5,11 +5,14 @@ import uploadFileAsync from '@/controllers/_helpers/uploadFile'
 import handleErrors from '@/controllers/_helpers/handleErrors'
 import authenticateUser from '@/controllers/_middlewares/authenticateUser'
 import { getSession } from 'next-auth/react'
+import parseData from '@/controllers/_middlewares/parseData'
 
 const createSchema = yup.object({
   fullName: yup.string()
-    .min(2, 'Minimum 2 characters')
-    .max(15, 'Maximum 15 characters')
+    .matches(/.{5,15}/, {
+      excludeEmptyString: true,
+      message: 'Must be between 5 to 15 characters'
+    })
     .required(),
   about: yup.string().required(),
   avatar: yup.mixed().required()
@@ -51,5 +54,6 @@ const controllersMyProfileCreate = async (req, res) => {
 }
 
 export default nc()
+  .use(parseData)
   .use(authenticateUser)
   .use(controllersMyProfileCreate)

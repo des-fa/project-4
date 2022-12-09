@@ -7,3 +7,9 @@ export default nc()
   .get(controllersMyProfileShow)
   .post(controllersMyProfileCreate)
   .put(controllersMyProfileUpdate)
+
+export const config = {
+  api: {
+    bodyParser: false
+  }
+}
