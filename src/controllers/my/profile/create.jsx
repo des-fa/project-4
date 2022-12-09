@@ -1,6 +1,7 @@
 import nc from '@/controllers/_helpers/nc'
 import * as yup from 'yup'
 import prisma from '@/controllers/_helpers/prisma'
+import uploadFileAsync from '@/controllers/_helpers/uploadFile'
 import handleErrors from '@/controllers/_helpers/handleErrors'
 import authenticateUser from '@/controllers/_middlewares/authenticateUser'
 import { getSession } from 'next-auth/react'
@@ -21,9 +22,17 @@ const controllersMyProfileCreate = async (req, res) => {
     const { body } = req
     const verifiedData = await createSchema.validate(body, { abortEarly: false, stripUnknown: true })
 
+    await uploadFileAsync(verifiedData, req)
+
+    const dataToSave = {
+      fullName: verifiedData.fullName,
+      about: verifiedData.about,
+      avatar: verifiedData.avatar
+    }
+
     const newProfile = await prisma.profile.create({
       data: {
-        ...verifiedData,
+        ...dataToSave,
         user: {
           connect: {
             id: session.user.id

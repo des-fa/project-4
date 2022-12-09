@@ -10,8 +10,8 @@ const createSchema = yup.object({
   month: yup
     .number()
     .integer()
-    .min(1, 'Minimum 1 number')
-    .max(2, 'Maximum 2 numbers')
+    .min(1, 'This month does not exist')
+    .max(12, 'This month does not exist')
     // .test('len', 'Must be exactly 2 numbers', (val) => val && val.toString().length === 2)
     .required(),
   year: yup

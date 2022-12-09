@@ -24,7 +24,7 @@ const controllersMySavedCountriesIndex = async (req, res) => {
       skip,
       where,
       orderBy: {
-        id: 'desc'
+        iso2: 'asc'
       }
     })
 

@@ -18,20 +18,32 @@ const updateSchema = yup.object({
     .integer()
     .test('len', 'Must be exactly 4 numbers', (val) => !val || val.toString().length === 4)
     .required(),
-  isPublic: yup.boolean().transform((value) => (!!value))
+  rating: yup.number().integer().required(),
+  tips: yup.array().of(
+    yup.object({
+      city: yup.string().required(),
+      content: yup.string().required()
+    })
+  )
+  // .default(undefined)
 })
 
-const controllersMyPlansUpdate = async (req, res) => {
+const controllersMyVisitedCountriesUpdate = async (req, res) => {
   try {
-    const { query: { planId }, body } = req
+    const { query: { visitedCountryId }, body } = req
     const verifiedData = await updateSchema.validate(body, { abortEarly: false, stripUnknown: true })
-    const updatedPlan = await prisma.travelPlan.update({
-      where: { id: Number(planId) },
+    const updatedVisitedCountry = await prisma.visitedCountry.update({
+      where: { id: Number(visitedCountryId) },
       data: {
-        ...verifiedData
-      }
+        ...verifiedData,
+        tips: {
+          deleteMany: {},
+          create: verifiedData?.tips
+        }
+      },
+      include: { tips: true }
     })
-    return res.status(200).json(updatedPlan)
+    return res.status(200).json(updatedVisitedCountry)
   } catch (err) {
     return handleErrors(res, err)
   }
@@ -39,4 +51,4 @@ const controllersMyPlansUpdate = async (req, res) => {
 
 export default nc()
   .use(authenticateUser)
-  .use(controllersMyPlansUpdate)
+  .use(controllersMyVisitedCountriesUpdate)

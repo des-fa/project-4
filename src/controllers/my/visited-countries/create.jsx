@@ -10,7 +10,9 @@ const createSchema = yup.object({
   month: yup
     .number()
     .integer()
-    .test('len', 'Must be exactly 2 numbers', (val) => val && val.toString().length === 2)
+    .min(1, 'This month does not exist')
+    .max(12, 'This month does not exist')
+    // .test('len', 'Must be exactly 2 numbers', (val) => val && val.toString().length === 2)
     .required(),
   year: yup
     .number()
@@ -18,10 +20,12 @@ const createSchema = yup.object({
     .test('len', 'Must be exactly 4 numbers', (val) => !val || val.toString().length === 4)
     .required(),
   rating: yup.number().integer().required(),
-  tips: yup.array().of(yup.object({
-    city: yup.string().required(),
-    content: yup.string().required()
-  }))
+  tips: yup.array().of(
+    yup.object({
+      city: yup.string().required(),
+      content: yup.string().required()
+    })
+  )
   // .default(undefined)
 })
 

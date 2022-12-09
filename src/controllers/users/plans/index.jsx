@@ -17,6 +17,7 @@ const controllersUsersPlansIndex = async (req, res) => {
     // Common Where Query
     const where = {
       userId,
+      isPublic: true,
       NOT: {
         userId: session.user.id
       }

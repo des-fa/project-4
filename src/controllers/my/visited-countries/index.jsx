@@ -23,8 +23,23 @@ const controllersMyVisitedCountriesIndex = async (req, res) => {
       take,
       skip,
       where,
-      orderBy: {
-        createdAt: 'desc'
+      orderBy: [
+        {
+          year: 'desc'
+        },
+        {
+          month: 'desc'
+        },
+        {
+          createdAt: 'desc'
+        }
+      ],
+      include: {
+        tips: {
+          orderBy: {
+            createdAt: 'desc'
+          }
+        }
       }
     })
 
