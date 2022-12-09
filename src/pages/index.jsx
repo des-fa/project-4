@@ -1,12 +1,11 @@
 import React from 'react'
-import { Heading } from '@chakra-ui/react'
 
 export function Home() {
   return (
     <div>
-      <Heading>
+      <h1>
         Home
-      </Heading>
+      </h1>
     </div>
 
   )

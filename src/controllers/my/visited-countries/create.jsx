@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import prisma from '@/controllers/_helpers/prisma'
 import handleErrors from '@/controllers/_helpers/handleErrors'
 import authenticateUser from '@/controllers/_middlewares/authenticateUser'
+import parseData from '@/controllers/_middlewares/parseData'
 import { getSession } from 'next-auth/react'
 
 const createSchema = yup.object({
@@ -35,7 +36,9 @@ const controllersMyVisitedCountriesCreate = async (req, res) => {
     // console.log(session?.user)
 
     const { body } = req
+    console.log(body)
     const verifiedData = await createSchema.validate(body, { abortEarly: false, stripUnknown: true })
+    console.log('verified', verifiedData)
     const newVisitedCountry = await prisma.visitedCountry.create({
       data: {
         ...verifiedData,
@@ -59,5 +62,6 @@ const controllersMyVisitedCountriesCreate = async (req, res) => {
 }
 
 export default nc()
+  .use(parseData)
   .use(authenticateUser)
   .use(controllersMyVisitedCountriesCreate)

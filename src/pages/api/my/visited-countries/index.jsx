@@ -5,3 +5,9 @@ import controllersMyVisitedCountriesCreate from '@/controllers/my/visited-countr
 export default nc()
   .get(controllersMyVisitedCountriesIndex)
   .post(controllersMyVisitedCountriesCreate)
+
+export const config = {
+  api: {
+    bodyParser: false
+  }
+}
