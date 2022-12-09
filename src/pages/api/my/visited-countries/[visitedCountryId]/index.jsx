@@ -7,3 +7,9 @@ export default nc()
   .get(controllersMyVisitedCountriesShow)
   .put(controllersMyVisitedCountriesUpdate)
   .delete(controllersMyVisitedCountriesDestroy)
+
+export const config = {
+  api: {
+    bodyParser: false
+  }
+}

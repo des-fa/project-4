@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import prisma from '@/controllers/_helpers/prisma'
 import handleErrors from '@/controllers/_helpers/handleErrors'
 import authenticateUser from '@/controllers/_middlewares/authenticateUser'
+import parseData from '@/controllers/_middlewares/parseData'
 
 const updateSchema = yup.object({
   iso2: yup.string().uppercase().required(),
@@ -50,5 +51,6 @@ const controllersMyVisitedCountriesUpdate = async (req, res) => {
 }
 
 export default nc()
+  .use(parseData)
   .use(authenticateUser)
   .use(controllersMyVisitedCountriesUpdate)
