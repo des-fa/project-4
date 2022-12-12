@@ -36,9 +36,9 @@ const controllersMyVisitedCountriesCreate = async (req, res) => {
     // console.log(session?.user)
 
     const { body } = req
-    console.log(body)
+    // console.log(body)
     const verifiedData = await createSchema.validate(body, { abortEarly: false, stripUnknown: true })
-    console.log('verified', verifiedData)
+    // console.log('verified', verifiedData)
     const newVisitedCountry = await prisma.visitedCountry.create({
       data: {
         ...verifiedData,
