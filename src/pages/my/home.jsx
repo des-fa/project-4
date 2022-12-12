@@ -5,15 +5,27 @@ import countriesData from '../../data/countries.json'
 
 export default function MyHome() {
   const [value, setValue] = useState('')
+  const [lat, setLat] = useState('')
+  const [long, setLong] = useState('')
 
   const onChange = (event) => {
     setValue(event.target.value)
   }
 
-  const onSearch = (searchTerm) => {
+  const onSearch = async (searchTerm) => {
     setValue(searchTerm)
+    const countryResult = await countriesData.find((country) => country.name === searchTerm)
+
+    console.log('countryResult ', countryResult)
+
+    setLat(countryResult?.latitude)
+    setLong(countryResult?.longitude)
+
     // our api to fetch the search result
     console.log('search ', searchTerm)
+
+    console.log('lat ', lat)
+    console.log('long ', long)
   }
 
   const handleKeyPress = (event) => {
