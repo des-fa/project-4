@@ -1,18 +1,18 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
-import countriesData from '../../data/countries.json'
+// import countriesData from '../../data/countries.json'
 // import heart from '/images/heart.svg'
 
 const loveIcon = L.icon({
-  iconUrl: '/images/heart.svg',
-  iconRetinaUrl: '/images/heart.svg',
+  iconUrl: '/images/search-heart.svg',
+  iconRetinaUrl: '/images/search-heart.svg',
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
   iconSize: [25, 55]
 })
 
-function Map() {
+function Map({ lat, long }) {
   // function LocationMarker() {
   //   const map = useMapEvents({
   //     click: (e) => {
@@ -40,14 +40,17 @@ function Map() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {countriesData.map((country) => (
+      {/* {countriesData.map((country) => (
         <Marker
           key={country.id}
           position={[country.latitude, country.longitude]}
           icon={loveIcon}
         />
-      ))}
-
+      ))} */}
+      <Marker
+        position={[lat, long]}
+        icon={loveIcon}
+      />
     </MapContainer>
   )
 }

@@ -81,7 +81,7 @@ export default function MyHome() {
         </div>
 
         <div className="col w-100">
-          <Map />
+          <Map lat={lat} long={long} />
         </div>
       </div>
 
