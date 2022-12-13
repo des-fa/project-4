@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, useMap, Popup } from 'react-leaflet'
 import { useEffect } from 'react'
 
 const loveIcon = L.icon({
@@ -8,17 +8,17 @@ const loveIcon = L.icon({
   iconRetinaUrl: '/images/search-heart.svg',
   iconAnchor: [5, 55],
   popupAnchor: [10, -44],
-  iconSize: [25, 55]
+  iconSize: [35, 65]
 })
 
-function ZoomMarker({ lat, long }) {
+function ZoomMarker({ lat, long, searchTerm }) {
   const map = useMap()
 
   useEffect(() => {
     if (lat && long) {
       // console.log(lat + long)
       const location = { lat, lng: long }
-      map.flyTo(location, 5)
+      map.flyTo(location, 4)
     }
   }, [lat, long])
 
@@ -26,7 +26,11 @@ function ZoomMarker({ lat, long }) {
     <Marker
       position={[lat, long]}
       icon={loveIcon}
-    />
+    >
+      {/* <Popup>
+        {searchTerm}
+      </Popup> */}
+    </Marker>
   ) : null
 }
 

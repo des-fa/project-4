@@ -1,12 +1,13 @@
 import Map from '@/components-layouts/map'
 import { useState } from 'react'
-// import CountrySearch from '@/forms/CountrySearch'
+import parse from 'html-react-parser'
 import countriesData from '../../data/countries.json'
 
 export default function MyHome() {
   const [value, setValue] = useState('')
   const [lat, setLat] = useState('')
   const [long, setLong] = useState('')
+  const [wikiExtract, setWikiExtract] = useState('')
 
   const onChange = (event) => {
     setValue(event.target.value)
@@ -14,15 +15,53 @@ export default function MyHome() {
 
   const onSearch = async (searchTerm) => {
     setValue(searchTerm)
-    const countryResult = await countriesData.find((country) => country.name === searchTerm)
+    const countryResult = await countriesData.find((country) => country.name.toLowerCase() === searchTerm.toLowerCase())
     // console.log('countryResult ', countryResult)
 
     setLat(countryResult?.latitude)
     setLong(countryResult?.longitude)
 
-    // our api to fetch the search result
-    // console.log('search ', searchTerm)
+    // api to fetch the search result
+    let url = 'https://en.wikipedia.org/w/api.php'
 
+    // const params = {
+    //   action: 'opensearch',
+    //   search: searchTerm,
+    //   limit: '5',
+    //   namespace: '0',
+    //   format: 'json'
+    // }
+
+    const params = {
+      action: 'query',
+      // list: 'search',
+      prop: 'extracts',
+      exsentences: 5,
+      titles: searchTerm,
+      // srsearch: searchTerm,
+      format: 'json'
+    }
+
+    url = `${url}?origin=*`
+    Object.keys(params).forEach((key) => { url += `&${key}=${params[key]}` })
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((response) => {
+        // if (response.query.search[0].title === searchTerm) {
+        console.log(response)
+        const respObject = response.query.pages
+        const respPageId = Object.keys(respObject)[0]
+        console.log(response.query.pages[respPageId].extract)
+        if (response.query.pages[respPageId].title.toLowerCase() === searchTerm.toLowerCase()) {
+          const parsedWikiExtract = parse(response.query.pages[respPageId].extract)
+          setWikiExtract(parsedWikiExtract)
+        }
+        // }
+      })
+      .catch((error) => { console.log(error) })
+
+    // console.log('search ', searchTerm)
     // console.log('lat ', lat)
     // console.log('long ', long)
   }
@@ -75,6 +114,10 @@ export default function MyHome() {
                   {country.name}
                 </div>
               ))}
+          </div>
+
+          <div>
+            {wikiExtract}
           </div>
 
         </div>
