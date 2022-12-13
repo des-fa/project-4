@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { MapContainer, TileLayer, Marker, useMap, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import { useEffect } from 'react'
 
 const loveIcon = L.icon({
@@ -11,7 +11,7 @@ const loveIcon = L.icon({
   iconSize: [35, 65]
 })
 
-function ZoomMarker({ lat, long, searchTerm }) {
+function ZoomMarker({ lat, long }) {
   const map = useMap()
 
   useEffect(() => {

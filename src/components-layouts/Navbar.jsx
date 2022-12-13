@@ -14,7 +14,7 @@ function OffcanvasExample() {
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
             <Image src="/images/world.png" alt="world-image" className="my-2 mx-3" style={{ height: '40px', width: '40px' }} />
-            <Navbar.Brand href="/my/home">At Your Fingertips</Navbar.Brand>
+            <Navbar.Brand href="/home">At Your Fingertips</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -28,7 +28,7 @@ function OffcanvasExample() {
               </Offcanvas.Header>
               <Offcanvas.Body className="bg-gray">
                 <Nav className="justify-content-end flex-grow-1 pe-3 gap-2 text-black">
-                  <Nav.Link href="/my/home">Home</Nav.Link>
+                  <Nav.Link href="/home">Home</Nav.Link>
                   <Nav.Link href="/countries">Countries</Nav.Link>
                   <Nav.Link href="/users">Users</Nav.Link>
                   <Nav.Link href="#action5">
