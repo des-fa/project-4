@@ -1,8 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { MapContainer, TileLayer, Marker } from 'react-leaflet'
-// import countriesData from '../../data/countries.json'
-// import heart from '/images/heart.svg'
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
+import { useEffect } from 'react'
 
 const loveIcon = L.icon({
   iconUrl: '/images/search-heart.svg',
@@ -12,7 +11,26 @@ const loveIcon = L.icon({
   iconSize: [25, 55]
 })
 
-function Map({ lat, long }) {
+function ZoomMarker({ lat, long }) {
+  const map = useMap()
+
+  useEffect(() => {
+    if (lat && long) {
+      // console.log(lat + long)
+      const location = { lat, lng: long }
+      map.flyTo(location, 5)
+    }
+  }, [lat, long])
+
+  return (lat && long) ? (
+    <Marker
+      position={[lat, long]}
+      icon={loveIcon}
+    />
+  ) : null
+}
+
+function Map({ lat, long, searchTerm }) {
   // function LocationMarker() {
   //   const map = useMapEvents({
   //     click: (e) => {
@@ -34,7 +52,7 @@ function Map({ lat, long }) {
   //     </LocationMarker> */}
 
   return (
-    <MapContainer className="home-map" center={[49.166972936611536, -123.11932391181658]} zoom={8} scrollWheelZoom>
+    <MapContainer className="home-map" center={[49.166972936611536, -123.11932391181658]} zoom={5} scrollWheelZoom>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -47,10 +65,14 @@ function Map({ lat, long }) {
           icon={loveIcon}
         />
       ))} */}
-      <Marker
-        position={[lat, long]}
-        icon={loveIcon}
-      />
+
+      <ZoomMarker lat={lat} long={long} searchTerm={searchTerm} />
+
+      {/* <Marker
+            position={[lat, long]}
+            icon={loveIcon}
+          /> */}
+
     </MapContainer>
   )
 }

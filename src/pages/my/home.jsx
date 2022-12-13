@@ -15,17 +15,16 @@ export default function MyHome() {
   const onSearch = async (searchTerm) => {
     setValue(searchTerm)
     const countryResult = await countriesData.find((country) => country.name === searchTerm)
-
-    console.log('countryResult ', countryResult)
+    // console.log('countryResult ', countryResult)
 
     setLat(countryResult?.latitude)
     setLong(countryResult?.longitude)
 
     // our api to fetch the search result
-    console.log('search ', searchTerm)
+    // console.log('search ', searchTerm)
 
-    console.log('lat ', lat)
-    console.log('long ', long)
+    // console.log('lat ', lat)
+    // console.log('long ', long)
   }
 
   const handleKeyPress = (event) => {
@@ -81,7 +80,7 @@ export default function MyHome() {
         </div>
 
         <div className="col w-100">
-          <Map lat={lat} long={long} />
+          <Map lat={lat} long={long} searchTerm={value} />
         </div>
       </div>
 
