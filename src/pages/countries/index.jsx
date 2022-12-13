@@ -1,6 +1,7 @@
+import withAuth from '@/hoc/withAuth'
 import React from 'react'
 
-export function CountriesSearch() {
+function CountriesSearch() {
   return (
     <div>
       <h1>
@@ -10,4 +11,4 @@ export function CountriesSearch() {
 
   )
 }
-export default CountriesSearch
+export default withAuth(CountriesSearch)

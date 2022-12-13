@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react'
 import parse from 'html-react-parser'
 import { Image } from 'react-bootstrap'
 import Link from 'next/link'
+import withAuth from '@/hoc/withAuth'
 import countriesData from '../data/countries.json'
 
-export default function MyHome() {
+function Home() {
   const [value, setValue] = useState('')
   const [lat, setLat] = useState('')
   const [long, setLong] = useState('')
@@ -104,11 +105,6 @@ export default function MyHome() {
               onChange={onChange}
               onKeyUp={handleKeyPress}
             />
-            {/* <button
-              type="button"
-              className="btn btn-sm btn-dark"
-              onClick={() => onSearch(value)}
-            >Search</button> */}
           </div>
 
           <div className="mt-2">
@@ -151,7 +147,7 @@ export default function MyHome() {
             </div>
           ) : null}
 
-          <div className="my-4 mx-auto text-center" style={{ minHeight: 100 }}>
+          <div className="mb-4 mt-2 mx-auto text-center" style={{ minHeight: 100 }}>
             {wikiExtract ? (
               <Image
                 alt="country-flag"
@@ -184,3 +180,5 @@ export default function MyHome() {
     </div>
   )
 }
+
+export default withAuth(Home)

@@ -44,6 +44,7 @@
     "react-leaflet-google-layer": "^2.0.7",
     "react-select": "^5.7.0",
     "react-toastify": "^8.2.0",
+    "superjson": "^1.12.0",
     "swr": "^1.2.2",
     "vercel": "^24.0.1",
     "yup": "^0.32.11"
