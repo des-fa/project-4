@@ -8,9 +8,8 @@ import countriesData from '../../data/countries.json'
 function Country({ id, countryInfo, countryNews }) {
   // const router = useRouter()
   // const { countryId } = router.query
-  // console.log('data', countryInfo)
-  console.log(countryNews)
-  console.log(countryNews?.articles)
+  // console.log(countryInfo)
+  // console.log(countryNews?.articles)
 
   const currencies = Object.keys(countryInfo?.currencies).map((k, i) => (
     // Object.entries(data?.currencies[key]).map(([k, v], i) => (
