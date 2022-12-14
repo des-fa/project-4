@@ -13,3 +13,13 @@
 .accordion-button {
   padding: 16px 5px;
 }
+
+#iframeCont iframe::-webkit-scrollbar {
+  display: none;
+}
+
+#visaIframe {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  overflow: hidden !important;
+}
