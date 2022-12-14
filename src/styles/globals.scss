@@ -5,6 +5,28 @@
   display: none !important;
 }
 
+.dropdown-item.active, .dropdown-item:active {
+  color: rgb(35, 34, 34);
+  background-color: darkgray;
+}
+
+.nav-tabs .nav-item .nav-link {
+  color: gray;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  color: black;
+}
+
+.nav.nav-pills .nav-link {
+    color: gray;
+}
+
+.nav.nav-pills .nav-link.active {
+    background-color: rgb(67, 65, 65);
+    color: white;
+}
+
 .home-map {
   width: 100%;
   height: 40rem;
@@ -23,7 +45,3 @@
   overflow-x: hidden !important;
   overflow: hidden !important;
 }
-
-// .plans-user-pic {
-//   object-fit: cover;
-// }

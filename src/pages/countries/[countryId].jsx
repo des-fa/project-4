@@ -51,7 +51,7 @@ function Country({ id, countryInfo, countryNews }) {
   return (
     <div className="d-flex flex-lg-row flex-column justify-content-center gap-4 mx-4 my-5">
       <div className="col-md-3 mx-4">
-        <div className="d-flex flex-row justify-content-center">
+        <div className="d-flex flex-row justify-content-center mb-4">
           <iframe
             src={`https://www.travel-advisory.info/widget-no-js?countrycode=${id}`}
             className="rounded"
