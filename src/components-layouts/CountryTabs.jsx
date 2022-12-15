@@ -62,7 +62,7 @@ function CountryTabs({ countryNews }) {
       <>
         <h3 className="text-muted fw-light mb-3 ms-5">Users&apos; thoughts</h3>
 
-        <div className="d-flex flex-row justify-content-center py-2 px-5" style={{ minWidth: '550px' }}>
+        <div className="d-flex flex-row justify-content-center py-2 px-5" style={{ width: '100%' }}>
           {countryReviews?.reviews.map((review, i) => (
             <div key={i} className="card mb-3">
               <div className="d-flex flex-lg-row flex-column py-2">
@@ -95,7 +95,7 @@ function CountryTabs({ countryNews }) {
                 </div>
               </div>
 
-              { review?.tips?.length > 0 ? (
+              { review?.tips?.length < 0 ? (
                 <div className="row text-left px-3">
                   <h5 className="mt-3">Visited Cities</h5>
                   <p className="content">If you really enjoy spending your vacation or would like to try something new and exciting for the first time.</p>

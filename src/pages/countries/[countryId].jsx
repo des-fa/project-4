@@ -1,6 +1,6 @@
 import withAuth from '@/hoc/withAuth'
 import React, { useEffect, useState } from 'react'
-import { Accordion, Tab, Tabs } from 'react-bootstrap'
+import { Accordion, Image, Tab, Tabs } from 'react-bootstrap'
 
 import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/CountryTabs'
@@ -15,13 +15,13 @@ function CountryPage({ id, countryInfo, countryNews }) {
   // const { countryId } = router.query
   // console.log(countryInfo)
   // console.log(countryNews?.articles)
-  const cities = City.getCitiesOfCountry(id)
+  const cities = City.getCitiesOfCountry(id.toUpperCase())
   const capitalNames = Object.values(countryInfo?.capital)
   // console.log(Object.values(countryInfo?.capital))
   const capitalResult = capitalNames.map((name) => (
     cities.find((city) => city?.name?.toLowerCase() === name.toLowerCase())
   ))
-  console.log('cap', capitalResult)
+  // console.log('cap', countryInfo?.capital)
 
   const capitalInfo = capitalResult.map((info) => (
     { lat: info?.latitude, long: info?.longitude, name: info?.name }
@@ -70,11 +70,10 @@ function CountryPage({ id, countryInfo, countryNews }) {
   //     console.log(err)
   //   }
   // }, [])
-
   return (
     <div className="d-flex flex-lg-row flex-column justify-content-center gap-4 mx-4 my-5">
       <div className="col-md-3 mx-4">
-        <div className="col mb-4 w-100">
+        <div className="col w-100 mb-4">
           <Map lat={countryLat} long={countryLong} capitalInfo={capitalInfo} />
         </div>
 
@@ -85,6 +84,21 @@ function CountryPage({ id, countryInfo, countryNews }) {
             style={{ minHeight: 220 }}
           >Country advisory by <a href="https://www.travel-advisory.info/" rel="nofollow">Travel-Advisory.info</a>
           </iframe>
+        </div>
+
+        <div className="d-flex flex-row justify-content-end mb-4">
+          <a
+            href={countryInfo?.maps?.googleMaps}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-decoration-none link-dark"
+          >
+            <Image
+              src="/images/google-maps-1.png"
+              alt="google-maps-icon"
+              width="40"
+            />
+          </a>
         </div>
 
         <Tabs
@@ -130,10 +144,25 @@ function CountryPage({ id, countryInfo, countryNews }) {
                 </div>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Capital</div>
-                  <small>{countryInfo?.capital}</small>
-                </div>
+                {
+                  countryInfo?.capital?.length === 1 ? (
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">Capital</div>
+                      <small>{countryInfo?.capital}</small>
+                    </div>
+                  ) : (
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">Capitals</div>
+                      <ul>
+                        {countryInfo?.capital.map((capital, i) => (
+                          <li key={i}>
+                            <small>{capital}</small>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+                }
               </li>
             </ul>
           </Tab>
@@ -221,7 +250,6 @@ function CountryPage({ id, countryInfo, countryNews }) {
                   <small className="text-capitalize">+{countryResult?.phone_code}</small>
                 </div>
               </li>
-              <a href={countryInfo?.maps?.googleMaps}>Google</a>
             </ul>
           </Tab>
 

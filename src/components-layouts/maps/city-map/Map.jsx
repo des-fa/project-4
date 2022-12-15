@@ -29,7 +29,7 @@ function Markers({ capitalInfo }) {
         icon={capitalIcon}
       >
         <Popup>
-          <h5 className="py-2">{info.name}</h5>
+          <h6 className="p-1">{info.name}</h6>
         </Popup>
       </Marker>
     ))
