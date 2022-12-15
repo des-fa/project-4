@@ -32,6 +32,16 @@
   height: 40rem;
 }
 
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background-color: rgb(86, 84, 84) !important;
+  color: white !important;
+}
+
+.leaflet-popup-close-button {
+color: white !important;
+margin: 4px;
+}
+
 .accordion-button {
   padding: 16px 5px;
 }

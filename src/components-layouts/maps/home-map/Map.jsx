@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 const loveIcon = L.icon({
   iconUrl: '/images/search-heart.svg',
   iconRetinaUrl: '/images/search-heart.svg',
-  iconAnchor: [5, 55],
+  iconAnchor: [5, 65],
   popupAnchor: [10, -44],
   iconSize: [35, 65]
 })
@@ -34,7 +34,7 @@ function ZoomMarker({ lat, long }) {
   ) : null
 }
 
-function Map({ lat, long, searchTerm }) {
+function HomeMap({ lat, long, searchTerm }) {
   // function LocationMarker() {
   //   const map = useMapEvents({
   //     click: (e) => {
@@ -81,4 +81,4 @@ function Map({ lat, long, searchTerm }) {
   )
 }
 
-export default Map
+export default HomeMap

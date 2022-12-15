@@ -11,7 +11,7 @@ function CountryTabs({ countryNews }) {
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
 
-  console.log(countryReviews)
+  // console.log(countryReviews)
 
   const newsArticles = countryNews?.articles?.length > 0 ? (
     <>

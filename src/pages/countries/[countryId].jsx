@@ -1,15 +1,31 @@
 import withAuth from '@/hoc/withAuth'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Accordion, Tab, Tabs } from 'react-bootstrap'
 
+import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/CountryTabs'
+import { City } from 'country-state-city'
 import countriesData from '../../data/countries.json'
 
-function Country({ id, countryInfo, countryNews }) {
+function CountryPage({ id, countryInfo, countryNews }) {
+  const [countryLat, setCountryLat] = useState('')
+  const [countryLong, setCountryLong] = useState('')
+
   // const router = useRouter()
   // const { countryId } = router.query
   // console.log(countryInfo)
   // console.log(countryNews?.articles)
+  const cities = City.getCitiesOfCountry(id)
+  const capitalNames = Object.values(countryInfo?.capital)
+  // console.log(Object.values(countryInfo?.capital))
+  const capitalResult = capitalNames.map((name) => (
+    cities.find((city) => city?.name?.toLowerCase() === name.toLowerCase())
+  ))
+  console.log('cap', capitalResult)
+
+  const capitalInfo = capitalResult.map((info) => (
+    { lat: info?.latitude, long: info?.longitude, name: info?.name }
+  ))
 
   const currencies = Object.keys(countryInfo?.currencies).map((k, i) => (
     // Object.entries(data?.currencies[key]).map(([k, v], i) => (
@@ -32,6 +48,13 @@ function Country({ id, countryInfo, countryNews }) {
 
   const countryResult = countriesData.find((country) => country.iso2.toLowerCase() === id.toLowerCase())
 
+  useEffect(() => {
+    if (countryResult) {
+      setCountryLat(countryResult?.latitude)
+      setCountryLong(countryResult?.longitude)
+    }
+  }, [countryResult])
+
   // const currencyKey = Object.keys(data?.currencies)
   // console.log(data?.currencies[currencyKey].name)
   // console.log(data?.currencies[currencyKey].symbol)
@@ -51,6 +74,10 @@ function Country({ id, countryInfo, countryNews }) {
   return (
     <div className="d-flex flex-lg-row flex-column justify-content-center gap-4 mx-4 my-5">
       <div className="col-md-3 mx-4">
+        <div className="col mb-4 w-100">
+          <Map lat={countryLat} long={countryLong} capitalInfo={capitalInfo} />
+        </div>
+
         <div className="d-flex flex-row justify-content-center mb-4">
           <iframe
             src={`https://www.travel-advisory.info/widget-no-js?countrycode=${id}`}
@@ -237,4 +264,4 @@ export async function getServerSideProps(context) {
   } }
 }
 
-export default withAuth(Country)
+export default withAuth(CountryPage)
