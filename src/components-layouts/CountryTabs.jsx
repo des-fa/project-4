@@ -11,8 +11,6 @@ function CountryTabs({ countryNews }) {
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
 
-  // console.log(countryReviews)
-
   const newsArticles = countryNews?.articles?.length > 0 ? (
     <>
       <h3 className="text-muted fw-light mb-3 ms-4">Latest headlines</h3>
@@ -51,6 +49,17 @@ function CountryTabs({ countryNews }) {
   ) : (
     <h3 className="text-muted fw-light m-4">No recent news was found.</h3>
   )
+
+  // console.log('reviews', countryReviews?.reviews)
+  const tips = countryReviews?.reviews.map((review) => (
+    review.tips.map((tip, i) => (
+      <div key={i} className="mb-2">
+        <h6 className="mb-1 fw-semibold">{tip.city}</h6>
+        <p>{tip.content}</p>
+      </div>
+    ))
+  ))
+
   let reviews
   if (isLoadingReviews) {
     reviews = <h3 className="text-muted fw-light m-4">Loading..</h3>
@@ -62,9 +71,13 @@ function CountryTabs({ countryNews }) {
       <>
         <h3 className="text-muted fw-light mb-3 ms-5">Users&apos; thoughts</h3>
 
-        <div className="d-flex flex-row justify-content-center py-2 px-5" style={{ width: '100%' }}>
+        {/* {tips.map((tip) => (
+          console.log(tip?.id)
+        ))} */}
+
+        <div className="d-flex flex-column justify-content-center py-2 px-5">
           {countryReviews?.reviews.map((review, i) => (
-            <div key={i} className="card mb-3">
+            <div key={i} className="card mb-3 w-100">
               <div className="d-flex flex-lg-row flex-column py-2">
                 <div className="col-md-3 text-center my-2 me-2">
                   <Image
@@ -95,10 +108,10 @@ function CountryTabs({ countryNews }) {
                 </div>
               </div>
 
-              { review?.tips?.length < 0 ? (
-                <div className="row text-left px-3">
-                  <h5 className="mt-3">Visited Cities</h5>
-                  <p className="content">If you really enjoy spending your vacation or would like to try something new and exciting for the first time.</p>
+              { review?.tips?.length > 0 ? (
+                <div className="row text-left px-5">
+                  <h5 className="my-3 text-muted">Visited Cities</h5>
+                  {tips}
                 </div>
               ) : (
                 null
@@ -166,8 +179,8 @@ function CountryTabs({ countryNews }) {
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-      <Row>
-        <Col sm={3} className="mb-4">
+      <Row className="gap-4 h-100">
+        <Col sm={2} className="mb-4">
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
               <Nav.Link eventKey="first">Weather</Nav.Link>
@@ -186,7 +199,7 @@ function CountryTabs({ countryNews }) {
             </Nav.Item>
           </Nav>
         </Col>
-        <Col sm={9}>
+        <Col sm={9} className="border border-gray rounded p-4 h-100">
           <Tab.Content>
             <Tab.Pane eventKey="first">
               <p>hi</p>

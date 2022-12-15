@@ -71,80 +71,80 @@ function CountryPage({ id, countryInfo, countryNews }) {
   //   }
   // }, [])
   return (
-    <div className="d-flex flex-lg-row flex-column justify-content-center gap-4 mx-4 my-5">
-      <div className="col-md-3 mx-4">
-        <div className="col w-100 mb-4">
-          <Map lat={countryLat} long={countryLong} capitalInfo={capitalInfo} />
-        </div>
-
-        <div className="d-flex flex-row justify-content-center mb-4">
-          <iframe
-            src={`https://www.travel-advisory.info/widget-no-js?countrycode=${id}`}
-            className="rounded"
-            style={{ minHeight: 220 }}
-          >Country advisory by <a href="https://www.travel-advisory.info/" rel="nofollow">Travel-Advisory.info</a>
-          </iframe>
-        </div>
-
-        <div className="d-flex flex-row justify-content-end mb-4">
-          <a
-            href={countryInfo?.maps?.googleMaps}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-decoration-none link-dark"
-          >
-            <Image
-              src="/images/google-maps-1.png"
-              alt="google-maps-icon"
-              width="40"
-            />
-          </a>
-        </div>
-
-        <Tabs
-          defaultActiveKey="general"
-          className="my-3"
+    <>
+      <div className="d-flex flex-row justify-content-end mx-5">
+        <a
+          href={countryInfo?.maps?.googleMaps}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-decoration-none link-dark"
         >
-          <Tab eventKey="general" title="General">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Common Name</div>
-                  <small>{countryInfo?.name?.common}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Official Name</div>
-                  <small>{countryInfo?.name?.official}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Continent</div>
-                  <small>{countryInfo?.continents}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Region</div>
-                  <small>{countryInfo?.region}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Subregion</div>
-                  <small>{countryInfo?.subregion}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Population</div>
-                  <small>{countryInfo?.population}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                {
+          <Image
+            src="/images/google-maps-1.png"
+            alt="google-maps-icon"
+            width="35"
+          />
+        </a>
+      </div>
+      <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3">
+        <div className="col-md-3 mx-4">
+          <div className="col w-100 mb-4">
+            <Map lat={countryLat} long={countryLong} capitalInfo={capitalInfo} />
+          </div>
+
+          <div className="d-flex flex-row justify-content-center mb-4">
+            <iframe
+              src={`https://www.travel-advisory.info/widget-no-js?countrycode=${id}`}
+              className="rounded"
+              style={{ minHeight: 220 }}
+            >Country advisory by <a href="https://www.travel-advisory.info/" rel="nofollow">Travel-Advisory.info</a>
+            </iframe>
+          </div>
+
+          <Tabs
+            defaultActiveKey="general"
+            className="my-3"
+          >
+            <Tab eventKey="general" title="General">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Common Name</div>
+                    <small>{countryInfo?.name?.common}</small>
+                  </div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Official Name</div>
+                    <small>{countryInfo?.name?.official}</small>
+                  </div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Continent</div>
+                    <small>{countryInfo?.continents}</small>
+                  </div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Region</div>
+                    <small>{countryInfo?.region}</small>
+                  </div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Subregion</div>
+                    <small>{countryInfo?.subregion}</small>
+                  </div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">Population</div>
+                    <small>{countryInfo?.population}</small>
+                  </div>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  {
                   countryInfo?.capital?.length === 1 ? (
                     <div className="ms-2 me-auto">
                       <div className="fw-bold">Capital</div>
@@ -163,114 +163,114 @@ function CountryPage({ id, countryInfo, countryNews }) {
                     </div>
                   )
                 }
-              </li>
-            </ul>
-          </Tab>
+                </li>
+              </ul>
+            </Tab>
 
-          <Tab eventKey="additional" title="Additional">
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                {Object.keys(countryInfo?.currencies).length <= 5 ? (
+            <Tab eventKey="additional" title="Additional">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  {Object.keys(countryInfo?.currencies).length <= 5 ? (
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">Currencies</div>
+                      <ul>
+                        {currencies}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="w-100">
+                      <Accordion className="accordion-flush">
+                        <Accordion.Item eventKey="0" className="w-100">
+                          <Accordion.Header><span className="fw-bold">Currencies</span></Accordion.Header>
+                          <Accordion.Body className="ps-4">
+                            <ul>
+                              {currencies}
+                            </ul>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </div>
+                  )}
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  {Object.keys(countryInfo?.languages).length <= 5 ? (
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">Languages</div>
+                      <ul>
+                        {languages}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="w-100">
+                      <Accordion className="accordion-flush">
+                        <Accordion.Item eventKey="0" className="w-100">
+                          <Accordion.Header><span className="fw-bold">Languages</span></Accordion.Header>
+                          <Accordion.Body className="accordion-btn-padding-x-0">
+                            <ul className="ps-4">
+                              {languages}
+                            </ul>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </div>
+                  )}
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
+                  {Object.keys(countryInfo?.timezones).length <= 5 ? (
+                    <div className="ms-2 me-auto">
+                      <div className="fw-bold">Timezones</div>
+                      <ul>
+                        {timezones}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="w-100">
+                      <Accordion className="accordion-flush">
+                        <Accordion.Item eventKey="0" className="w-100">
+                          <Accordion.Header><span className="fw-bold">Timezones</span></Accordion.Header>
+                          <Accordion.Body className="accordion-btn-padding-x-0">
+                            <ul className="ps-4">
+                              {timezones}
+                            </ul>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </div>
+                  )}
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="ms-2 me-auto">
-                    <div className="fw-bold">Currencies</div>
-                    <ul>
-                      {currencies}
-                    </ul>
+                    <div className="fw-bold">Driving Side</div>
+                    <small className="text-capitalize">{countryInfo?.car?.side}</small>
                   </div>
-                ) : (
-                  <div className="w-100">
-                    <Accordion className="accordion-flush">
-                      <Accordion.Item eventKey="0" className="w-100">
-                        <Accordion.Header><span className="fw-bold">Currencies</span></Accordion.Header>
-                        <Accordion.Body className="ps-4">
-                          <ul>
-                            {currencies}
-                          </ul>
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    </Accordion>
-                  </div>
-                )}
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                {Object.keys(countryInfo?.languages).length <= 5 ? (
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="ms-2 me-auto">
-                    <div className="fw-bold">Languages</div>
-                    <ul>
-                      {languages}
-                    </ul>
+                    <div className="fw-bold">Calling Code</div>
+                    <small className="text-capitalize">+{countryResult?.phone_code}</small>
                   </div>
-                ) : (
-                  <div className="w-100">
-                    <Accordion className="accordion-flush">
-                      <Accordion.Item eventKey="0" className="w-100">
-                        <Accordion.Header><span className="fw-bold">Languages</span></Accordion.Header>
-                        <Accordion.Body className="accordion-btn-padding-x-0">
-                          <ul className="ps-4">
-                            {languages}
-                          </ul>
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    </Accordion>
-                  </div>
-                )}
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                {Object.keys(countryInfo?.timezones).length <= 5 ? (
-                  <div className="ms-2 me-auto">
-                    <div className="fw-bold">Timezones</div>
-                    <ul>
-                      {timezones}
-                    </ul>
-                  </div>
-                ) : (
-                  <div className="w-100">
-                    <Accordion className="accordion-flush">
-                      <Accordion.Item eventKey="0" className="w-100">
-                        <Accordion.Header><span className="fw-bold">Timezones</span></Accordion.Header>
-                        <Accordion.Body className="accordion-btn-padding-x-0">
-                          <ul className="ps-4">
-                            {timezones}
-                          </ul>
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    </Accordion>
-                  </div>
-                )}
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Driving Side</div>
-                  <small className="text-capitalize">{countryInfo?.car?.side}</small>
-                </div>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-start">
-                <div className="ms-2 me-auto">
-                  <div className="fw-bold">Calling Code</div>
-                  <small className="text-capitalize">+{countryResult?.phone_code}</small>
-                </div>
-              </li>
-            </ul>
-          </Tab>
+                </li>
+              </ul>
+            </Tab>
 
-          <Tab eventKey="visa" title="Visa Search">
-            <div id="iframeCont" className="d-flex flex-row justify-content-center">
-              <iframe
-                id="visaIframe"
-                style={{ overflow: 'hidden', height: '500px', minWidth: '350px', border: '0px' }}
-                src="https://visalist.io/widget?dark=false&showheader=true&home=null&destination=null&headercolor=%484A4C&buttoncolor=%D2D2D2"
-                width="100%"
-                scrolling="no"
-                // allowFullScreen
-              />
-            </div>
-          </Tab>
-        </Tabs>
+            <Tab eventKey="visa" title="Visa Search">
+              <div id="iframeCont" className="d-flex flex-row justify-content-center">
+                <iframe
+                  id="visaIframe"
+                  style={{ overflow: 'hidden', height: '500px', minWidth: '350px', border: '0px' }}
+                  src="https://visalist.io/widget?dark=false&showheader=true&home=null&destination=null&headercolor=%484A4C&buttoncolor=%D2D2D2"
+                  width="100%"
+                  scrolling="no"
+                />
+              </div>
+            </Tab>
+          </Tabs>
+        </div>
+        <div className="col-md-8">
+          <CountryTabs countryNews={countryNews} />
+        </div>
       </div>
-      <div className="col-md-8 border border-secondary rounded p-4">
-        <CountryTabs countryNews={countryNews} />
-      </div>
-    </div>
+    </>
   )
 }
 
