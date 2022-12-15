@@ -28,7 +28,6 @@ function Home() {
     const countryResult = await countriesData.find((country) => country.name.toLowerCase() === searchTerm.toLowerCase())
     // console.log('countryResult ', countryResult)
     setCountryIso(countryResult?.iso2)
-
     setLat(countryResult?.latitude)
     setLong(countryResult?.longitude)
 
@@ -90,10 +89,10 @@ function Home() {
   }
 
   return (
-    <div className="container px-3">
+    <div className="container px-2">
       <div className="d-flex flex-lg-row flex-column my-5 gap-5">
 
-        <div className="col-lg-3 col-md-12 me-2">
+        <div className="col-lg-3 col-md-12 me-4">
           <div className="input-group rounded">
             <input
               type="search"
@@ -130,8 +129,8 @@ function Home() {
           </div>
 
           {wikiExtract ? (
-            <div className="d-flex flex-row justify-content-end mt-3">
-              <a href={`/countries/${countryIso}`} className="text-decoration-none link-dark">
+            <div className="d-flex flex-row justify-content-end my-3">
+              <a href={`/countries/${countryIso.toUpperCase()}`} className="text-decoration-none link-dark">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="25"

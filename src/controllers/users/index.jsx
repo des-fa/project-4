@@ -10,7 +10,6 @@ const controllersUsersIndex = async (req, res) => {
 
     // Filters
     const q = req.query.q || ''
-    // Search by name, visited countries, travel plans
 
     // Pagination
     const take = 5

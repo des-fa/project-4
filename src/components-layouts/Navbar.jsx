@@ -7,13 +7,18 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 
 import { signOut } from 'next-auth/react'
 
-function OffcanvasExample() {
+function SiteNavbar() {
   return (
     <>
       {['md'].map((expand) => (
-        <Navbar key={expand} bg="light" expand={expand} className="mb-3">
+        <Navbar key={expand} bg="light" expand={expand} className="mb-3 py-3">
           <Container fluid>
-            <Image src="/images/world.png" alt="world-image" className="my-2 mx-3" style={{ height: '40px', width: '40px' }} />
+            <Image
+              src="/images/world.png"
+              alt="world-image"
+              className="my-2 mx-4"
+              style={{ height: '40px', width: '40px' }}
+            />
             <Navbar.Brand href="/home">At Your Fingertips</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
@@ -73,4 +78,4 @@ function OffcanvasExample() {
   )
 }
 
-export default OffcanvasExample
+export default SiteNavbar

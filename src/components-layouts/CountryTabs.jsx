@@ -15,7 +15,7 @@ function CountryTabs({ countryNews }) {
     <>
       <h3 className="text-muted fw-light mb-3 ms-4">Latest headlines</h3>
 
-      <div className="row row-cols-1 row-cols-md-2 g-3 px-3 py-2">
+      <div className="row row-cols-1 row-cols-lg-2 g-3 px-3 py-2">
         {countryNews?.articles.map((article, i) => (
           <div key={i} className="d-flex flex-column align-items-center mb-1">
             <div key={i} className="card h-100" style={{ width: '18rem' }}>
@@ -60,6 +60,11 @@ function CountryTabs({ countryNews }) {
     ))
   ))
 
+  const searchCities = (event) => {
+    event.currentTarget.preventDefault()
+    console.log('hi', event)
+  }
+
   let reviews
   if (isLoadingReviews) {
     reviews = <h3 className="text-muted fw-light m-4">Loading..</h3>
@@ -71,9 +76,31 @@ function CountryTabs({ countryNews }) {
       <>
         <h3 className="text-muted fw-light mb-3 ms-5">Users&apos; thoughts</h3>
 
-        {/* {tips.map((tip) => (
-          console.log(tip?.id)
-        ))} */}
+        <div className="d-flex flex-row">
+          <div className="input-group rounded px-5 mb-2 justify-content-end">
+            <form className="d-flex" role="search">
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search by city"
+                aria-label="Search"
+              />
+              <button
+                className="btn btn-sm btn-outline-dark"
+                type="submit"
+                onSubmit={() => searchCities()}
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                fill="currentColor"
+                className="bi bi-search"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg></button>
+            </form>
+          </div>
+        </div>
 
         <div className="d-flex flex-column justify-content-center py-2 px-5">
           {countryReviews?.reviews.map((review, i) => (

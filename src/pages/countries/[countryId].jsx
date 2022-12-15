@@ -16,6 +16,7 @@ function CountryPage({ id, countryInfo, countryNews }) {
   // console.log(countryInfo)
   // console.log(countryNews?.articles)
   const cities = City.getCitiesOfCountry(id.toUpperCase())
+  // console.log(cities)
   const capitalNames = Object.values(countryInfo?.capital)
   // console.log(Object.values(countryInfo?.capital))
   const capitalResult = capitalNames.map((name) => (
@@ -72,20 +73,52 @@ function CountryPage({ id, countryInfo, countryNews }) {
   // }, [])
   return (
     <>
-      <div className="d-flex flex-row justify-content-end mx-5">
+      <div className="d-flex flex-row justify-content-end mx-5 px-5 py-2 gap-3">
         <a
           href={countryInfo?.maps?.googleMaps}
           target="_blank"
           rel="noopener noreferrer"
           className="text-decoration-none link-dark"
         >
-          <Image
-            src="/images/google-maps-1.png"
-            alt="google-maps-icon"
-            width="35"
-          />
+          <button
+            type="button"
+            className="btn btn-sm btn-light text-black p-2"
+          >
+            <Image
+              src="/images/google-maps.png"
+              alt="google-maps-icon"
+              width="25"
+            />
+          </button>
         </a>
+
+        <button
+          type="button"
+          className="btn btn-sm btn-light text-black p-2"
+        >
+          <span>Save</span>
+          <Image
+            src="/images/bookmark.png"
+            alt="bookmark-icon"
+            width="25"
+            className="ms-2"
+          />
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-sm btn-light text-black p-2"
+        >
+          <span>Add</span>
+          <Image
+            src="/images/location.png"
+            alt="location-icon"
+            width="25"
+            className="ms-2"
+          />
+        </button>
       </div>
+
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3">
         <div className="col-md-3 mx-4">
           <div className="col w-100 mb-4">

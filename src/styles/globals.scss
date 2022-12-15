@@ -1,6 +1,10 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~react-toastify/dist/ReactToastify";
 
+// body {
+//   background-color: rgb(246, 243, 243);
+// }
+
 .dropdown-toggle::after {
   display: none !important;
 }
