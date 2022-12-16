@@ -39,6 +39,8 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
   background-color: rgb(86, 84, 84) !important;
   color: white !important;
+  max-height: 8rem;
+  max-width: 12rem;
 }
 
 .leaflet-popup-close-button {

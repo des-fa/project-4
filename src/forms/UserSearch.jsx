@@ -7,7 +7,7 @@ const initialValues = {
   q: ''
 }
 
-function FormsSearch(props) {
+function FormsUserSearch(props) {
   return (
     <Formik
       initialValues={initialValues}
@@ -66,4 +66,4 @@ function FormsSearch(props) {
   )
 }
 
-export default FormsSearch
+export default FormsUserSearch

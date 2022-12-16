@@ -1,35 +1,39 @@
-import Map from '@/components-layouts/maps/home-map'
-import { useEffect, useState } from 'react'
-import parse from 'html-react-parser'
+import React, { useState } from 'react'
+import Router from 'next/router'
+import axios from 'axios'
 import { Image } from 'react-bootstrap'
+import parse from 'html-react-parser'
+
+import Map from '@/components-layouts/maps/home-map'
+import FormCountrySearch from '@/forms/CountrySearch'
 import withAuth from '@/hoc/withAuth'
 import countriesData from '../data/countries.json'
 
-function Home() {
-  const [value, setValue] = useState('')
+function Home(countryInfo) {
+  // const [countryName, setCountryName] = useState('')
+  const [countryIso, setCountryIso] = useState('')
   const [lat, setLat] = useState('')
   const [long, setLong] = useState('')
-  const [countryIso, setCountryIso] = useState('')
   const [wikiExtract, setWikiExtract] = useState('')
   const [wikiPageId, setWikiPageId] = useState('')
+  const options = countryInfo?.countryInfo?.map((country) => (
+    { value: country.iso2, label: country.name }
+  ))
 
-  useEffect(() => {
-    if (value.length <= 3) {
+  const handleChange = async (value) => {
+    setCountryIso(value?.value.toUpperCase() || '')
+    // setCountryName(value?.label || '')
+    console.log(value)
+
+    const countryData = await countriesData.find((country) => country.iso2.toUpperCase() === value?.value?.toUpperCase())
+    // console.log('countryData ', countryData)
+
+    setLat(countryData?.latitude)
+    setLong(countryData?.longitude)
+
+    if (!value) {
       setWikiExtract('')
     }
-  })
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  const onSearch = async (searchTerm) => {
-    setValue(searchTerm)
-    const countryResult = await countriesData.find((country) => country.name.toLowerCase() === searchTerm.toLowerCase())
-    // console.log('countryResult ', countryResult)
-    setCountryIso(countryResult?.iso2)
-    setLat(countryResult?.latitude)
-    setLong(countryResult?.longitude)
 
     // api to fetch the search result
     let url = 'https://en.wikipedia.org/w/api.php'
@@ -47,14 +51,15 @@ function Home() {
       // list: 'search',
       prop: 'extracts',
       exsentences: 4,
-      titles: searchTerm,
+      titles: value?.label,
       // srsearch: searchTerm,
       format: 'json'
     }
 
     url = `${url}?origin=*`
     Object.keys(params).forEach((key) => { url += `&${key}=${params[key]}` })
-    if (countryResult) {
+
+    if (value?.label) {
       fetch(url)
         .then((response) => response.json())
         .then((response) => {
@@ -63,28 +68,21 @@ function Home() {
           const respObject = response.query.pages
           const respPageId = Object.keys(respObject)[0]
           // console.log(response.query.pages[respPageId].extract)
-          if (countryResult) {
+          if (value?.label) {
             const parsedWikiExtract = parse(response.query.pages[respPageId].extract)
             setWikiExtract(parsedWikiExtract)
             setWikiPageId(respPageId)
-            // const word = '(listen)'
-            // if (wikiExtract.includes(word)) {
-            //   console.log('has listen')
-            // }
           }
         // }
         })
         .catch((error) => { console.log(error) })
     }
-
-    // console.log('search ', searchTerm)
-    // console.log('lat ', lat)
-    // console.log('long ', long)
   }
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      onSearch(value)
+  const handleSubmit = () => {
+    const { pathname } = Router
+    if (pathname !== `/countries/${countryIso.toUpperCase()}`) {
+      Router.push(`/countries/${countryIso.toUpperCase()}`)
     }
   }
 
@@ -93,44 +91,27 @@ function Home() {
       <div className="d-flex flex-lg-row flex-column my-5 gap-5">
 
         <div className="col-lg-3 col-md-12 me-4">
-          <div className="input-group rounded">
-            <input
-              type="search"
-              className="form-control rounded"
-              placeholder="Search by country"
-              aria-label="Search"
-              value={value}
-              onChange={onChange}
-              onKeyUp={handleKeyPress}
-            />
-          </div>
+          <div className="d-flex flex-row justify-content-center w-100">
+            <FormCountrySearch options={options} handleChange={handleChange} />
 
-          <div className="mt-2">
-            {countriesData
-              .filter((country) => {
-                const searchTerm = value.toLowerCase()
-                const countryName = country.name.toLowerCase()
-
-                return (
-                  searchTerm
-                && countryName.startsWith(searchTerm)
-                && countryName !== searchTerm
-                )
-              })
-              .slice(0, 10)
-              .map((country) => (
-                <div
-                  key={country.id}
-                  onClick={() => onSearch(country.name)}
-                >
-                  {country.name}
-                </div>
-              ))}
+            <button
+              className="btn btn-outline-secondary ms-2"
+              type="submit"
+              onClick={handleSubmit}
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18"
+              fill="currentColor"
+              className="bi bi-search"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg></button>
           </div>
 
           {wikiExtract ? (
             <div className="d-flex flex-row justify-content-end my-3">
-              <a href={`/countries/${countryIso.toUpperCase()}`} className="text-decoration-none link-dark">
+              <a href={`/countries/${countryIso?.toUpperCase()}`} className="text-decoration-none link-dark">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="25"
@@ -182,12 +163,33 @@ function Home() {
         </div>
 
         <div className="col w-100">
-          <Map lat={lat} long={long} searchTerm={value} />
+          <Map lat={lat} long={long} />
         </div>
-      </div>
 
+      </div>
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  try {
+    const res = await axios.get('https://api.countrystatecity.in/v1/countries/', {
+      headers: {
+        'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
+      }
+    })
+    return {
+      props: {
+        countryInfo: res.data
+      }
+    }
+  } catch (e) {
+    return {
+      props: {
+        countryInfo: null
+      }
+    }
+  }
 }
 
 export default withAuth(Home)

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Image } from 'react-bootstrap'
 
-import FormsSearch from '@/forms/Search'
+import FormsUserSearch from '@/forms/UserSearch'
 import withAuth from '@/hoc/withAuth'
 
 export function UsersSearch() {
@@ -23,7 +23,7 @@ export function UsersSearch() {
         <h3 className="text-muted fw-light mt-4 mb-5 ms-4">Search for Users</h3>
 
         <div className="row mb-5">
-          <FormsSearch handleSubmit={handleSubmit} />
+          <FormsUserSearch handleSubmit={handleSubmit} />
         </div>
 
         <div className="d-flex flex-row justify-content-start ms-4">

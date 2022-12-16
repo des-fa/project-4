@@ -4,29 +4,43 @@ import { Accordion, Image, Tab, Tabs } from 'react-bootstrap'
 
 import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/CountryTabs'
-import { City } from 'country-state-city'
+// import { City } from 'country-state-city'
+import axios from 'axios'
 import countriesData from '../../data/countries.json'
 
-function CountryPage({ id, countryInfo, countryNews }) {
-  const [countryLat, setCountryLat] = useState('')
-  const [countryLong, setCountryLong] = useState('')
+function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
+  const [capitalInfo, setCapitalInfo] = useState(null)
 
-  // const router = useRouter()
-  // const { countryId } = router.query
-  // console.log(countryInfo)
   // console.log(countryNews?.articles)
-  const cities = City.getCitiesOfCountry(id.toUpperCase())
-  // console.log(cities)
+  // const cities = City.getCitiesOfCountry(id.toUpperCase())
   const capitalNames = Object.values(countryInfo?.capital)
   // console.log(Object.values(countryInfo?.capital))
-  const capitalResult = capitalNames.map((name) => (
-    cities.find((city) => city?.name?.toLowerCase() === name.toLowerCase())
-  ))
-  // console.log('cap', countryInfo?.capital)
+  console.log('capitalname', capitalNames)
+  console.log(citiesInfo)
 
-  const capitalInfo = capitalResult.map((info) => (
-    { lat: info?.latitude, long: info?.longitude, name: info?.name }
-  ))
+  useEffect(async () => {
+    try {
+      const capitalInfoArray = await Promise.all(capitalNames.map(async (name) => {
+        const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
+        const result = response.data[0]
+        return result
+      }))
+      // console.log('array', capitalInfoArray)
+      setCapitalInfo(capitalInfoArray)
+    } catch (e) {
+      console.log(e)
+    }
+  }, [countryInfo])
+
+  // const capitalResult = capitalNames?.map((name) => (
+  // citiesInfo.find((city) => city?.name?.toLowerCase() === name.toLowerCase())
+  // ))
+
+  const capitalCoordinates = capitalInfo ? (
+    capitalInfo.map((info) => (
+      { lat: info?.lat, long: info?.lon, name: info?.display_name }
+    ))
+  ) : (null)
 
   const currencies = Object.keys(countryInfo?.currencies).map((k, i) => (
     // Object.entries(data?.currencies[key]).map(([k, v], i) => (
@@ -49,13 +63,6 @@ function CountryPage({ id, countryInfo, countryNews }) {
 
   const countryResult = countriesData.find((country) => country.iso2.toLowerCase() === id.toLowerCase())
 
-  useEffect(() => {
-    if (countryResult) {
-      setCountryLat(countryResult?.latitude)
-      setCountryLong(countryResult?.longitude)
-    }
-  }, [countryResult])
-
   // const currencyKey = Object.keys(data?.currencies)
   // console.log(data?.currencies[currencyKey].name)
   // console.log(data?.currencies[currencyKey].symbol)
@@ -71,6 +78,7 @@ function CountryPage({ id, countryInfo, countryNews }) {
   //     console.log(err)
   //   }
   // }, [])
+
   return (
     <>
       <div className="d-flex flex-row justify-content-end mx-5 px-5 py-2 gap-3">
@@ -122,7 +130,7 @@ function CountryPage({ id, countryInfo, countryNews }) {
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3">
         <div className="col-md-3 mx-4">
           <div className="col w-100 mb-4">
-            <Map lat={countryLat} long={countryLong} capitalInfo={capitalInfo} />
+            <Map lat={countryResult?.latitude} long={countryResult?.longitude} capitalCoordinates={capitalCoordinates} />
           </div>
 
           <div className="d-flex flex-row justify-content-center mb-4">
@@ -280,7 +288,7 @@ function CountryPage({ id, countryInfo, countryNews }) {
                 <li className="list-group-item d-flex justify-content-between align-items-start">
                   <div className="ms-2 me-auto">
                     <div className="fw-bold">Calling Code</div>
-                    <small className="text-capitalize">+{countryResult?.phone_code}</small>
+                    <small className="text-capitalize">{countryResult?.phone_code}</small>
                   </div>
                 </li>
               </ul>
@@ -309,19 +317,28 @@ function CountryPage({ id, countryInfo, countryNews }) {
 
 export async function getServerSideProps(context) {
   // Fetch data from external API
-  const [countryInfoRes, countryNewsInfo] = await Promise.all([
-    fetch(`https://restcountries.com/v3.1/alpha/${context.params.countryId}`),
-    fetch(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`)
+  const [countryInfoRes, countryNewsInfoRes, citiesInfoRes] = await Promise.all([
+    // fetch(`https://restcountries.com/v3.1/alpha/${context.params.countryId}`),
+    // fetch(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`)
+    axios.get(`https://restcountries.com/v3.1/alpha/${context.params.countryId.toUpperCase()}`),
+    axios.get(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId.toUpperCase()}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`),
+    axios.get(`https://api.countrystatecity.in/v1/countries/${context.params.countryId.toUpperCase()}/cities`, {
+      headers: {
+        'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
+      }
+    })
   ])
-  const [countryInfo, countryNews] = await Promise.all([
-    countryInfoRes.json(),
-    countryNewsInfo.json()
+  const [countryInfo, countryNews, citiesInfo] = await Promise.all([
+    countryInfoRes.data,
+    countryNewsInfoRes.data,
+    citiesInfoRes.data
   ])
   // Pass data to the page via props
   return { props: {
-    id: context.params.countryId,
+    id: context.params.countryId.toUpperCase(),
     countryInfo: countryInfo[0],
-    countryNews
+    countryNews,
+    citiesInfo
   } }
 }
 

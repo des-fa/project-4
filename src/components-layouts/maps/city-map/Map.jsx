@@ -10,33 +10,34 @@ const capitalIcon = L.icon({
   iconSize: [25, 25]
 })
 
-function Markers({ capitalInfo }) {
+function Markers({ capitalCoordinates }) {
   const map = useMap()
   return (
-    capitalInfo.length > 0
-    && capitalInfo.map((info, i) => (
+    capitalCoordinates?.length > 0
+    && capitalCoordinates?.map((info, i) => (
       <Marker
         eventHandlers={{
           click: () => {
             map.setView(
-              [info.lat, info.long],
+              [info?.lat, info?.long],
               12
             )
           }
         }}
         key={i}
-        position={[info.lat, info.long]}
+        position={[info?.lat, info?.long]}
         icon={capitalIcon}
       >
         <Popup>
-          <h6 className="p-1">{info.name}</h6>
+          <p className="p-1">{info?.name}</p>
         </Popup>
       </Marker>
     ))
   )
 }
 
-function CityMap({ lat, long, capitalInfo }) {
+function CityMap({ lat, long, capitalCoordinates }) {
+  // console.log(capitalCoordinates)
   return (
     <MapContainer className="home-map" style={{ height: 350 }} center={[lat, long]} zoom={3} scrollWheelZoom>
       <TileLayer
@@ -44,7 +45,7 @@ function CityMap({ lat, long, capitalInfo }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <Markers capitalInfo={capitalInfo} />
+      <Markers capitalCoordinates={capitalCoordinates} />
 
     </MapContainer>
   )
