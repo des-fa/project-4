@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 
 const initialValues = {
@@ -10,7 +10,7 @@ const initialValues = {
 function FormsSearch(props) {
   return (
     <Formik
-      initialValues={props.query || initialValues}
+      initialValues={initialValues}
       onSubmit={props.handleSubmit}
       // {(values) => {
       //   console.log(values)

@@ -9,7 +9,7 @@ export default function useUsers() {
 
   return {
     users: data,
-    isLoadingUseress: !error && !data,
+    isLoadingUsers: !error && !data,
     isError: error,
     errorMessage: error?.response?.data?.message
   }

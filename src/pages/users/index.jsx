@@ -7,7 +7,8 @@ import withAuth from '@/hoc/withAuth'
 
 export function UsersSearch() {
   const [data, setData] = useState(null)
-  console.log(data)
+  // console.log(data)
+
   const handleSubmit = async (values) => {
     await axios({
       method: 'GET',
@@ -20,11 +21,12 @@ export function UsersSearch() {
     <div className="container px-3">
       <div className="d-flex flex-column mt-5">
         <h3 className="text-muted fw-light mt-4 mb-5 ms-4">Search for Users</h3>
-        <div className="row">
+
+        <div className="row mb-5">
           <FormsSearch handleSubmit={handleSubmit} />
         </div>
 
-        <div className="d-flex flex-row justify-content-start">
+        <div className="d-flex flex-row justify-content-start ms-4">
           {data?.map((user, i) => (
             <div key={i} className="d-flex flex-row align-items-center border rounded-4 px-3 py-2 gap-2 w-50">
               <div className="text-center">
