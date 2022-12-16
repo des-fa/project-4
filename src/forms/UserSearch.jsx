@@ -26,39 +26,36 @@ function FormsUserSearch(props) {
       {
       ({ errors: e, touched: t, isSubmitting }) => (
         <Form>
-          <div className="d-flex flex-row ms-4 align-items-center">
+          {/* <div className="d-flex flex-row ms-4 w-100 align-items-center"> */}
 
-            <div className="d-flex flex-column me-3">
-              <Field
-                className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
-                name="q"
-                placeholder="Connect with others"
-
-              />
-              {/* <ErrorMessage
+          <div className="d-flex flex-row ms-4 gap-3">
+            <Field
+              className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
+              name="q"
+              placeholder="Connect with others"
+            />
+            {/* <ErrorMessage
                 className="invalid-feedback"
                 name="q"
                 component="div"
               /> */}
-            </div>
 
-            <div className="d-flex flex-column">
-              <button
-                className="btn btn-outline-secondary"
-                type="submit"
-                disabled={isSubmitting}
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="18"
-                fill="currentColor"
-                className="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-              </svg></button>
-            </div>
-
+            <button
+              className="btn btn-outline-secondary"
+              type="submit"
+              disabled={isSubmitting}
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18"
+              fill="currentColor"
+              className="bi bi-search"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg></button>
           </div>
+
+          {/* </div> */}
         </Form>
       )
       }

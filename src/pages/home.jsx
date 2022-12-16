@@ -10,12 +10,12 @@ import withAuth from '@/hoc/withAuth'
 import countriesData from '../data/countries.json'
 
 function Home(countryInfo) {
+  // const [countryName, setCountryName] = useState('')
   const [countryIso, setCountryIso] = useState('')
   const [lat, setLat] = useState('')
   const [long, setLong] = useState('')
   const [wikiExtract, setWikiExtract] = useState('')
   const [wikiPageId, setWikiPageId] = useState('')
-
   const options = countryInfo?.countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
