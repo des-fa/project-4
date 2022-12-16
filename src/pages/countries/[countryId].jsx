@@ -10,13 +10,13 @@ import countriesData from '../../data/countries.json'
 
 function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
   const [capitalInfo, setCapitalInfo] = useState(null)
-
-  // console.log(countryNews?.articles)
   // const cities = City.getCitiesOfCountry(id.toUpperCase())
+  const options = citiesInfo?.map((city) => (
+    { value: city.name, label: city.name }
+  ))
   const capitalNames = Object.values(countryInfo?.capital)
   // console.log(Object.values(countryInfo?.capital))
-  console.log('capitalname', capitalNames)
-  console.log(citiesInfo)
+  // console.log('options', options)
 
   useEffect(async () => {
     try {
@@ -308,7 +308,7 @@ function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
           </Tabs>
         </div>
         <div className="col-md-8">
-          <CountryTabs countryNews={countryNews} />
+          <CountryTabs countryNews={countryNews} citiesOptions={options} />
         </div>
       </div>
     </>

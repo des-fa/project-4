@@ -18,8 +18,8 @@ function FormCountrySearch({ options, handleChange }) {
             // isLoading={isLoading}
             // isDisabled={isDisabled}
         name="countries"
-        placeholder="Select a country"
-        noOptionsMessage={() => 'Country not found'}
+        placeholder="Select or Search"
+        noOptionsMessage={() => 'No results'}
         options={options}
         onChange={handleChange}
       />

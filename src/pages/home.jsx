@@ -5,17 +5,17 @@ import { Image } from 'react-bootstrap'
 import parse from 'html-react-parser'
 
 import Map from '@/components-layouts/maps/home-map'
-import FormCountrySearch from '@/forms/CountrySearch'
+import FormCountrySearch from '@/forms/CountryCitySearch'
 import withAuth from '@/hoc/withAuth'
 import countriesData from '../data/countries.json'
 
 function Home(countryInfo) {
-  // const [countryName, setCountryName] = useState('')
   const [countryIso, setCountryIso] = useState('')
   const [lat, setLat] = useState('')
   const [long, setLong] = useState('')
   const [wikiExtract, setWikiExtract] = useState('')
   const [wikiPageId, setWikiPageId] = useState('')
+
   const options = countryInfo?.countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
@@ -23,7 +23,7 @@ function Home(countryInfo) {
   const handleChange = async (value) => {
     setCountryIso(value?.value.toUpperCase() || '')
     // setCountryName(value?.label || '')
-    console.log(value)
+    // console.log(value)
 
     const countryData = await countriesData.find((country) => country.iso2.toUpperCase() === value?.value?.toUpperCase())
     // console.log('countryData ', countryData)

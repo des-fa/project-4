@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { Image } from 'react-bootstrap'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
@@ -6,10 +8,12 @@ import Tab from 'react-bootstrap/Tab'
 
 import useCountryReviews from '@/hooks/country-reviews'
 import useCountryPlans from '@/hooks/country-plans'
+import FormCountrySearch from '@/forms/CountryCitySearch'
 
-function CountryTabs({ countryNews }) {
+function CountryTabs({ countryNews, citiesOptions }) {
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
+  const [cityName, setCityName] = useState('')
 
   const newsArticles = countryNews?.articles?.length > 0 ? (
     <>
@@ -59,10 +63,11 @@ function CountryTabs({ countryNews }) {
       </div>
     ))
   ))
+  console.log(tips)
 
-  const searchCities = (event) => {
-    event.currentTarget.preventDefault()
-    console.log('hi', event)
+  const handleChange = async (value) => {
+    setCityName(value?.value)
+    console.log(cityName)
   }
 
   let reviews
@@ -76,30 +81,8 @@ function CountryTabs({ countryNews }) {
       <>
         <h3 className="text-muted fw-light mb-3 ms-5">Users&apos; thoughts</h3>
 
-        <div className="d-flex flex-row">
-          <div className="input-group rounded px-5 mb-2 justify-content-end">
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search by city"
-                aria-label="Search"
-              />
-              <button
-                className="btn btn-sm btn-outline-dark"
-                type="submit"
-                onSubmit={() => searchCities()}
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                fill="currentColor"
-                className="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-              </svg></button>
-            </form>
-          </div>
+        <div className="d-flex flex-row justify-content-center w-75 ms-5 my-3">
+          <FormCountrySearch options={citiesOptions} handleChange={handleChange} />
         </div>
 
         <div className="d-flex flex-column justify-content-center py-2 px-5">

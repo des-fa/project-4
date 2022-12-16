@@ -36,6 +36,11 @@
   height: 40rem;
 }
 
+.continent-search-result:hover {
+background-color: rgb(173, 172, 172);
+opacity: 0.5;
+}
+
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
   background-color: rgb(86, 84, 84) !important;
   color: white !important;
