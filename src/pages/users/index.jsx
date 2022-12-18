@@ -28,7 +28,7 @@ export function UsersSearch() {
 
         <div className="d-flex flex-row justify-content-start ms-4">
           {data?.map((user, i) => (
-            <div key={i} className="d-flex flex-row align-items-center border rounded-4 px-3 py-2 gap-2 w-25">
+            <div key={i} className="d-flex flex-lg-row flex-column align-items-center border rounded-4 px-3 py-2 gap-2 w-25">
               <div className="text-center">
                 <Image
                   src={user?.profile?.avatar}

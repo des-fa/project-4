@@ -19,18 +19,20 @@ export default function useMyProfile() {
   }
 
   const updateMyProfile = async (values) => {
+    console.log('hook', values)
+
     await axios({
       method: 'PUT',
       url: '/api/my/profile',
       data: values
     }).then((resp) => {
-      mutate(resp.data)
+      console.log('resp', resp)
     }).catch(handleErrors)
   }
 
   return {
     myProfile: data,
-    isLoading: !error && !data,
+    isLoadingProfile: !error && !data,
     isError: error,
     errorMessage: error?.response?.data,
     createMyProfile,

@@ -28,7 +28,7 @@ function FormsUserSearch(props) {
         <Form>
           {/* <div className="d-flex flex-row ms-4 w-100 align-items-center"> */}
 
-          <div className="d-flex flex-row ms-4 gap-3">
+          <div className="d-flex flex-row ms-4 gap-3 w-100">
             <Field
               className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
               name="q"

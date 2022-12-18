@@ -6,6 +6,7 @@ import authenticateUser from '@/controllers/_middlewares/authenticateUser'
 
 const updateSchema = yup.object({
   iso2: yup.string().uppercase().required(),
+  countryName: yup.string().required(),
   month: yup
     .number()
     .integer()

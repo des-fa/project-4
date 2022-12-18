@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react'
 
 const createSchema = yup.object({
   iso2: yup.string().uppercase().required(),
+  countryName: yup.string().required(),
   month: yup
     .number()
     .integer()

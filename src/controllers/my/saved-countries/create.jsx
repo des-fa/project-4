@@ -6,7 +6,8 @@ import authenticateUser from '@/controllers/_middlewares/authenticateUser'
 import { getSession } from 'next-auth/react'
 
 const createSchema = yup.object({
-  iso2: yup.string().uppercase().required()
+  iso2: yup.string().uppercase().required(),
+  countryName: yup.string().required()
 })
 
 const controllersMySavedCountriesCreate = async (req, res) => {

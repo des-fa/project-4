@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { Badge, Image } from 'react-bootstrap'
 
-import useMyProfile from '@/hooks/profile'
+import useMyProfile from '@/hooks/my/profile'
 
 const initialValues = {
   avatar: '',
@@ -32,7 +32,6 @@ function FormsProfileChangeModal(props) {
 
   const handleSubmit = props.initialValues ? (
     async (values) => {
-      console.log(values)
       await updateMyProfile(values)
         .then(() => {
           props.setEditModalShow(false)

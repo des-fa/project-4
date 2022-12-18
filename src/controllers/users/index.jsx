@@ -24,12 +24,12 @@ const controllersUsersIndex = async (req, res) => {
         }
       },
       OR: [
-        {
-          id: {
-            contains: q,
-            mode: 'insensitive'
-          }
-        },
+        // {
+        //   id: {
+        //     contains: q,
+        //     mode: 'insensitive'
+        //   }
+        // },
         {
           profile: {
             fullName: {

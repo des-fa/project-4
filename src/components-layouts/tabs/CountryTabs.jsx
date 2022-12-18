@@ -63,7 +63,6 @@ function CountryTabs({ countryNews, citiesOptions }) {
       </div>
     ))
   ))
-  console.log(tips)
 
   const handleChange = async (value) => {
     setCityName(value?.value)

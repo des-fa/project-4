@@ -1,9 +1,19 @@
+import React from 'react'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
-function ProfileTabs() {
+function ProfileTabs({ countryInfo, myPlans }) {
+  console.log(myPlans)
+  console.log(countryInfo)
+  const plans = myPlans?.plans.map((plan, i) => (
+    <div key={i}>
+      <h5>{plan?.countryName}</h5>
+      <p>{plan?.month} / {plan?.year}</p>
+    </div>
+  ))
+
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
       <Row>
@@ -33,6 +43,9 @@ function ProfileTabs() {
             </Tab.Pane>
             <Tab.Pane eventKey="second">
               <p>hi</p>
+            </Tab.Pane>
+            <Tab.Pane eventKey="third">
+              {plans}
             </Tab.Pane>
           </Tab.Content>
         </Col>

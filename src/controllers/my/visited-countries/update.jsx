@@ -7,6 +7,7 @@ import parseData from '@/controllers/_middlewares/parseData'
 
 const updateSchema = yup.object({
   iso2: yup.string().uppercase().required(),
+  countryName: yup.string().required(),
   month: yup
     .number()
     .integer()

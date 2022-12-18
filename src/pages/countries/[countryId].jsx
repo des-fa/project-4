@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Accordion, Image, Tab, Tabs } from 'react-bootstrap'
 
 import Map from '@/components-layouts/maps/city-map'
-import CountryTabs from '@/components-layouts/CountryTabs'
+import CountryTabs from '@/components-layouts/tabs/CountryTabs'
 // import { City } from 'country-state-city'
 import axios from 'axios'
 import countriesData from '../../data/countries.json'
