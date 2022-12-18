@@ -8,6 +8,7 @@ import useMyProfile from '@/hooks/my/profile'
 import useMyVisitedCountries from '@/hooks/my/visited-countries'
 import useMySavedCountries from '@/hooks/my/saved-countries'
 import useMyPlans from '@/hooks/my/plans'
+import useMyFollowing from '@/hooks/my/following'
 
 import ProfileTabs from '@/components-layouts/tabs/ProfileTabs'
 import FormsProfileChangeModal from '@/forms/profile/ProfileChange'
@@ -15,7 +16,8 @@ import FormsProfileChangeModal from '@/forms/profile/ProfileChange'
 function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryInfo }) {
   const { myVisitedCountries } = useMyVisitedCountries()
   const { mySavedCountries } = useMySavedCountries()
-  const { myPlans, isLoadingPlans } = useMyPlans()
+  const { myPlans } = useMyPlans()
+  const { myFollowing } = useMyFollowing()
 
   return (
     <>
@@ -64,9 +66,9 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
           <ProfileTabs
             countryInfo={countryInfo}
             myVisitedCountries={myVisitedCountries}
-            myPlans={myPlans}
-            isLoadingPlans={isLoadingPlans}
             mySavedCountries={mySavedCountries}
+            myPlans={myPlans}
+            myFollowing={myFollowing}
           />
         </div>
       </div>
