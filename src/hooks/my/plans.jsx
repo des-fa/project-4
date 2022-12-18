@@ -18,24 +18,23 @@ export default function useMyPlans() {
     }).catch(handleErrors)
   }
 
-  const updateMyPlans = async (values) => {
-    console.log('hook', values)
+  // const updateMyPlans = async (values) => {
+  //   console.log('hook', values)
 
-    await axios({
-      method: 'PUT',
-      url: '/api/my/plans',
-      data: values
-    }).then((resp) => {
-      console.log('resp', resp)
-    }).catch(handleErrors)
-  }
+  //   await axios({
+  //     method: 'PUT',
+  //     url: '/api/my/plans',
+  //     data: values
+  //   }).then((resp) => {
+  //     console.log('resp', resp)
+  //   }).catch(handleErrors)
+  // }
 
   return {
     myPlans: data,
     isLoadingPlans: !error && !data,
     isError: error,
     errorMessage: error?.response?.data,
-    createMyPlans,
-    updateMyPlans
+    createMyPlans
   }
 }
