@@ -5,12 +5,16 @@ import { Dropdown, Image } from 'react-bootstrap'
 
 import withAuth from '@/hoc/withAuth'
 import useMyProfile from '@/hooks/my/profile'
+import useMyVisitedCountries from '@/hooks/my/visited-countries'
+import useMySavedCountries from '@/hooks/my/saved-countries'
 import useMyPlans from '@/hooks/my/plans'
 
 import ProfileTabs from '@/components-layouts/tabs/ProfileTabs'
 import FormsProfileChangeModal from '@/forms/profile/ProfileChange'
 
 function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryInfo }) {
+  const { myVisitedCountries } = useMyVisitedCountries()
+  const { mySavedCountries } = useMySavedCountries()
   const { myPlans, isLoadingPlans } = useMyPlans()
 
   return (
@@ -57,7 +61,13 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
         </div>
 
         <div className="col-lg-8 col-md-12 border border-dark rounded p-4">
-          <ProfileTabs countryInfo={countryInfo} myPlans={myPlans} isLoadingPlans={isLoadingPlans} />
+          <ProfileTabs
+            countryInfo={countryInfo}
+            myVisitedCountries={myVisitedCountries}
+            myPlans={myPlans}
+            isLoadingPlans={isLoadingPlans}
+            mySavedCountries={mySavedCountries}
+          />
         </div>
       </div>
     </>
