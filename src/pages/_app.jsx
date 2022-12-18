@@ -1,5 +1,7 @@
 import '@/styles/globals.scss'
 import SSRProvider from 'react-bootstrap/SSRProvider'
+
+import ScrollToTop from 'react-scroll-to-top'
 import { ToastContainer } from 'react-toastify'
 import { appWithTranslation } from 'next-i18next'
 // import { useRouter } from 'next/router'
@@ -32,6 +34,7 @@ function MyApp({ Component, pageProps }) {
         draggable
         pauseOnHover
       />
+      <ScrollToTop smooth className="scroll-btn" style={{ right: 30, bottom: 100 }} />
     </SSRProvider>
   )
 }

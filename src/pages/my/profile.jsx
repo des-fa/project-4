@@ -9,6 +9,7 @@ import useMyVisitedCountries from '@/hooks/my/visited-countries'
 import useMySavedCountries from '@/hooks/my/saved-countries'
 import useMyPlans from '@/hooks/my/plans'
 import useMyFollowing from '@/hooks/my/following'
+import useMyFollowers from '@/hooks/my/followers'
 
 import ProfileTabs from '@/components-layouts/tabs/ProfileTabs'
 import FormsProfileChangeModal from '@/forms/profile/ProfileChange'
@@ -18,20 +19,26 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
   const { mySavedCountries } = useMySavedCountries()
   const { myPlans } = useMyPlans()
   const { myFollowing } = useMyFollowing()
+  const { myFollowers } = useMyFollowers()
 
   return (
-    <>
-      {/* <div className="row">
-        <div className="col-12 my-4">
-          <h2>Profile</h2>
-        </div>
-      </div> */}
+    <div className="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-5">
+      <div className="card col-lg-3 col-md-3">
+        <Image
+          className="card-profile-picture img-fluid"
+          src={profile?.avatar}
+          alt="profile-picture"
+          style={{ maxHeight: '250px' }}
+        />
+        <div className="card-body my-2">
+          <div className="d-flex flex-row justify-content-between mb-2">
+            <h4 className="fw-semibold text-capitalize">{profile?.fullName}</h4>
 
-      <div className="d-flex flex-lg-row flex-column">
-        <div className="d-flex flex-column text-center w-100 pe-5 me-5 mb-4">
-          <div className="d-flex justify-content-end">
             <Dropdown>
-              <Dropdown.Toggle variant="outline-dark">
+              <Dropdown.Toggle
+                variant="outline-dark"
+                size="sm"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-three-dots" viewBox="0 0 16 16">
                   <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                 </svg>
@@ -46,33 +53,21 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
             <FormsProfileChangeModal initialValues={profile} show={show} onHide={onHide} setEditModalShow={setEditModalShow} />
           </div>
 
-          <div className="mb-2">
-            <Image
-              src={profile?.avatar}
-              alt="profile-picture"
-              className="rounded-circle"
-              width={150}
-              height={150}
-            />
-          </div>
-
-          <div className="d-flex flex-column gap-2 my-2">
-            <h4 className="fw-semibold text-uppercase">{profile?.fullName}</h4>
-            <h5>{profile?.about}</h5>
-          </div>
-        </div>
-
-        <div className="col-lg-8 col-md-12 border border-dark rounded p-4">
-          <ProfileTabs
-            countryInfo={countryInfo}
-            myVisitedCountries={myVisitedCountries}
-            mySavedCountries={mySavedCountries}
-            myPlans={myPlans}
-            myFollowing={myFollowing}
-          />
+          <h6>{profile?.about}</h6>
         </div>
       </div>
-    </>
+
+      <div className="col-lg-9 col-md-9 border border-gray rounded p-4">
+        <ProfileTabs
+          countryInfo={countryInfo}
+          myVisitedCountries={myVisitedCountries}
+          mySavedCountries={mySavedCountries}
+          myPlans={myPlans}
+          myFollowing={myFollowing}
+          myFollowers={myFollowers}
+        />
+      </div>
+    </div>
 
   )
 }
@@ -129,7 +124,7 @@ export function ProfilePage({ countryInfo }) {
   }
 
   return (
-    <div id="pages-my-profile" className="container pt-5">
+    <div id="pages-my-profile" className="container pt-5 mb-5">
       {content}
     </div>
   )

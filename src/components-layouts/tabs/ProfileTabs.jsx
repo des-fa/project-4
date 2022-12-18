@@ -7,11 +7,11 @@ import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
-function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing }) {
-  console.log(myFollowing)
+function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
+  // console.log(myFollowers)
   console.log(countryInfo)
 
-  const visited = myVisitedCountries ? (
+  const visited = myVisitedCountries?.visitedCountries?.length > 0 ? (
     myVisitedCountries?.visitedCountries?.map((country, i) => (
       <div
         key={i}
@@ -95,7 +95,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
     <h3 className="text-muted fw-light m-4">You haven&apos;t added any information about your past travels yet.</h3>
   )
 
-  const saved = mySavedCountries ? (
+  const saved = mySavedCountries?.savedCountries?.length > 0 ? (
     mySavedCountries?.savedCountries?.map((country, i) => (
       <div
         key={i}
@@ -131,7 +131,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
     </>
   )
 
-  const plans = myPlans ? (
+  const plans = myPlans?.plans?.length > 0 ? (
     myPlans?.plans?.map((plan, i) => (
       <div
         key={i}
@@ -189,7 +189,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
     <h3 className="text-muted fw-light m-4">You haven&apos;t made any travel plans yet.</h3>
   )
 
-  const following = myFollowing ? (
+  const following = myFollowing?.following?.length > 0 ? (
     myFollowing?.following?.map((user, i) => (
       <div
         key={i}
@@ -219,7 +219,42 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
       <h3 className="text-muted fw-light m-4">You aren&apos;t following anyone yet.</h3>
 
       <h5 className="fw-light m-4">
-        <Link href="/users" passHref><a className="text-decoration-none link-dark fw-semibold">Search</a></Link> for other users!
+        <Link href="/users" passHref><a className="text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
+      </h5>
+    </>
+  )
+
+  const followers = myFollowers?.followers?.length > 0 ? (
+    myFollowers?.followers?.map((user, i) => (
+      <div
+        key={i}
+        className="d-flex flex-row  justify-content-start align-items-center border-bottom border-gray px-3 py-2 mx-2 mb-3"
+      >
+        <div className="d-flex flex-column me-3">
+          <Image
+            className="img-fluid rounded-circle"
+            src={user?.follower?.profile?.avatar}
+            alt="user-profile-pic"
+            width="70"
+          />
+        </div>
+
+        <div className="d-flex flex-column">
+          <a
+            className="text-decoration-none link-dark"
+            href={`/users/${user?.follower?.id}`}
+          >
+            <h5 className="text-capitalize">{user?.follower?.profile?.fullName}</h5>
+          </a>
+        </div>
+      </div>
+    ))
+  ) : (
+    <>
+      <h3 className="text-muted fw-light m-4">You don&apos;t have any followers yet.</h3>
+
+      <h5 className="fw-light m-4">
+        <Link href="/users" passHref><a className="text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
       </h5>
     </>
   )
@@ -315,6 +350,28 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </div>
               <div className="my-2 px-3">
                 {following}
+              </div>
+            </Tab.Pane>
+
+            <Tab.Pane eventKey="fifth">
+              <div className="d-flex flex-row justify-content-end mb-4">
+                <Link href="/users" passHref>
+                  <button type="button" className="btn btn-sm btn-dark">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                      className="bi bi-search"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </button>
+                </Link>
+              </div>
+              <div className="my-2 px-3">
+                {followers}
               </div>
             </Tab.Pane>
           </Tab.Content>
