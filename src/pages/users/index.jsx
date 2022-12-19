@@ -26,23 +26,23 @@ export function UsersSearch() {
           <FormsUserSearch handleSubmit={handleSubmit} />
         </div>
 
-        <div className="d-flex flex-row justify-content-start ms-4">
+        <div className="users-search-result d-flex flex-row justify-content-start rounded ms-4 w-50">
           {data?.map((user, i) => (
-            <div key={i} className="d-flex flex-lg-row flex-column align-items-center border rounded-4 px-3 py-2 gap-2 w-25">
-              <div className="text-center">
-                <Image
-                  src={user?.profile?.avatar}
-                  className="img-fluid rounded-circle"
-                  alt="user-profile-pic"
-                  width="80"
-                />
-              </div>
-              <div className="w-100 py-2 ps-3">
-                <a href={`/users/${user?.id}`} className="text-decoration-none link-dark">
+            <a href={`/users/${user?.id}`} className="text-decoration-none link-dark w-100">
+              <div key={i} className="d-flex flex-lg-row flex-column align-items-center border rounded px-3 py-2 gap-2 w-100">
+                <div className="text-center">
+                  <Image
+                    src={user?.profile?.avatar}
+                    className="img-fluid rounded-circle"
+                    alt="user-profile-pic"
+                    width="80"
+                  />
+                </div>
+                <div className="w-100 py-2 ps-3">
                   <h6 className="fw-semibold text-uppercase">{user?.profile?.fullName}</h6>
-                </a>
+                </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>

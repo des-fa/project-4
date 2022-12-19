@@ -36,12 +36,12 @@
 }
 
 .nav.nav-pills .nav-link {
-    color: gray;
+  color: gray;
 }
 
 .nav.nav-pills .nav-link.active {
-    background-color: rgb(67, 65, 65);
-    color: white;
+  background-color: rgb(67, 65, 65);
+  color: white;
 }
 
 .home-map {
@@ -50,8 +50,8 @@
 }
 
 .continent-search-result:hover {
-background-color: rgb(173, 172, 172);
-opacity: 0.5;
+  background-color: rgb(173, 172, 172);
+  opacity: 0.5;
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
@@ -62,8 +62,8 @@ opacity: 0.5;
 }
 
 .leaflet-popup-close-button {
-color: white !important;
-margin: 4px;
+  color: white !important;
+  margin: 4px;
 }
 
 .accordion-button {
@@ -78,6 +78,12 @@ margin: 4px;
   overflow-y: hidden !important;
   overflow-x: hidden !important;
   overflow: hidden !important;
+}
+
+.users-search-result:hover {
+  border-style: solid;
+  border-color: rgb(67, 65, 65);
+  opacity: 0.5;
 }
 
 .rounded-circle {
