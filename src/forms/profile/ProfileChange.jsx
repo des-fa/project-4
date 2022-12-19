@@ -36,7 +36,6 @@ function FormsProfileChangeModal(props) {
         .then(() => {
           props.setEditModalShow(false)
           setInputText('')
-          // navigate('/my/profile')
         })
     }
   ) : (
@@ -45,7 +44,6 @@ function FormsProfileChangeModal(props) {
         .then(() => {
         // console.log(values)
           props.onHide()
-          // navigate('/my/profile')
         })
     }
   )

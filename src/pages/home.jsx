@@ -130,8 +130,9 @@ function Home(countryInfo) {
             {wikiExtract ? (
               <Image
                 alt="country-flag"
-                src={`https://countryflagsapi.com/png/${countryIso}`}
+                src={`https://countryflagsapi.com/svg/${countryIso}`}
                 width={250}
+                crossOrigin="anonymous"
               />
             ) : null}
           </div>

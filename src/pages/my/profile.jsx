@@ -84,7 +84,11 @@ export function ProfilePage({ countryInfo }) {
   const [createModalShow, setCreateModalShow] = useState(false)
   const [editModalShow, setEditModalShow] = useState(false)
 
+  let content
+
   useEffect(() => {
+    if (isLoadingProfile) { content = (<div>Loading...</div>) }
+
     if (!myProfile && !createModalShow) {
       setTimeout(() => {
         setCreateModalShow(true)
@@ -94,10 +98,6 @@ export function ProfilePage({ countryInfo }) {
       setCreateModalShow(false)
     }
   }, [myProfile, createModalShow])
-
-  let content
-
-  if (isLoadingProfile) { content = (<div>Loading...</div>) }
 
   if (!myProfile) {
     content = (

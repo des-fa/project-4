@@ -27,22 +27,25 @@ export function UsersSearch() {
         </div>
 
         <div className="users-search-result d-flex flex-row justify-content-start rounded ms-4 w-50">
-          {data?.map((user, i) => (
-            <a href={`/users/${user?.id}`} className="text-decoration-none link-dark w-100">
-              <div key={i} className="d-flex flex-lg-row flex-column align-items-center border rounded px-3 py-2 gap-2 w-100">
-                <div className="text-center">
-                  <Image
-                    src={user?.profile?.avatar}
-                    className="img-fluid rounded-circle"
-                    alt="user-profile-pic"
-                    width="80"
-                  />
+          {data?.map((user, index) => (
+            <div key={index} className="w-100">
+              <a href={`/users/${user?.id}`} className="text-decoration-none link-dark w-100">
+                <div className="d-flex flex-lg-row align-items-center border rounded px-3 py-2 gap-2 w-100">
+                  <div className="text-center">
+                    <Image
+                      src={user?.profile?.avatar}
+                      className="img-fluid rounded-circle"
+                      alt="user-profile-pic"
+                      width="80"
+                    />
+                  </div>
+                  <div className="w-100 py-2 ps-3">
+                    <h6 className="fw-semibold text-uppercase">{user?.profile?.fullName}</h6>
+                  </div>
                 </div>
-                <div className="w-100 py-2 ps-3">
-                  <h6 className="fw-semibold text-uppercase">{user?.profile?.fullName}</h6>
-                </div>
-              </div>
-            </a>
+              </a>
+            </div>
+
           ))}
         </div>
       </div>

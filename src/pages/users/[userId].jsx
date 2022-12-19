@@ -9,11 +9,12 @@ import UserProfileTabs from '@/components-layouts/tabs/UserProfileTabs'
 import useUserProfile from '@/hooks/users/profile'
 import useUserVisitedCountries from '@/hooks/users/visited-countries'
 import useUserPlans from '@/hooks/users/plans'
+import useMyFollowing from '@/hooks/my/following'
 
-function UserProfile({ profile, currentUser }) {
+function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }) {
   const { userVisitedCountries } = useUserVisitedCountries()
   const { userPlans } = useUserPlans()
-  // console.log(profile?.user)
+  // console.log(profile)
   // console.log(currentUser)
 
   const followIcon = (
@@ -70,22 +71,24 @@ function UserProfile({ profile, currentUser }) {
       setShowFollowsYouText(false)
       setShowMessageButton(false)
     }
-  }, [followingUser, followsCurrentUser])
+  }, [profile?.user?.followedBy, profile?.user?.following])
 
   // clicking on follow button updates followers/following
-  // const handleClick = followingUser?.length !== 0 ? (
-  //   (value) => {
-  //     deleteMyFollowing(value).unwrap().then(() => {
-  //       // console.log('unfollowed')
-  //     })
-  //   }
-  // ) : (
-  //   (value) => {
-  //     createMyFollowing(value).unwrap().then(() => {
-  //       // console.log('followed')
-  //     })
-  //   }
-  // )
+  const handleClick = followingUser?.length !== 0 ? (
+    (value) => {
+      // console.log(value)
+      destroyFollowing(value).then(() => {
+        console.log('unfollowed')
+      })
+    }
+  ) : (
+    (value) => {
+      // console.log(value)
+      createFollowing(value).then(() => {
+        console.log('followed')
+      })
+    }
+  )
 
   return (
     <>
@@ -105,6 +108,8 @@ function UserProfile({ profile, currentUser }) {
           type="button"
           // className="btn btn-sm btn-dark text-white px-3"
           className={followButton ? 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-dark text-white px-3' : 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-outline-secondary px-3'}
+          onClick={() => handleClick(profile?.userId)}
+
         >
           {/* <div className="me-2"> */}
           {followText}
@@ -125,7 +130,7 @@ function UserProfile({ profile, currentUser }) {
       <div className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4">
         <div className="card col-lg-3 col-md-3">
           <Image
-            className="card-profile-picture img-fluid"
+            className="card-profile-picture img-fluid rounded-top"
             src={profile?.avatar}
             alt="profile-picture"
             style={{ maxHeight: '250px' }}
@@ -152,6 +157,8 @@ function UserProfile({ profile, currentUser }) {
 
 export function UserPage() {
   const { userProfile, isLoadingUserProfile, isError, errorMessage } = useUserProfile()
+  const { createFollowing, destroyFollowing } = useMyFollowing()
+
   const [currentUser, setCurrentUser] = useState('')
 
   const checkUser = async () => {
@@ -193,6 +200,8 @@ export function UserPage() {
       <UserProfile
         profile={userProfile}
         currentUser={currentUser}
+        createFollowing={createFollowing}
+        destroyFollowing={destroyFollowing}
       />
     )
   }

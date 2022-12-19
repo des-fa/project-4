@@ -1,8 +1,9 @@
 import useSWR from 'swr'
+import { useRouter } from 'next/router'
+import { serialize } from 'object-to-formdata'
 import axios from 'axios'
 
 import { handleErrors, fetcher } from '@/hooks/_utils'
-import { useRouter } from 'next/router'
 
 export default function useMyProfile() {
   const { isReady } = useRouter()
@@ -12,21 +13,20 @@ export default function useMyProfile() {
     await axios({
       method: 'POST',
       url: '/api/my/profile',
-      data: values
+      data: serialize(values, { indices: true })
     }).then((resp) => {
       mutate(resp.data)
     }).catch(handleErrors)
   }
 
   const updateMyProfile = async (values) => {
-    console.log('hook', values)
-
+    // console.log('hook', values)
     await axios({
       method: 'PUT',
       url: '/api/my/profile',
-      data: values
+      data: serialize(values, { indices: true })
     }).then((resp) => {
-      console.log('resp', resp)
+      mutate(resp.data)
     }).catch(handleErrors)
   }
 

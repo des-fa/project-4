@@ -2,7 +2,7 @@ import React from 'react'
 
 export function Home() {
   return (
-    <div>
+    <div className="container">
       <h1>
         Home
       </h1>
@@ -10,4 +10,5 @@ export function Home() {
 
   )
 }
+
 export default Home

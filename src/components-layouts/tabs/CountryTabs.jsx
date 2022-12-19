@@ -6,8 +6,8 @@ import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
-import useCountryReviews from '@/hooks/country-reviews'
-import useCountryPlans from '@/hooks/country-plans'
+import useCountryReviews from '@/hooks/countries/country-reviews'
+import useCountryPlans from '@/hooks/countries/country-plans'
 import FormCountrySearch from '@/forms/CountryCitySearch'
 
 function CountryTabs({ countryNews, citiesOptions }) {
