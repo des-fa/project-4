@@ -65,7 +65,7 @@ model Tip {
 
 model SavedCountry {
   id          Int     @id @default(autoincrement())
-  iso2        String
+  iso2        String  @unique
   countryName String
   user        User?   @relation(fields: [userId], references: [id])
   userId      String?

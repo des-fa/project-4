@@ -18,11 +18,24 @@ export default function useMySavedCountries() {
     }).catch(handleErrors)
   }
 
+  const destroyMySavedCountries = async (id) => {
+    // console.log('hook', id)
+    await axios({
+      method: 'DELETE',
+      url: `/api/my/saved-countries/${id}`
+    }).then((resp) => {
+      mutate(resp.data)
+    }).catch((err) => {
+      handleErrors(err)
+    })
+  }
+
   return {
     mySavedCountries: data,
     isLoadingSavedCountries: !error && !data,
     isError: error,
     errorMessage: error?.response?.data,
-    createMySavedCountries
+    createMySavedCountries,
+    destroyMySavedCountries
   }
 }

@@ -7,7 +7,8 @@ const controllersMySavedCountriesDestroy = async (req, res) => {
   try {
     const { query: { savedCountryId } } = req
     const deletedSavedCountry = await prisma.savedCountry.delete({
-      where: { id: Number(savedCountryId) }
+      // where: { id: Number(savedCountryId) }
+      where: { iso2: savedCountryId }
     })
     return res.status(200).json(deletedSavedCountry)
   } catch (err) {

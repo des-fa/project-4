@@ -7,9 +7,16 @@ import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
-function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
+import useMySavedCountries from '@/hooks/my/saved-countries'
+
+function ProfileTabs({ myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
   // console.log(myFollowers)
-  console.log(countryInfo)
+  // console.log(countryInfo)
+  const { destroyMySavedCountries } = useMySavedCountries()
+
+  const handleDeleteSavedCountry = async (e) => {
+    await destroyMySavedCountries(e.currentTarget.value)
+  }
 
   const visited = myVisitedCountries?.visitedCountries?.length > 0 ? (
     myVisitedCountries?.visitedCountries?.map((country, i) => (
@@ -112,7 +119,12 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
           </div>
 
           <div>
-            <button type="button" className="btn btn-sm">
+            <button
+              type="button"
+              className="btn btn-sm"
+              value={country?.iso2}
+              onClick={handleDeleteSavedCountry}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
               </svg>

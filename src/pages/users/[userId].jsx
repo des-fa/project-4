@@ -75,16 +75,16 @@ function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }
 
   // clicking on follow button updates followers/following
   const handleClick = followingUser?.length !== 0 ? (
-    (value) => {
+    () => {
       // console.log(value)
-      destroyFollowing(value).then(() => {
+      destroyFollowing().then(() => {
         console.log('unfollowed')
       })
     }
   ) : (
-    (value) => {
+    () => {
       // console.log(value)
-      createFollowing(value).then(() => {
+      createFollowing().then(() => {
         console.log('followed')
       })
     }
@@ -108,7 +108,7 @@ function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }
           type="button"
           // className="btn btn-sm btn-dark text-white px-3"
           className={followButton ? 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-dark text-white px-3' : 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-outline-secondary px-3'}
-          onClick={() => handleClick(profile?.userId)}
+          onClick={handleClick}
 
         >
           {/* <div className="me-2"> */}

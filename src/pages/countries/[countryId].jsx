@@ -6,10 +6,30 @@ import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/tabs/CountryTabs'
 // import { City } from 'country-state-city'
 import axios from 'axios'
+import useMySavedCountries from '@/hooks/my/saved-countries'
 import countriesData from '../../data/countries.json'
 
-function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
+function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo }) {
   const [capitalInfo, setCapitalInfo] = useState(null)
+
+  const saveIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+      <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z" />
+    </svg>
+  )
+
+  const savedIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+      <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+    </svg>
+  )
+
+  const [saveText, setSaveText] = useState('Save')
+  const [saveImg, setSaveImg] = useState(saveIcon)
+  const { mySavedCountries, createMySavedCountries, destroyMySavedCountries } = useMySavedCountries()
+  // console.log(mySavedCountries)
+  const savedCurrentCountry = mySavedCountries?.savedCountries?.filter((country) => country.iso2 === id)
+
   // const cities = City.getCitiesOfCountry(id.toUpperCase())
   const options = citiesInfo?.map((city) => (
     { value: city.name, label: city.name }
@@ -31,6 +51,33 @@ function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
       console.log(e)
     }
   }, [countryInfo])
+
+  // changing save button dynamically
+  useEffect(() => {
+    if (savedCurrentCountry?.length !== 0) {
+      setSaveText('Saved')
+      setSaveImg(savedIcon)
+    } else {
+      setSaveText('Save')
+      setSaveImg(saveIcon)
+    }
+  }, [mySavedCountries])
+
+  const handleSaveCountry = savedCurrentCountry?.length !== 0 ? (
+    async () => {
+      await destroyMySavedCountries(id)
+      // .then(() => {
+      //   console.log('deleted')
+      // })
+    }
+  ) : (
+    async () => {
+      await createMySavedCountries({ iso2: id, countryName: countryCSCInfo?.name })
+      // .then(() => {
+      //   console.log('saved')
+      // })
+    }
+  )
 
   // const capitalResult = capitalNames?.map((name) => (
   // citiesInfo.find((city) => city?.name?.toLowerCase() === name.toLowerCase())
@@ -102,15 +149,11 @@ function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
 
         <button
           type="button"
-          className="btn btn-sm btn-light text-black p-2"
+          className="d-flex flex-row gap-2 align-items-center btn btn-sm btn-light text-black p-2"
+          onClick={handleSaveCountry}
         >
-          <span>Save</span>
-          <Image
-            src="/images/bookmark.png"
-            alt="bookmark-icon"
-            width="25"
-            className="ms-2"
-          />
+          {saveText}
+          {saveImg}
         </button>
 
         <button
@@ -317,20 +360,26 @@ function CountryPage({ id, countryInfo, countryNews, citiesInfo }) {
 
 export async function getServerSideProps(context) {
   // Fetch data from external API
-  const [countryInfoRes, countryNewsInfoRes, citiesInfoRes] = await Promise.all([
+  const [countryInfoRes, countryNewsInfoRes, countryCSCInfoRes, citiesInfoRes] = await Promise.all([
     // fetch(`https://restcountries.com/v3.1/alpha/${context.params.countryId}`),
     // fetch(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`)
     axios.get(`https://restcountries.com/v3.1/alpha/${context.params.countryId.toUpperCase()}`),
     axios.get(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId.toUpperCase()}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`),
+    axios.get(`https://api.countrystatecity.in/v1/countries/${context.params.countryId.toUpperCase()}`, {
+      headers: {
+        'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
+      }
+    }),
     axios.get(`https://api.countrystatecity.in/v1/countries/${context.params.countryId.toUpperCase()}/cities`, {
       headers: {
         'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
       }
     })
   ])
-  const [countryInfo, countryNews, citiesInfo] = await Promise.all([
+  const [countryInfo, countryNews, countryCSCInfo, citiesInfo] = await Promise.all([
     countryInfoRes.data,
     countryNewsInfoRes.data,
+    countryCSCInfoRes.data,
     citiesInfoRes.data
   ])
   // Pass data to the page via props
@@ -338,6 +387,7 @@ export async function getServerSideProps(context) {
     id: context.params.countryId.toUpperCase(),
     countryInfo: countryInfo[0],
     countryNews,
+    countryCSCInfo,
     citiesInfo
   } }
 }
