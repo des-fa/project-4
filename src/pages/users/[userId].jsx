@@ -14,7 +14,8 @@ import useMyFollowing from '@/hooks/my/following'
 function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }) {
   const { userVisitedCountries } = useUserVisitedCountries()
   const { userPlans } = useUserPlans()
-  // console.log(profile)
+  const profileId = profile?.userId
+  // console.log(profile?.userId)
   // console.log(currentUser)
 
   const followIcon = (
@@ -71,22 +72,22 @@ function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }
       setShowFollowsYouText(false)
       setShowMessageButton(false)
     }
-  }, [profile?.user?.followedBy, profile?.user?.following])
+  }, [profile?.user])
 
   // clicking on follow button updates followers/following
   const handleClick = followingUser?.length !== 0 ? (
-    () => {
-      // console.log(value)
-      destroyFollowing().then(() => {
-        console.log('unfollowed')
-      })
+    async () => {
+      await destroyFollowing(profileId)
+      // .then(() => {
+      //   console.log('unfollowed')
+      // })
     }
   ) : (
-    () => {
-      // console.log(value)
-      createFollowing().then(() => {
-        console.log('followed')
-      })
+    async () => {
+      await createFollowing(profileId)
+      // .then(() => {
+      //   console.log('followed')
+      // })
     }
   )
 

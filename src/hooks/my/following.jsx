@@ -1,34 +1,31 @@
-import useSWR, { mutate } from 'swr'
+import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import produce from 'immer'
 
 import { handleErrors, fetcher } from '@/hooks/_utils'
 
 export default function useMyFollowing() {
-  const { isReady, query: { followingId } } = useRouter()
-  const { data, error } = useSWR(isReady ? '/api/my/following' : null, fetcher)
+  const { isReady } = useRouter()
 
-  const createFollowing = async () => {
-    // console.log('val', values)
+  const { data, error, mutate } = useSWR(isReady ? '/api/my/following' : null, fetcher)
+
+  const createFollowing = async (id) => {
+    // console.log('hook', id)
     await axios({
       method: 'POST',
-      url: `/api/my/following/${followingId}`
+      url: `/api/my/following/${id}`
     }).then((resp) => {
-      mutate(produce(data, (draft) => {
-        draft.push(resp.data)
-        // console.log('resp', resp.data)
-      }))
+      mutate(resp.data)
     }).catch(handleErrors)
   }
 
-  const destroyFollowing = async () => {
-    // console.log('val', values)
+  const destroyFollowing = async (id) => {
+    // console.log('hook', id)
     await axios({
       method: 'DELETE',
-      url: `/api/my/following/${followingId}`
-    }).then(() => {
-      mutate('/api/my/following')
+      url: `/api/my/following/${id}`
+    }).then((resp) => {
+      mutate(resp.data)
     }).catch((err) => {
       handleErrors(err)
     })

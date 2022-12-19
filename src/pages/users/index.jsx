@@ -23,7 +23,7 @@ export function UsersSearch() {
         <h3 className="text-muted fw-light mt-4 mb-5 ms-4">Search for Users</h3>
 
         <div className="d-flex flex-row mb-5 w-100">
-          <FormsUserSearch handleSubmit={handleSubmit} />
+          <FormsUserSearch setData={setData} handleSubmit={handleSubmit} />
         </div>
 
         <div className="users-search-result d-flex flex-row justify-content-start rounded ms-4 w-50">

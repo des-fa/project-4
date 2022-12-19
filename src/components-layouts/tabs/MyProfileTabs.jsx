@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Dropdown, Image } from 'react-bootstrap'
 import Col from 'react-bootstrap/Col'
@@ -8,10 +8,13 @@ import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
 import useMySavedCountries from '@/hooks/my/saved-countries'
+import FormsProfilePlansChangeModal from '@/forms/profile/PlansChange'
 
-function ProfileTabs({ myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
-  // console.log(myFollowers)
+function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
   // console.log(countryInfo)
+  const [createModalShow, setCreateModalShow] = useState(false)
+  // const [editModalShow, setEditModalShow] = useState(false)
+
   const { destroyMySavedCountries } = useMySavedCountries()
 
   const handleDeleteSavedCountry = async (e) => {
@@ -332,7 +335,11 @@ function ProfileTabs({ myVisitedCountries, mySavedCountries, myPlans, myFollowin
 
             <Tab.Pane eventKey="third">
               <div className="d-flex flex-row justify-content-end mb-4">
-                <button type="button" className="btn btn-sm btn-dark">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-dark"
+                  onClick={() => setCreateModalShow(true)}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
                   </svg>
@@ -341,6 +348,9 @@ function ProfileTabs({ myVisitedCountries, mySavedCountries, myPlans, myFollowin
               <div className="my-2 px-3">
                 {plans}
               </div>
+
+              <FormsProfilePlansChangeModal countryInfo={countryInfo} show={createModalShow} onHide={() => setCreateModalShow(false)} />
+
             </Tab.Pane>
 
             <Tab.Pane eventKey="fourth">
