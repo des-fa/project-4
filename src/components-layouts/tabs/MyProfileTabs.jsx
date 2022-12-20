@@ -9,17 +9,26 @@ import Tab from 'react-bootstrap/Tab'
 
 import useMySavedCountries from '@/hooks/my/saved-countries'
 import FormsProfilePlansChangeModal from '@/forms/profile/PlansChange'
+import DeleteConfirmation from '../DeleteConfirmation'
 
 function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
   // console.log(countryInfo)
   const [createModalShow, setCreateModalShow] = useState(false)
   // const [editModalShow, setEditModalShow] = useState(false)
+  const [deleteModalShow, setDeleteModalShow] = useState(false)
+  const [deleteData, setDeleteData] = useState('')
 
   const { destroyMySavedCountries } = useMySavedCountries()
 
   const handleDeleteSavedCountry = async (e) => {
     await destroyMySavedCountries(e.currentTarget.value)
   }
+
+  //   const handleDelete = (values) => {
+  //   deleteMyPost(values).unwrap().then(() => {
+  //     // console.log(values)
+  //   })
+  // }
 
   const visited = myVisitedCountries?.visitedCountries?.length > 0 ? (
     myVisitedCountries?.visitedCountries?.map((country, i) => (
@@ -51,7 +60,10 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
 
               <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
+                <Dropdown.Item onClick={() => {
+                  setDeleteModalShow(true)
+                }}
+                >Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -176,7 +188,11 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
 
               <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Delete</Dropdown.Item>
+                <Dropdown.Item onClick={() => {
+                  setDeleteModalShow(true)
+                  setDeleteData(plan?.id)
+                }}
+                >Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -276,6 +292,13 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+      <DeleteConfirmation
+        data={deleteData}
+        show={deleteModalShow}
+        onHide={() => setDeleteModalShow(false)}
+        // confirm={handleDelete}
+      />
+
       <Row>
         <Col sm={3}>
           <Nav variant="pills" className="flex-column">
