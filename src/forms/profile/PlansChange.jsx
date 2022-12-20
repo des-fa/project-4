@@ -9,47 +9,32 @@ import Modal from 'react-bootstrap/Modal'
 import FormCountrySearch from '@/forms/CountryCitySearch'
 
 const initialValues = {
-  iso2: '',
+  // iso2: '',
   countryName: '',
   month: '',
   year: '',
   isPublic: ''
 }
 
-const CountrySearchOptions = ({ ...props }) => {
-  const options = props?.countryInfo?.countryInfo?.map((country) => (
+const countrySearchOptions = ({ countryInfo, field
+  // form: { t, e }, ...props
+}) => {
+  const options = countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
+  // console.log('options', options)
   return (
-    <FormCountrySearch options={options} />
+    <>
+      <label htmlFor={field.name}>Countries</label>
+      <FormCountrySearch options={options} />
+    </>
   )
 }
 
 function FormsProfilePlansChangeModal(props) {
-  console.log(props?.countryInfo)
+  // console.log(props?.countryInfo)
 
   // const { createMyProfile, updateMyProfile } = useMyProfile()
-
-  // const CountrySearchComponent = ({ options }) => (
-  //   <FormCountrySearch options={options} />
-  // )
-
-  // const CountrySearchInput = () => (
-  //   <>
-
-  //     <Field
-  //       className={`form-control ${e?.countryName && t?.countryName && 'is-invalid'}`}
-  //       name="countryName"
-  //     >
-  //       <CountrySearchComponent />
-  //     </Field>
-  //     <ErrorMessage
-  //       className="invalid-feedback"
-  //       name="countryName"
-  //       component="div"
-  //     />
-  //   </>
-  // )
 
   // const handleSubmit = props.initialValues ? (
   //   async (values) => {
@@ -100,22 +85,24 @@ function FormsProfilePlansChangeModal(props) {
 
       <Formik
         initialValues={props.initialValues || initialValues}
-        onSubmit={() => { console.log('submitted') }}
+        onSubmit={(values) => { console.log('values', values) }}
         // {handleSubmit}
         enableReinitialize
         validationSchema={
         Yup.object({
-          avatar: Yup.mixed().required().label('Profile picture'),
-          fullName: Yup.string()
-            .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.')
-            .required()
-            .label('Full name'),
-          about: Yup
-            .string()
-            .trim()
-            .max(400, 'Maximum 400 characters.')
-            .required()
-            .label('About me')
+          countryName: Yup.string().required().label('Country Name'),
+          month: Yup
+            .number()
+            .integer()
+            .min(1, 'This month does not exist')
+            .max(12, 'This month does not exist')
+            .required(),
+          year: Yup
+            .number()
+            .integer()
+            .test('len', 'Must be exactly 4 numbers', (val) => !val || val.toString().length === 4)
+            .required(),
+          isPublic: Yup.boolean().transform((value) => (!!value))
         })
       }
       >
@@ -124,17 +111,17 @@ function FormsProfilePlansChangeModal(props) {
           <Form>
             <Modal.Body>
               <div className="mb-3">
-                <label>Countries</label>
                 <Field
-                  className={`form-control ${e?.countryName && t?.countryName && 'is-invalid'}`}
+                  // className={`form-control ${e?.countryName && t?.countryName && 'is-invalid'}`}
                   name="countryName"
-                  component={CountrySearchOptions}
+                  countryInfo={props?.countryInfo}
+                  component={countrySearchOptions}
                 />
-                <ErrorMessage
+                {/* <ErrorMessage
                   className="invalid-feedback"
                   name="countryName"
                   component="div"
-                />
+                /> */}
               </div>
 
               <div className="mb-3">
