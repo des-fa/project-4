@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Router from 'next/router'
+// import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/react'
 
 import { Image } from 'react-bootstrap'
@@ -162,21 +163,23 @@ export function UserPage() {
 
   const [currentUser, setCurrentUser] = useState('')
 
+  const { asPath, push } = useRouter()
+
   const checkUser = async () => {
     const session = await getSession()
-    const { pathname } = Router
     setCurrentUser(session?.user?.id)
     // console.log(currentUser)
     // console.log(pathname)
-
-    if (pathname === `/users/${currentUser}`) {
-      console.log('not right')
-      Router.push('/my/profile')
-    }
+    // console.log(asPath)
   }
 
   useEffect(() => {
     checkUser()
+    if (asPath === `/users/${currentUser}`
+    && asPath !== '/my/profile'
+    ) {
+      push('/my/profile')
+    }
   }, [userProfile])
 
   let content
