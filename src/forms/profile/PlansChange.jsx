@@ -1,6 +1,7 @@
 import React from 'react'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+// import { addYears, format } from 'date-fns'
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -16,17 +17,34 @@ const initialValues = {
   isPublic: ''
 }
 
-const countrySearchOptions = ({ countryInfo, field
-  // form: { t, e }, ...props
+const yearOptions = []
+const year = new Date().getFullYear()
+// console.log(typeof year)
+for (let index = 0; index <= 10; index += 1) {
+  const years = year + index
+  yearOptions.push(years)
+}
+// console.log(yearOptions)
+
+const countrySearchOptions = ({ countryInfo, field, form: { t, e }
+  // , ...props
 }) => {
   const options = countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
-  // console.log('options', options)
   return (
     <>
       <label htmlFor={field.name}>Countries</label>
-      <FormCountrySearch options={options} />
+      <FormCountrySearch
+        className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
+        {...field}
+        options={options}
+      />
+      <ErrorMessage
+        className="invalid-feedback"
+        name={field.name}
+        component="div"
+      />
     </>
   )
 }
@@ -85,7 +103,7 @@ function FormsProfilePlansChangeModal(props) {
 
       <Formik
         initialValues={props.initialValues || initialValues}
-        onSubmit={(values) => { console.log('values', values) }}
+        onSubmit={(values) => { alert(values) }}
         // {handleSubmit}
         enableReinitialize
         validationSchema={
@@ -96,12 +114,14 @@ function FormsProfilePlansChangeModal(props) {
             .integer()
             .min(1, 'This month does not exist')
             .max(12, 'This month does not exist')
-            .required(),
+            .required()
+            .label('Month'),
           year: Yup
             .number()
             .integer()
             .test('len', 'Must be exactly 4 numbers', (val) => !val || val.toString().length === 4)
-            .required(),
+            .required()
+            .label('Year'),
           isPublic: Yup.boolean().transform((value) => (!!value))
         })
       }
@@ -112,33 +132,66 @@ function FormsProfilePlansChangeModal(props) {
             <Modal.Body>
               <div className="mb-3">
                 <Field
-                  // className={`form-control ${e?.countryName && t?.countryName && 'is-invalid'}`}
                   name="countryName"
                   countryInfo={props?.countryInfo}
                   component={countrySearchOptions}
                 />
-                {/* <ErrorMessage
-                  className="invalid-feedback"
-                  name="countryName"
-                  component="div"
-                /> */}
               </div>
 
-              <div className="mb-3">
-                <label>About you</label>
-                <Field
-                  className={`form-control ${e?.about && t?.about && 'is-invalid'}`}
-                  name="about"
-                  as="textarea"
-                  rows="5"
-                  placeholder="Share a little bit about yourself!"
+              <div className="d-flex flex-row gap-3 mb-3">
+                <div className="w-50">
+                  <label htmlFor="month">Month</label>
+                  <Field
+                    className={`form-control ${e?.month && t?.month && 'is-invalid'}`}
+                    as="select"
+                    name="month"
+                  >
+                    <option>Select a month...</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </Field>
+                  <ErrorMessage
+                    className="invalid-feedback"
+                    name="month"
+                    component="div"
+                  />
+                </div>
 
-                />
-                <ErrorMessage
-                  className="invalid-feedback"
-                  name="about"
-                  component="div"
-                />
+                <div className="w-50">
+                  <label htmlFor="year">Year</label>
+                  <Field
+                    className={`form-control ${e?.year && t?.year && 'is-invalid'}`}
+                    as="select"
+                    name="year"
+                  >
+                    <option>Select a year...</option>
+                    {
+                    yearOptions.map((option, i) => (
+                      <option key={i} value={option}>{option}</option>
+                    ))
+                  }
+                  </Field>
+                  <ErrorMessage
+                    className="invalid-feedback"
+                    name="year"
+                    component="div"
+                  />
+                </div>
+              </div>
+
+              <div className="d-flex flex-row gap-3 mb-3">
+                <Field type="checkbox" name="isPublic" />
+                Public
               </div>
 
             </Modal.Body>
