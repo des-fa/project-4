@@ -30,11 +30,24 @@ export default function useMyPlans() {
   //   }).catch(handleErrors)
   // }
 
+  const destroyMyPlans = async (id) => {
+    // console.log('hook', id)
+    await axios({
+      method: 'DELETE',
+      url: `/api/my/plans/${id}`
+    }).then((resp) => {
+      mutate(resp.data)
+    }).catch((err) => {
+      handleErrors(err)
+    })
+  }
+
   return {
     myPlans: data,
     isLoadingPlans: !error && !data,
     isError: error,
     errorMessage: error?.response?.data,
-    createMyPlans
+    createMyPlans,
+    destroyMyPlans
   }
 }

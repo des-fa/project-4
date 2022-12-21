@@ -12,7 +12,7 @@ import useUserVisitedCountries from '@/hooks/users/visited-countries'
 import useUserPlans from '@/hooks/users/plans'
 import useMyFollowing from '@/hooks/my/following'
 
-function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }) {
+function UserProfile({ profile, currentUser, myFollowing, createFollowing, destroyFollowing }) {
   const { userVisitedCountries } = useUserVisitedCountries()
   const { userPlans } = useUserPlans()
   const profileId = profile?.userId
@@ -73,7 +73,7 @@ function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }
       setShowFollowsYouText(false)
       setShowMessageButton(false)
     }
-  }, [profile?.user])
+  }, [myFollowing])
 
   // clicking on follow button updates followers/following
   const handleClick = followingUser?.length !== 0 ? (
@@ -159,7 +159,7 @@ function UserProfile({ profile, currentUser, createFollowing, destroyFollowing }
 
 export function UserPage() {
   const { userProfile, isLoadingUserProfile, isError, errorMessage } = useUserProfile()
-  const { createFollowing, destroyFollowing } = useMyFollowing()
+  const { myFollowing, createFollowing, destroyFollowing } = useMyFollowing()
 
   const [currentUser, setCurrentUser] = useState('')
 
@@ -204,6 +204,7 @@ export function UserPage() {
       <UserProfile
         profile={userProfile}
         currentUser={currentUser}
+        myFollowing={myFollowing}
         createFollowing={createFollowing}
         destroyFollowing={destroyFollowing}
       />

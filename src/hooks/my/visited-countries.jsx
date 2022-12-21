@@ -18,11 +18,24 @@ export default function useMyVisitedCountries() {
     }).catch(handleErrors)
   }
 
+  const destroyMyVisitedCountries = async (id) => {
+    // console.log('hook', id)
+    await axios({
+      method: 'DELETE',
+      url: `/api/my/visited-countries/${id}`
+    }).then((resp) => {
+      mutate(resp.data)
+    }).catch((err) => {
+      handleErrors(err)
+    })
+  }
+
   return {
     myVisitedCountries: data,
     isLoadingVisitedCountries: !error && !data,
     isError: error,
     errorMessage: error?.response?.data,
-    createMyVisitedCountries
+    createMyVisitedCountries,
+    destroyMyVisitedCountries
   }
 }

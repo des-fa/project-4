@@ -7,7 +7,9 @@ import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
+import useMyVisitedCountries from '@/hooks/my/visited-countries'
 import useMySavedCountries from '@/hooks/my/saved-countries'
+import useMyPlans from '@/hooks/my/plans'
 import FormsProfilePlansChangeModal from '@/forms/profile/PlansChange'
 import DeleteConfirmation from '../DeleteConfirmation'
 
@@ -17,6 +19,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
   // const [editModalShow, setEditModalShow] = useState(false)
   const [deleteModalShow, setDeleteModalShow] = useState(false)
   const [deleteData, setDeleteData] = useState('')
+  const [handleDelete, setHandleDelete] = useState('')
 
   const { destroyMySavedCountries } = useMySavedCountries()
 
@@ -24,11 +27,24 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
     await destroyMySavedCountries(e.currentTarget.value)
   }
 
-  //   const handleDelete = (values) => {
-  //   deleteMyPost(values).unwrap().then(() => {
-  //     // console.log(values)
-  //   })
-  // }
+  const { destroyMyVisitedCountries } = useMyVisitedCountries()
+  const { destroyMyPlans } = useMyPlans()
+
+  const handleDeletePlansOrVisited = handleDelete === 'plan' ? (
+    (values) => {
+      destroyMyPlans(values)
+      // .then(() => {
+      //   console.log(values)
+      // })
+    }
+  ) : (
+    (values) => {
+      destroyMyVisitedCountries(values)
+      // .then(() => {
+      //   console.log(values)
+      // })
+    }
+  )
 
   const visited = myVisitedCountries?.visitedCountries?.length > 0 ? (
     myVisitedCountries?.visitedCountries?.map((country, i) => (
@@ -61,6 +77,8 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
+                  setDeleteData(country?.id)
+                  setHandleDelete('visited')
                   setDeleteModalShow(true)
                 }}
                 >Delete</Dropdown.Item>
@@ -189,8 +207,9 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
-                  setDeleteModalShow(true)
                   setDeleteData(plan?.id)
+                  setHandleDelete('plan')
+                  setDeleteModalShow(true)
                 }}
                 >Delete</Dropdown.Item>
               </Dropdown.Menu>
@@ -296,7 +315,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
         data={deleteData}
         show={deleteModalShow}
         onHide={() => setDeleteModalShow(false)}
-        // confirm={handleDelete}
+        confirm={handleDeletePlansOrVisited}
       />
 
       <Row>
