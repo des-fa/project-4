@@ -1,8 +1,9 @@
 import useSWR from 'swr'
+import { useRouter } from 'next/router'
+// import { serialize } from 'object-to-formdata'
 import axios from 'axios'
 
 import { handleErrors, fetcher } from '@/hooks/_utils'
-import { useRouter } from 'next/router'
 
 export default function useMyPlans() {
   const { isReady } = useRouter()
@@ -13,6 +14,7 @@ export default function useMyPlans() {
       method: 'POST',
       url: '/api/my/plans',
       data: values
+      // data: serialize(values, { indices: true })
     }).then((resp) => {
       mutate(resp.data)
     }).catch(handleErrors)

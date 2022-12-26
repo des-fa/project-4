@@ -7,13 +7,14 @@ import Modal from 'react-bootstrap/Modal'
 
 // import useMyProfile from '@/hooks/my/profile'
 import FormCountrySearch from '@/forms/CountryCitySearch'
+import useMyPlans from '@/hooks/my/plans'
 
 const initialValues = {
   iso2: '',
   countryName: '',
   month: '',
   year: '',
-  isPublic: ''
+  isPublic: false
 }
 
 const yearOptions = []
@@ -47,9 +48,9 @@ const countrySearchOptions = ({ countryInfo, field,
         options={options}
         handleChange={
           async (value) => {
+            console.log(value)
             setFieldValue('iso2', value?.value)
             setFieldValue('countryName', value?.label)
-            console.log(value)
           }
         }
       />
@@ -65,25 +66,25 @@ const countrySearchOptions = ({ countryInfo, field,
 function FormsProfilePlansChangeModal(props) {
   // console.log(props?.countryInfo)
 
-  // const { createMyProfile, updateMyProfile } = useMyProfile()
+  const { createMyPlans, updateMyPlans } = useMyPlans()
 
-  // const handleSubmit = props.initialValues ? (
-  //   async (values) => {
-  //     await updateMyProfile(values)
-  //       .then(() => {
-  //         props.setEditModalShow(false)
-  //         setInputText('')
-  //       })
-  //   }
-  // ) : (
-  //   async (values) => {
-  //     await createMyProfile(values)
-  //       .then(() => {
-  //       // console.log(values)
-  //         props.onHide()
-  //       })
-  //   }
-  // )
+  const handleSubmit = props.initialValues ? (
+    async (values) => {
+      await updateMyPlans(values)
+        .then(() => {
+          console.log(values)
+          props.setEditModalShow(false)
+        })
+    }
+  ) : (
+    async (values) => {
+      await createMyPlans(values)
+        .then(() => {
+          console.log(values)
+          props.onHide()
+        })
+    }
+  )
 
   return (
     <Modal
@@ -116,11 +117,14 @@ function FormsProfilePlansChangeModal(props) {
 
       <Formik
         initialValues={props.initialValues || initialValues}
-        onSubmit={(values) => { console.log(values) }}
-        // {handleSubmit}
+        onSubmit={
+          // (values) => { console.log(values) }
+        handleSubmit
+          }
         enableReinitialize
         validationSchema={
         Yup.object({
+          iso2: Yup.string().uppercase().required(),
           countryName: Yup.string().required().label('Country Name'),
           month: Yup
             .number()
