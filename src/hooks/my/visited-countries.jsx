@@ -18,6 +18,17 @@ export default function useMyVisitedCountries() {
     }).catch(handleErrors)
   }
 
+  const updateMyVisitedCountries = async (values) => {
+    console.log('hook', values)
+    await axios({
+      method: 'PUT',
+      url: `/api/my/visited-countries/${values.id}`,
+      data: values
+    }).then((resp) => {
+      mutate(resp.data)
+    }).catch(handleErrors)
+  }
+
   const destroyMyVisitedCountries = async (id) => {
     // console.log('hook', id)
     await axios({
@@ -36,6 +47,7 @@ export default function useMyVisitedCountries() {
     isError: error,
     errorMessage: error?.response?.data,
     createMyVisitedCountries,
+    updateMyVisitedCountries,
     destroyMyVisitedCountries
   }
 }

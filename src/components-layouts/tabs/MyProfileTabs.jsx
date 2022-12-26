@@ -10,13 +10,18 @@ import Tab from 'react-bootstrap/Tab'
 import useMyVisitedCountries from '@/hooks/my/visited-countries'
 import useMySavedCountries from '@/hooks/my/saved-countries'
 import useMyPlans from '@/hooks/my/plans'
+import FormsProfileVisitedChangeModal from '@/forms/profile/VisitedChange'
 import FormsProfilePlansChangeModal from '@/forms/profile/PlansChange'
 import DeleteConfirmation from '../DeleteConfirmation'
 
 function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
   // console.log(countryInfo)
-  const [createModalShow, setCreateModalShow] = useState(false)
-  // const [editModalShow, setEditModalShow] = useState(false)
+  const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
+  const [editVisitedModalShow, setEditVisitedModalShow] = useState(false)
+
+  const [createPlansModalShow, setCreatePlansModalShow] = useState(false)
+  const [editPlansModalShow, setEditPlansModalShow] = useState(false)
+
   const [deleteModalShow, setDeleteModalShow] = useState(false)
   const [deleteData, setDeleteData] = useState('')
   const [handleDelete, setHandleDelete] = useState('')
@@ -75,7 +80,12 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setEditVisitedModalShow(true)
+                    console.log(country)
+                  }}
+                >Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
                   setDeleteData(country?.id)
                   setHandleDelete('visited')
@@ -84,6 +94,14 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 >Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+
+            <FormsProfileVisitedChangeModal
+              initialValues={country}
+              countryInfo={countryInfo}
+              show={editVisitedModalShow}
+              onHide={() => setEditVisitedModalShow(false)}
+              setEditVisitedModalShow={setEditVisitedModalShow}
+            />
           </div>
         </div>
 
@@ -205,7 +223,12 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Edit</Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setEditPlansModalShow(true)
+                    console.log(plan)
+                  }}
+                >Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
                   setDeleteData(plan?.id)
                   setHandleDelete('plan')
@@ -214,6 +237,14 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 >Delete</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+
+            <FormsProfilePlansChangeModal
+              initialValues={plan}
+              countryInfo={countryInfo}
+              show={editPlansModalShow}
+              onHide={() => setEditPlansModalShow(false)}
+              setEditPlansModalShow={setEditPlansModalShow}
+            />
           </div>
         </div>
 
@@ -342,7 +373,11 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
           <Tab.Content>
             <Tab.Pane eventKey="first">
               <div className="d-flex flex-row justify-content-end mb-4">
-                <button type="button" className="btn btn-sm btn-dark">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-dark"
+                  onClick={() => setCreateVisitedModalShow(true)}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
                   </svg>
@@ -351,6 +386,8 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               <div className="my-2 px-3">
                 {visited}
               </div>
+
+              <FormsProfileVisitedChangeModal countryInfo={countryInfo} show={createVisitedModalShow} onHide={() => setCreateVisitedModalShow(false)} />
             </Tab.Pane>
 
             <Tab.Pane eventKey="second">
@@ -380,7 +417,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 <button
                   type="button"
                   className="btn btn-sm btn-dark"
-                  onClick={() => setCreateModalShow(true)}
+                  onClick={() => setCreatePlansModalShow(true)}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
@@ -391,8 +428,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 {plans}
               </div>
 
-              <FormsProfilePlansChangeModal countryInfo={countryInfo} show={createModalShow} onHide={() => setCreateModalShow(false)} />
-
+              <FormsProfilePlansChangeModal countryInfo={countryInfo} show={createPlansModalShow} onHide={() => setCreatePlansModalShow(false)} />
             </Tab.Pane>
 
             <Tab.Pane eventKey="fourth">

@@ -1,6 +1,5 @@
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
-// import { serialize } from 'object-to-formdata'
 import axios from 'axios'
 
 import { handleErrors, fetcher } from '@/hooks/_utils'
@@ -14,23 +13,21 @@ export default function useMyPlans() {
       method: 'POST',
       url: '/api/my/plans',
       data: values
-      // data: serialize(values, { indices: true })
     }).then((resp) => {
       mutate(resp.data)
     }).catch(handleErrors)
   }
 
-  // const updateMyPlans = async (values) => {
-  //   console.log('hook', values)
-
-  //   await axios({
-  //     method: 'PUT',
-  //     url: '/api/my/plans',
-  //     data: values
-  //   }).then((resp) => {
-  //     console.log('resp', resp)
-  //   }).catch(handleErrors)
-  // }
+  const updateMyPlans = async (values) => {
+    console.log('hook', values)
+    await axios({
+      method: 'PUT',
+      url: `/api/my/plans/${values.id}`,
+      data: values
+    }).then((resp) => {
+      mutate(resp.data)
+    }).catch(handleErrors)
+  }
 
   const destroyMyPlans = async (id) => {
     // console.log('hook', id)
@@ -50,6 +47,7 @@ export default function useMyPlans() {
     isError: error,
     errorMessage: error?.response?.data,
     createMyPlans,
+    updateMyPlans,
     destroyMyPlans
   }
 }
