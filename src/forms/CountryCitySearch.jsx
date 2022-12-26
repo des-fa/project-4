@@ -17,7 +17,7 @@ function FormCountrySearch({ options, handleChange }) {
         isSearchable="true"
             // isLoading={isLoading}
             // isDisabled={isDisabled}
-        name="countries"
+        name="countryName"
         placeholder="Select or Search"
         noOptionsMessage={() => 'No results'}
         options={options}

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-// import { addYears, format } from 'date-fns'
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -10,7 +9,7 @@ import Modal from 'react-bootstrap/Modal'
 import FormCountrySearch from '@/forms/CountryCitySearch'
 
 const initialValues = {
-  // iso2: '',
+  iso2: '',
   countryName: '',
   month: '',
   year: '',
@@ -26,7 +25,14 @@ for (let index = 0; index <= 10; index += 1) {
 }
 // console.log(yearOptions)
 
-const countrySearchOptions = ({ countryInfo, field, form: { t, e }
+// const handleChange = async (value) => {
+//   setFieldValue('iso2', value?.value)
+//   setFieldValue('countryName', value?.label)
+//   console.log(value)
+// }
+
+const countrySearchOptions = ({ countryInfo, field,
+  form: { setFieldValue }
   // , ...props
 }) => {
   const options = countryInfo?.map((country) => (
@@ -36,15 +42,22 @@ const countrySearchOptions = ({ countryInfo, field, form: { t, e }
     <>
       <label htmlFor={field.name}>Countries</label>
       <FormCountrySearch
-        className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
-        {...field}
+        // className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
+        // {...field}
         options={options}
+        handleChange={
+          async (value) => {
+            setFieldValue('iso2', value?.value)
+            setFieldValue('countryName', value?.label)
+            console.log(value)
+          }
+        }
       />
-      <ErrorMessage
+      {/* <ErrorMessage
         className="invalid-feedback"
         name={field.name}
         component="div"
-      />
+      /> */}
     </>
   )
 }
@@ -103,7 +116,7 @@ function FormsProfilePlansChangeModal(props) {
 
       <Formik
         initialValues={props.initialValues || initialValues}
-        onSubmit={(values) => { alert(values) }}
+        onSubmit={(values) => { console.log(values) }}
         // {handleSubmit}
         enableReinitialize
         validationSchema={
