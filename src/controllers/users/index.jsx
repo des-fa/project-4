@@ -6,6 +6,8 @@ import { getSession } from 'next-auth/react'
 
 const controllersUsersIndex = async (req, res) => {
   try {
+    // console.log('query', req.query.q)
+
     const session = await getSession({ req })
 
     // Filters
@@ -41,7 +43,7 @@ const controllersUsersIndex = async (req, res) => {
         }, {
           visitedCountries: {
             some: {
-              iso2: {
+              countryName: {
                 contains: q,
                 mode: 'insensitive'
               }
@@ -50,7 +52,7 @@ const controllersUsersIndex = async (req, res) => {
         }, {
           travelPlans: {
             some: {
-              iso2: {
+              countryName: {
                 contains: q,
                 mode: 'insensitive'
               },

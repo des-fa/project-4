@@ -7,11 +7,6 @@ const initialValues = {
   q: ''
 }
 
-// onChange={(event) => {
-//                   setFieldValue('about', event.target.value)
-//                   setInputText(event.target.value)
-//                 }}
-
 function FormsUserSearch(props) {
   return (
     <Formik
@@ -19,7 +14,6 @@ function FormsUserSearch(props) {
       onSubmit={props.handleSubmit}
       // {(values) => {
       //   console.log(values)
-      //   trigger(values)
       // }}
       enableReinitialize
       validationSchema={
@@ -35,7 +29,10 @@ function FormsUserSearch(props) {
             <Field
               className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
               name="q"
-              placeholder="Connect with others"
+              placeholder="Search by name or country"
+              // onChange={(event) => {
+              //   setFieldValue('q', event.target.value)
+              // }}
             />
             {/* <ErrorMessage
                 className="invalid-feedback"

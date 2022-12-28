@@ -35,7 +35,7 @@ function CountriesSearch(countryInfo) {
   return (
     <div className="container px-3">
       <div className="d-flex flex-column mt-5">
-        <h3 className="text-muted fw-light mt-4 mb-5 ms-4">Search for Countries</h3>
+        <h3 className="text-muted fw-light mt-4 mb-5 ms-4">Search for countries</h3>
 
         <div className="d-flex flex-lg-row flex-column gap-5 mb-5 ms-4 w-100">
           <FormCountrySearch options={options} handleChange={handleChange} />
