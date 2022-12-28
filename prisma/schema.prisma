@@ -57,6 +57,7 @@ model VisitedCountry {
 model Tip {
   id               Int             @id @default(autoincrement())
   createdAt        DateTime        @default(now())
+  state            String
   city             String
   content          String
   visitedCountry   VisitedCountry? @relation(fields: [visitedCountryId], references: [id], onDelete: Cascade)

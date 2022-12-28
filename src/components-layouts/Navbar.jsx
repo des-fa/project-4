@@ -57,9 +57,9 @@ function SiteNavbar() {
                     align="end"
                   >
                     <NavDropdown.Item href="/my/profile">Profile</NavDropdown.Item>
-                    <NavDropdown.Item href="/my/settings">
+                    {/* <NavDropdown.Item href="/my/settings">
                       Account Settings
-                    </NavDropdown.Item>
+                    </NavDropdown.Item> */}
                     <NavDropdown.Divider />
                     <NavDropdown.Item
                       onClick={signOut}

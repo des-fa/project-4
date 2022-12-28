@@ -109,7 +109,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
           <Image
             className="me-2"
             src="/images/star.png"
-            alt="calendar-icon"
+            alt="star-icon"
             width="20"
           />
           <p className="mb-0 fw-semibold">{country?.rating}.0</p>

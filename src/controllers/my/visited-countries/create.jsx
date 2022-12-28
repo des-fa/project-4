@@ -24,6 +24,7 @@ const createSchema = yup.object({
   rating: yup.number().integer().required(),
   tips: yup.array().of(
     yup.object({
+      state: yup.string().required(),
       city: yup.string().required(),
       content: yup.string().required()
     })

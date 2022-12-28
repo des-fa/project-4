@@ -1,18 +1,21 @@
 import useSWR from 'swr'
+import { useRouter } from 'next/router'
+import { serialize } from 'object-to-formdata'
 import axios from 'axios'
 
 import { handleErrors, fetcher } from '@/hooks/_utils'
-import { useRouter } from 'next/router'
 
 export default function useMyVisitedCountries() {
   const { isReady } = useRouter()
   const { data, error, mutate } = useSWR(isReady ? '/api/my/visited-countries' : null, fetcher)
 
   const createMyVisitedCountries = async (values) => {
+    console.log('hook', values)
     await axios({
       method: 'POST',
       url: '/api/my/visited-countries',
-      data: values
+      // data: values
+      data: serialize(values, { indices: true })
     }).then((resp) => {
       mutate(resp.data)
     }).catch(handleErrors)

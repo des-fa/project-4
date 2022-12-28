@@ -71,7 +71,7 @@ function CountryTabs({ countryNews, citiesOptions }) {
 
   let reviews
   if (isLoadingReviews) {
-    reviews = <h3 className="text-muted fw-light m-4">Loading..</h3>
+    reviews = <h3 className="text-muted fw-light m-4">Loading...</h3>
   }
   if (countryReviews?.reviews?.length === 0) {
     reviews = <h3 className="text-muted fw-light m-4">No reviews have been made yet.</h3>
@@ -87,38 +87,49 @@ function CountryTabs({ countryNews, citiesOptions }) {
         <div className="d-flex flex-column justify-content-center py-2 px-5">
           {countryReviews?.reviews.map((review, i) => (
             <div key={i} className="card mb-3 w-100">
-              <div className="d-flex flex-lg-row flex-column py-2">
-                <div className="col-md-3 text-center my-2 me-2">
+              <div className="d-flex flex-lg-row flex-column gap-2 p-4">
+                <div className="col-md-3 text-center m-2">
                   <Image
-                    className="rounded rounded-circle"
+                    className="rounded"
                     src={review?.user?.profile?.avatar}
                     alt="user-profile-pic"
                     style={{ width: '100px' }}
                   />
                 </div>
 
-                <div className="col-md-8 my-2">
-                  <div className="d-flex flex-row justify-content-between align-items-center px-2 mb-2">
-                    <a href={`/users/${review?.userId}`} className="text-decoration-none link-dark">
-                      <h4 className="mt-2 mb-0 text-capitalize">{review?.user?.profile?.fullName}</h4>
-                    </a>
+                <div className="col-md-8 my-2 pt-3">
+                  <div className="d-flex flex-lg-row flex-column justify-content-between align-items-start px-2 mb-2">
+                    <div className="d-flex flex-column">
+                      <a href={`/users/${review?.userId}`} className="text-decoration-none link-dark">
+                        <h4 className="mb-2 text-uppercase">{review?.user?.profile?.fullName}</h4>
+                      </a>
+                      <p className="text-left">
+                        <Image src="/images/star.png" alt="star" />
+                        <span className="text-muted ms-2">{review?.rating}.0</span>
+                      </p>
+                    </div>
+
                     <div className="d-flex flex-row align-items-center gap-2">
-                      <Image src="/images/passenger.png" alt="traveler" />
+                      <Image
+                        src="/images/calendar.png"
+                        alt="calendar-icon"
+                        width="20"
+                      />
                       <p className="text-muted mb-0">{review?.month} / {review?.year}</p>
                     </div>
                   </div>
 
-                  <div className="d-flex flex-row px-2">
+                  {/* <div className="d-flex flex-row px-2">
                     <p className="text-left">
                       <Image src="/images/star.png" alt="star" />
                       <span className="text-muted ms-2">{review?.rating}.0</span>
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               { review?.tips?.length > 0 ? (
-                <div className="row text-left px-5">
+                <div className="row text-left px-4">
                   <h5 className="my-3 text-muted">Visited Cities</h5>
                   {tips}
                 </div>
@@ -135,7 +146,7 @@ function CountryTabs({ countryNews, citiesOptions }) {
 
   let meetUpPlans
   if (isLoadingPlans) {
-    meetUpPlans = <h3 className="text-muted fw-light m-4">Loading..</h3>
+    meetUpPlans = <h3 className="text-muted fw-light m-4">Loading...</h3>
   }
   if (publicPlans?.plans?.length === 0) {
     meetUpPlans = <h3 className="text-muted fw-light m-4">No travel plans have been shared yet.</h3>
@@ -149,24 +160,25 @@ function CountryTabs({ countryNews, citiesOptions }) {
             <div key={i} className="card mb-3 w-75" style={{ maxWidth: '450px' }}>
               <div className="row g-0">
                 <div className="col-md-4 text-center">
-                  <Image src={plan?.user?.profile?.avatar} className="img-fluid p-2 rounded-start" alt="user-profile-pic" />
+                  <Image
+                    src={plan?.user?.profile?.avatar}
+                    className="p-2 rounded"
+                    style={{ maxHeight: '150px' }}
+                    alt="user-profile-pic"
+                  />
                 </div>
                 <div className="col-md-8 py-2 ps-3 bg-light">
                   <div className="card-body">
                     <a href={`/users/${plan?.userId}`} className="text-decoration-none link-dark">
-                      <h5 className="card-title fw-bold text-uppercase  mb-3">{plan?.user?.profile?.fullName}</h5>
+                      <h5 className="card-title fw-semibold text-uppercase mb-3">{plan?.user?.profile?.fullName}</h5>
                     </a>
                     <p className="card-text text-muted">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
+                      <Image
+                        className="me-2"
+                        src="/images/calendar.png"
+                        alt="calendar-icon"
                         width="20"
-                        height="20"
-                        fill="currentColor"
-                        className="bi bi-airplane-fill me-2"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849Z" />
-                      </svg>
+                      />
                       {plan?.month} / {plan?.year}
                     </p>
                     <div className="d-flex flex-row justify-content-end me-2">

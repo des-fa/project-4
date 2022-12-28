@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik'
 import * as Yup from 'yup'
+import axios from 'axios'
 
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -24,40 +25,107 @@ for (let index = 0; index <= 10; index += 1) {
   yearOptions.push(years)
 }
 
-const countrySearchOptions = ({ countryInfo, field,
-  form: { setFieldValue }
+const stateInfoApi = async (country) => {
+  const resp = await axios({
+    method: 'GET',
+    url: `https://api.countrystatecity.in/v1/countries/${country}/states`,
+    headers: {
+      'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
+    }
+  })
+  return resp.data
+}
+
+const cityInfoApi = async (country, state) => {
+  // console.log(country)
+  // console.log(state)
+  const resp = await axios({
+    method: 'GET',
+    url: `https://api.countrystatecity.in/v1/countries/${country}/states/${state}/cities`,
+    headers: {
+      'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
+    }
+  })
+  return resp.data
+}
+
+const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field, form: { setFieldValue }
   // , ...props
 }) => {
-  const options = countryInfo?.map((country) => (
+  const countryOptions = countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
   return (
     <>
-      <label htmlFor={field.name}>Countries</label>
+      <label htmlFor={field.name}>Country</label>
       <FormCountrySearch
-        // className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
-        // {...field}
-        options={options}
+        options={countryOptions}
         handleChange={
           async (value) => {
-            console.log(value)
+            // console.log(value)
+            setCountryIso2(value?.value)
             setFieldValue('iso2', value?.value)
             setFieldValue('countryName', value?.label)
+            stateInfoApi(value?.value).then((resp) => setStateList(resp))
           }
         }
       />
-      {/* <ErrorMessage
-        className="invalid-feedback"
-        name={field.name}
-        component="div"
-      /> */}
+    </>
+  )
+}
+
+const stateSearchOptions = ({ countryIso2, stateList, setCityList, field, form: { setFieldValue }
+}) => {
+  const stateOptions = stateList?.map((state) => (
+    // console.log(state)
+    { value: state.iso2, label: state.name }
+  ))
+
+  return (
+    <>
+      <label htmlFor={field.name}>State/Province/County</label>
+      <FormCountrySearch
+        options={stateOptions}
+        handleChange={
+          async (value) => {
+            // console.log(value)
+            setFieldValue(field.name, value?.value)
+            cityInfoApi(countryIso2, value?.value).then((resp) => setCityList(resp))
+          }
+        }
+      />
+    </>
+  )
+}
+
+const citySearchOptions = ({ cityList, field, form: { setFieldValue }
+}) => {
+  const cityOptions = cityList?.map((city) => (
+    // console.log(city)
+    { value: city.name, label: city.name }
+  ))
+
+  return (
+    <>
+      <label htmlFor={field.name}>City</label>
+      <FormCountrySearch
+        options={cityOptions}
+        handleChange={
+          async (value) => {
+            // console.log(value)
+            setFieldValue(field.name, value?.value)
+          }
+        }
+      />
     </>
   )
 }
 
 function FormsProfileVisitedChangeModal(props) {
   // console.log(props?.countryInfo)
-
+  const [countryIso2, setCountryIso2] = useState([])
+  const [stateList, setStateList] = useState([])
+  const [cityList, setCityList] = useState([])
   const { createMyVisitedCountries, updateMyVisitedCountries } = useMyVisitedCountries()
 
   const handleSubmit = props.initialValues ? (
@@ -70,9 +138,10 @@ function FormsProfileVisitedChangeModal(props) {
     }
   ) : (
     async (values) => {
+      console.log(values)
       await createMyVisitedCountries(values)
         .then(() => {
-          console.log(values)
+          // console.log(values)
           props.onHide()
         })
     }
@@ -110,7 +179,9 @@ function FormsProfileVisitedChangeModal(props) {
       <Formik
         initialValues={props.initialValues || initialValues}
         onSubmit={
-          // (values) => { console.log(values) }
+          // (values) => {
+          //   console.log(values)
+          // }
         handleSubmit
           }
         enableReinitialize
@@ -134,8 +205,9 @@ function FormsProfileVisitedChangeModal(props) {
           rating: Yup.number().integer().required().label('Rating'),
           tips: Yup.array().of(
             Yup.object({
-              city: Yup.string().required(),
-              content: Yup.string().required()
+              state: Yup.string().required().label('This'),
+              city: Yup.string().required().label('This'),
+              content: Yup.string().required().label('This')
             })
           )
         })
@@ -149,6 +221,8 @@ function FormsProfileVisitedChangeModal(props) {
                 <Field
                   name="countryName"
                   countryInfo={props?.countryInfo}
+                  setCountryIso2={setCountryIso2}
+                  setStateList={setStateList}
                   component={countrySearchOptions}
                 />
               </div>
@@ -236,10 +310,28 @@ function FormsProfileVisitedChangeModal(props) {
                         <div key={i} className={`py-3 ${values?.tips?.length > 1 && values?.tips?.length !== i + 1 && 'border-bottom border-secondary'}`}>
                           <div className="d-flex flex-row justify-content-between w-100 mb-3">
                             <p className="fw-semibold mb-0">Tip {i + 1}</p>
-                            <button className="btn btn-danger btn-sm" type="button" onClick={() => remove(i)}>x</button>
+                            <button className="btn btn-danger btn-sm py-0" type="button" onClick={() => remove(i)}>x</button>
                           </div>
 
-                          <div>
+                          <div className="mb-3">
+                            <Field
+                              name={`tips[${i}].state`}
+                              countryIso2={countryIso2}
+                              stateList={stateList}
+                              setCityList={setCityList}
+                              component={stateSearchOptions}
+                            />
+                          </div>
+
+                          <div className="mb-3">
+                            <Field
+                              name={`tips[${i}].city`}
+                              cityList={cityList}
+                              component={citySearchOptions}
+                            />
+                          </div>
+
+                          <div className="mb-3">
                             {/* <label>Details</label> */}
                             <Field
                               className={`form-control ${e?.tips?.[i]?.content && t?.tips?.[i]?.content && 'is-invalid'}`}
@@ -250,11 +342,6 @@ function FormsProfileVisitedChangeModal(props) {
                             />
                             <ErrorMessage className="invalid-feedback" name={`tips[${i}].content`} component="div" />
                           </div>
-                          {/* <div className="form-check">
-                            <label className="form-check-label">Completed</label>
-                            <Field className="form-check-input" name={`TodoItems[${i}].checked`} type="checkbox" />
-                            <ErrorMessage className="invalid-feedback" name={`TodoItems[${i}].checked`} component="div" />
-                          </div> */}
                         </div>
                       ))
                     }

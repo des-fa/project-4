@@ -34,7 +34,7 @@ const countrySearchOptions = ({ countryInfo, field,
   ))
   return (
     <>
-      <label htmlFor={field.name}>Countries</label>
+      <label htmlFor={field.name}>Country</label>
       <FormCountrySearch
         // className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
         // {...field}
