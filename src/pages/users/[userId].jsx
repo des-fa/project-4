@@ -12,9 +12,10 @@ import useUserVisitedCountries from '@/hooks/users/visited-countries'
 import useUserPlans from '@/hooks/users/plans'
 import useMyFollowing from '@/hooks/my/following'
 
-function UserProfile({ profile, currentUser, myFollowing, createFollowing, destroyFollowing }) {
+function UserProfile({ profile, currentUser, mutate }) {
   const { userVisitedCountries } = useUserVisitedCountries()
   const { userPlans } = useUserPlans()
+  const { createFollowing, destroyFollowing } = useMyFollowing()
   const profileId = profile?.userId
   // console.log(profile?.userId)
   // console.log(currentUser)
@@ -45,6 +46,7 @@ function UserProfile({ profile, currentUser, myFollowing, createFollowing, destr
 
   // console.log('follows me', followsCurrentUser)
   // console.log('follows profile', followingUser)
+  // console.log('myfollowing', myFollowing)
 
   // changing buttons and follow message dynamically
   useEffect(() => {
@@ -73,22 +75,24 @@ function UserProfile({ profile, currentUser, myFollowing, createFollowing, destr
       setShowFollowsYouText(false)
       setShowMessageButton(false)
     }
-  }, [myFollowing])
+  }, [profile])
 
   // clicking on follow button updates followers/following
   const handleClick = followingUser?.length !== 0 ? (
     async () => {
       await destroyFollowing(profileId)
-      // .then(() => {
-      //   console.log('unfollowed')
-      // })
+        .then(() => {
+        // console.log('unfollowed')
+          mutate(profile)
+        })
     }
   ) : (
     async () => {
       await createFollowing(profileId)
-      // .then(() => {
-      //   console.log('followed')
-      // })
+        .then(() => {
+        // console.log('followed')
+          mutate(profile)
+        })
     }
   )
 
@@ -113,9 +117,7 @@ function UserProfile({ profile, currentUser, myFollowing, createFollowing, destr
           onClick={handleClick}
 
         >
-          {/* <div className="me-2"> */}
           {followText}
-          {/* </div> */}
           {followImg}
         </button>
       </div>
@@ -158,8 +160,7 @@ function UserProfile({ profile, currentUser, myFollowing, createFollowing, destr
 }
 
 export function UserPage() {
-  const { userProfile, isLoadingUserProfile, isError, errorMessage } = useUserProfile()
-  const { myFollowing, createFollowing, destroyFollowing } = useMyFollowing()
+  const { userProfile, isLoadingUserProfile, isError, errorMessage, mutate } = useUserProfile()
 
   const [currentUser, setCurrentUser] = useState('')
 
@@ -204,9 +205,7 @@ export function UserPage() {
       <UserProfile
         profile={userProfile}
         currentUser={currentUser}
-        myFollowing={myFollowing}
-        createFollowing={createFollowing}
-        destroyFollowing={destroyFollowing}
+        mutate={mutate}
       />
     )
   }

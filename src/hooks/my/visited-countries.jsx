@@ -26,7 +26,8 @@ export default function useMyVisitedCountries() {
     await axios({
       method: 'PUT',
       url: `/api/my/visited-countries/${values.id}`,
-      data: values
+      // data: values
+      data: serialize(values, { indices: true })
     }).then((resp) => {
       mutate(resp.data)
     }).catch(handleErrors)
