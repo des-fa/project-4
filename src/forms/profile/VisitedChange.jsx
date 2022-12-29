@@ -74,7 +74,7 @@ const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field
   )
 }
 
-const stateSearchOptions = ({ countryIso2, stateList, setCityList, field, form: { setFieldValue }
+const stateSearchOptions = ({ countryIso2, stateList, index, setCityList, field, form: { setFieldValue }
 }) => {
   const stateOptions = stateList?.map((state) => (
     // console.log(state)
@@ -89,7 +89,8 @@ const stateSearchOptions = ({ countryIso2, stateList, setCityList, field, form: 
         handleChange={
           async (value) => {
             // console.log(value)
-            setFieldValue(field.name, value?.value)
+            setFieldValue(field.name, value?.label)
+            setFieldValue(`tips[${index}].stateIso2`, value?.value)
             cityInfoApi(countryIso2, value?.value).then((resp) => setCityList(resp))
           }
         }
@@ -205,7 +206,8 @@ function FormsProfileVisitedChangeModal(props) {
           rating: Yup.number().integer().required().label('Rating'),
           tips: Yup.array().of(
             Yup.object({
-              state: Yup.string().required().label('This'),
+              stateIso2: Yup.string().required().label('This'),
+              stateName: Yup.string().required().label('This'),
               city: Yup.string().required().label('This'),
               content: Yup.string().required().label('This')
             })
@@ -315,7 +317,8 @@ function FormsProfileVisitedChangeModal(props) {
 
                           <div className="mb-3">
                             <Field
-                              name={`tips[${i}].state`}
+                              name={`tips[${i}].stateName`}
+                              index={i}
                               countryIso2={countryIso2}
                               stateList={stateList}
                               setCityList={setCityList}
