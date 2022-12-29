@@ -9,8 +9,9 @@ import Tab from 'react-bootstrap/Tab'
 import useCountryReviews from '@/hooks/countries/country-reviews'
 import useCountryPlans from '@/hooks/countries/country-plans'
 import FormCountrySearch from '@/forms/CountryCitySearch'
+import WeatherChart from '../WeatherChart'
 
-function CountryTabs({ countryNews, citiesOptions }) {
+function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
   const [cityName, setCityName] = useState('')
@@ -200,8 +201,8 @@ function CountryTabs({ countryNews, citiesOptions }) {
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-      <Row className="gap-4 h-100">
-        <Col sm={2} className="mb-4">
+      <Row className="gap-5 h-100">
+        <Col sm={1} className="mb-4">
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
               <Nav.Link eventKey="first">Weather</Nav.Link>
@@ -220,10 +221,10 @@ function CountryTabs({ countryNews, citiesOptions }) {
             </Nav.Item>
           </Nav>
         </Col>
-        <Col sm={9} className="border border-gray rounded p-4 h-100">
+        <Col sm={10} className="border border-gray rounded p-4 h-100">
           <Tab.Content>
             <Tab.Pane eventKey="first">
-              <p>hi</p>
+              <WeatherChart weatherInfo={weatherInfo} />
             </Tab.Pane>
 
             <Tab.Pane eventKey="third">

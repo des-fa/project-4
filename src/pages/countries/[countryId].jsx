@@ -1,16 +1,19 @@
 import withAuth from '@/hoc/withAuth'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import moment from 'moment'
+
 import { Accordion, Image, Tab, Tabs } from 'react-bootstrap'
 
 import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/tabs/CountryTabs'
 // import { City } from 'country-state-city'
-import axios from 'axios'
 import useMySavedCountries from '@/hooks/my/saved-countries'
 import countriesData from '../../data/countries.json'
 
 function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo }) {
   const [capitalInfo, setCapitalInfo] = useState(null)
+  const [weatherInfo, setWeatherInfo] = useState(null)
 
   const saveIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
@@ -109,6 +112,26 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
   )
 
   const countryResult = countriesData.find((country) => country.iso2.toLowerCase() === id.toLowerCase())
+
+  const d = new Date()
+  const today = moment(d).format('YYYY-MM-DD')
+  const yearAgo = moment(d).subtract(365, 'days').format('YYYY-MM-DD')
+
+  const countryWeatherInfo = async (lat, long) => {
+    const resp = await axios({
+      method: 'GET',
+      url: `https://archive-api.open-meteo.com/v1/era5?latitude=${lat}&longitude=${long}&start_date=${yearAgo}&end_date=${today}&daily=temperature_2m_max,temperature_2m_min,rain_sum,snowfall_sum&timezone=auto`
+    })
+    return resp.data
+  }
+
+  useEffect(async () => {
+    if (countryResult) {
+      const resp = await countryWeatherInfo(countryResult?.latitude, countryResult?.longitude)
+      setWeatherInfo(resp)
+      console.log(weatherInfo)
+    }
+  }, [countryResult])
 
   // const currencyKey = Object.keys(data?.currencies)
   // console.log(data?.currencies[currencyKey].name)
@@ -351,7 +374,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
           </Tabs>
         </div>
         <div className="col-md-8">
-          <CountryTabs countryNews={countryNews} citiesOptions={options} />
+          <CountryTabs countryNews={countryNews} citiesOptions={options} weatherInfo={weatherInfo} />
         </div>
       </div>
     </>
@@ -375,6 +398,7 @@ export async function getServerSideProps(context) {
         'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
       }
     })
+    // axios.get('https://archive-api.open-meteo.com/v1/era5?latitude=52.52&longitude=13.41&start_date=2021-12-09&end_date=2022-12-09&daily=temperature_2m_max&timezone=auto')
   ])
   const [countryInfo, countryNews, countryCSCInfo, citiesInfo] = await Promise.all([
     countryInfoRes.data,

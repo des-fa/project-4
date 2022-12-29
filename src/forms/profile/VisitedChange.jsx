@@ -63,10 +63,12 @@ const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field
         handleChange={
           async (value) => {
             // console.log(value)
-            setCountryIso2(value?.value)
-            setFieldValue('iso2', value?.value)
-            setFieldValue('countryName', value?.label)
-            stateInfoApi(value?.value).then((resp) => setStateList(resp))
+            if (value) {
+              setCountryIso2(value?.value)
+              setFieldValue('iso2', value?.value)
+              setFieldValue('countryName', value?.label)
+              stateInfoApi(value?.value).then((resp) => setStateList(resp))
+            }
           }
         }
       />
@@ -89,9 +91,11 @@ const stateSearchOptions = ({ countryIso2, stateList, index, setCityList, field,
         handleChange={
           async (value) => {
             // console.log(value)
-            setFieldValue(field.name, value?.label)
-            setFieldValue(`tips[${index}].stateIso2`, value?.value)
-            cityInfoApi(countryIso2, value?.value).then((resp) => setCityList(resp))
+            if (value) {
+              setFieldValue(field.name, value?.label)
+              setFieldValue(`tips[${index}].stateIso2`, value?.value)
+              cityInfoApi(countryIso2, value?.value).then((resp) => setCityList(resp))
+            }
           }
         }
       />
@@ -124,7 +128,7 @@ const citySearchOptions = ({ cityList, field, form: { setFieldValue }
 
 function FormsProfileVisitedChangeModal(props) {
   // console.log(props?.countryInfo)
-  const [countryIso2, setCountryIso2] = useState([])
+  const [countryIso2, setCountryIso2] = useState('')
   const [stateList, setStateList] = useState([])
   const [cityList, setCityList] = useState([])
   const { createMyVisitedCountries, updateMyVisitedCountries } = useMyVisitedCountries()
