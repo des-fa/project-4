@@ -4,7 +4,7 @@ import HighchartsReact from 'highcharts-react-official'
 import moment from 'moment'
 
 function WeatherChart({ weatherInfo }) {
-  console.log('chart weather', weatherInfo?.daily)
+  // console.log('chart weather', weatherInfo?.daily)
 
   const months = weatherInfo?.daily?.time?.map((time) => (
     moment(time).format('MMM Do YY')
@@ -31,7 +31,7 @@ function WeatherChart({ weatherInfo }) {
         // padding: '2px',
         style: {
           color: Highcharts.getOptions().colors[4],
-          fontSize: '10px'
+          fontSize: '8px'
         }
       },
       title: {
@@ -56,7 +56,7 @@ function WeatherChart({ weatherInfo }) {
         format: '{value} mm',
         style: {
           color: Highcharts.getOptions().colors[9],
-          fontSize: '10px'
+          fontSize: '8px'
         }
       }
     },
@@ -73,7 +73,7 @@ function WeatherChart({ weatherInfo }) {
         format: '{value} cm',
         style: {
           color: Highcharts.getOptions().colors[7],
-          fontSize: '10px'
+          fontSize: '8px'
         }
       }
 
@@ -133,8 +133,8 @@ function WeatherChart({ weatherInfo }) {
     responsive: {
       rules: [{
         condition: {
-          minWidth: 400,
-          minHeight: 600
+          // minWidth: 400,
+          minHeight: 700
         },
         chartOptions: {
           // legend: {

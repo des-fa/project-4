@@ -22,7 +22,7 @@ function UserProfileTabs({ userVisitedCountries, userPlans }) {
               className="text-decoration-none link-dark"
               href={`/countries/${country?.iso2}`}
             >
-              <h4 className="text-decoration-underline">{country?.countryName}</h4>
+              <h4 className="action-title text-decoration-underline">{country?.countryName}</h4>
             </a>
           </div>
         </div>
@@ -87,7 +87,7 @@ function UserProfileTabs({ userVisitedCountries, userPlans }) {
               className="text-decoration-none link-dark"
               href={`/countries/${plan?.iso2}`}
             >
-              <h4 className="text-decoration-underline">{plan?.countryName}</h4>
+              <h4 className="action-title text-decoration-underline">{plan?.countryName}</h4>
             </a>
           </div>
         </div>

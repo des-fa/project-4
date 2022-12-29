@@ -24,32 +24,32 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
 
   const [deleteModalShow, setDeleteModalShow] = useState(false)
   const [deleteData, setDeleteData] = useState('')
-  const [handleDelete, setHandleDelete] = useState('')
-
-  const { destroyMySavedCountries } = useMySavedCountries()
-
-  const handleDeleteSavedCountry = async (e) => {
-    await destroyMySavedCountries(e.currentTarget.value)
-  }
+  const [handleDeleteModal, setHandleDeleteModal] = useState('')
 
   const { destroyMyVisitedCountries } = useMyVisitedCountries()
+  const { destroyMySavedCountries } = useMySavedCountries()
   const { destroyMyPlans } = useMyPlans()
 
-  const handleDeletePlansOrVisited = handleDelete === 'plan' ? (
-    (values) => {
-      destroyMyPlans(values)
+  const handleDelete = async (values) => {
+    if (handleDeleteModal === 'visited') {
+      await destroyMyVisitedCountries(values)
       // .then(() => {
       //   console.log(values)
       // })
     }
-  ) : (
-    (values) => {
-      destroyMyVisitedCountries(values)
+    if (handleDeleteModal === 'saved') {
+      await destroyMySavedCountries(values)
       // .then(() => {
       //   console.log(values)
       // })
     }
-  )
+    if (handleDeleteModal === 'plan') {
+      await destroyMyPlans(values)
+      // .then(() => {
+      //   console.log(values)
+      // })
+    }
+  }
 
   const visited = myVisitedCountries?.visitedCountries?.length > 0 ? (
     myVisitedCountries?.visitedCountries?.map((country, i) => (
@@ -63,7 +63,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               className="text-decoration-none link-dark"
               href={`/countries/${country?.iso2}`}
             >
-              <h4 className="text-decoration-underline">{country?.countryName}</h4>
+              <h4 className="action-title text-decoration-underline">{country?.countryName}</h4>
             </a>
           </div>
 
@@ -88,7 +88,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 >Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
                   setDeleteData(country?.id)
-                  setHandleDelete('visited')
+                  setHandleDeleteModal('visited')
                   setDeleteModalShow(true)
                 }}
                 >Delete</Dropdown.Item>
@@ -165,7 +165,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               className="text-decoration-none link-dark"
               href={`/countries/${country?.iso2}`}
             >
-              <h4 className="mb-0">{country?.countryName}</h4>
+              <h4 className="action-title mb-0">{country?.countryName}</h4>
             </a>
           </div>
 
@@ -174,9 +174,16 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               type="button"
               className="btn btn-sm"
               value={country?.iso2}
-              onClick={handleDeleteSavedCountry}
+              // onClick={
+              //   handleDeleteSavedCountry}
+              onClick={(e) => {
+                setDeleteData(e.currentTarget.value)
+                setHandleDeleteModal('saved')
+                setDeleteModalShow(true)
+              }}
+
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="action-btn bi bi-x-lg" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
               </svg>
             </button>
@@ -189,7 +196,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
       <h3 className="text-muted fw-light m-4">You don&apos;t any saved countries yet.</h3>
 
       <h5 className="fw-light m-4">
-        <Link href="/countries" passHref><a className="text-decoration-none link-dark fw-semibold">Search</a></Link> for countries to save!
+        <Link href="/countries" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Search</a></Link> for countries to save!
       </h5>
     </>
   )
@@ -206,7 +213,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               className="text-decoration-none link-dark"
               href={`/countries/${plan?.iso2}`}
             >
-              <h4 className="text-decoration-underline">{plan?.countryName}</h4>
+              <h4 className="action-title text-decoration-underline">{plan?.countryName}</h4>
             </a>
           </div>
 
@@ -231,7 +238,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 >Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
                   setDeleteData(plan?.id)
-                  setHandleDelete('plan')
+                  setHandleDeleteModal('plan')
                   setDeleteModalShow(true)
                 }}
                 >Delete</Dropdown.Item>
@@ -290,7 +297,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
             className="text-decoration-none link-dark"
             href={`/users/${user?.following?.id}`}
           >
-            <h5 className="text-capitalize">{user?.following?.profile?.fullName}</h5>
+            <h5 className="action-title text-capitalize">{user?.following?.profile?.fullName}</h5>
           </a>
         </div>
       </div>
@@ -300,7 +307,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
       <h3 className="text-muted fw-light m-4">You aren&apos;t following anyone yet.</h3>
 
       <h5 className="fw-light m-4">
-        <Link href="/users" passHref><a className="text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
+        <Link href="/users" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
       </h5>
     </>
   )
@@ -325,7 +332,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
             className="text-decoration-none link-dark"
             href={`/users/${user?.follower?.id}`}
           >
-            <h5 className="text-capitalize">{user?.follower?.profile?.fullName}</h5>
+            <h5 className="action-title text-capitalize">{user?.follower?.profile?.fullName}</h5>
           </a>
         </div>
       </div>
@@ -335,7 +342,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
       <h3 className="text-muted fw-light m-4">You don&apos;t have any followers yet.</h3>
 
       <h5 className="fw-light m-4">
-        <Link href="/users" passHref><a className="text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
+        <Link href="/users" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
       </h5>
     </>
   )
@@ -346,7 +353,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
         data={deleteData}
         show={deleteModalShow}
         onHide={() => setDeleteModalShow(false)}
-        confirm={handleDeletePlansOrVisited}
+        confirm={handleDelete}
       />
 
       <Row>

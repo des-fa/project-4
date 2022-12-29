@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Image } from 'react-bootstrap'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
@@ -13,12 +14,15 @@ function SiteNavbar() {
       {['md'].map((expand) => (
         <Navbar key={expand} bg="light" expand={expand} className="mb-3 py-3">
           <Container fluid>
-            <Image
-              src="/images/world.png"
-              alt="world-image"
-              className="my-2 mx-4"
-              style={{ height: '40px', width: '40px' }}
-            />
+            <Link href="/home" passHref>
+              <a><Image
+                src="/images/world.png"
+                alt="world-image"
+                className="my-2 mx-4"
+                style={{ height: '40px', width: '40px' }}
+              />
+              </a>
+            </Link>
             <Navbar.Brand href="/home">At Your Fingertips</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas

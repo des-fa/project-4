@@ -86,7 +86,7 @@ function CountriesSearch(countryInfo) {
                 href={`/countries/${country?.alpha2Code}`}
                 className="text-decoration-none link-dark"
               >
-                <h6 className="mb-0">{country?.name}</h6>
+                <h6 className="continent-search-result-text mb-0">{country?.name}</h6>
               </a>
             </div>
           ))

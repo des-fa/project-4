@@ -22,7 +22,10 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
   const { myFollowers } = useMyFollowers()
 
   return (
-    <div className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4">
+    <div
+      className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4 pb-5"
+      style={{ minHeight: '100vh' }}
+    >
       <div className="card col-lg-3 col-md-3">
         <Image
           className="card-profile-picture img-fluid"
@@ -124,7 +127,7 @@ export function ProfilePage({ countryInfo }) {
   }
 
   return (
-    <div id="pages-my-profile" className="container pt-5 mb-5">
+    <div id="pages-my-profile" className="container pt-5 pb-2 mb-5">
       {content}
     </div>
   )

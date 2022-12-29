@@ -11,7 +11,7 @@ import CountryTabs from '@/components-layouts/tabs/CountryTabs'
 import useMySavedCountries from '@/hooks/my/saved-countries'
 import countriesData from '../../data/countries.json'
 
-function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo }) {
+function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory }) {
   const [capitalInfo, setCapitalInfo] = useState(null)
   const [weatherInfo, setWeatherInfo] = useState(null)
 
@@ -41,6 +41,24 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
   // console.log(Object.values(countryInfo?.capital))
   // console.log('options', options)
 
+  //   const capitalInfoArray = async () => {
+  //   await Promise.all(capitalNames.map(async (name) => {
+  //     const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
+  //     // const result = response.data[0]
+  //     console.log(response.data[0])
+  //     // return result
+  //     return response.data[0]
+  //   }))
+  // }
+
+  // useEffect(async () => {
+  //   if (capitalNames) {
+  //     const resp = await capitalInfoArray()
+  //     console.log('array', resp)
+  //     setCapitalInfo(resp)
+  //   }
+  // }, [countryInfo])
+
   useEffect(async () => {
     try {
       const capitalInfoArray = await Promise.all(capitalNames.map(async (name) => {
@@ -48,7 +66,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
         const result = response.data[0]
         return result
       }))
-      // console.log('array', capitalInfoArray)
+      console.log('array', capitalInfoArray)
       setCapitalInfo(capitalInfoArray)
     } catch (e) {
       console.log(e)
@@ -129,7 +147,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
     if (countryResult) {
       const resp = await countryWeatherInfo(countryResult?.latitude, countryResult?.longitude)
       setWeatherInfo(resp)
-      console.log(weatherInfo)
+      // console.log(weatherInfo)
     }
   }, [countryResult])
 
@@ -193,19 +211,25 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
         </button>
       </div>
 
-      <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3">
+      <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3 pb-5">
         <div className="col-md-3 mx-4">
           <div className="col w-100 mb-4">
             <Map lat={countryResult?.latitude} long={countryResult?.longitude} capitalCoordinates={capitalCoordinates} />
           </div>
 
           <div className="d-flex flex-row justify-content-center mb-4">
-            <iframe
-              src={`https://www.travel-advisory.info/widget-no-js?countrycode=${id}`}
-              className="rounded"
-              style={{ minHeight: 220 }}
-            >Country advisory by <a href="https://www.travel-advisory.info/" rel="nofollow">Travel-Advisory.info</a>
-            </iframe>
+            {
+            travelAdvisory === 'Country does not exist' ? (
+              null
+            ) : (
+              <iframe
+                src={`https://www.travel-advisory.info/widget-no-js?countrycode=${id}`}
+                className="rounded"
+                style={{ minHeight: 220 }}
+              >Country advisory by <a href="https://www.travel-advisory.info/" rel="nofollow">Travel-Advisory.info</a>
+              </iframe>
+            )
+          }
           </div>
 
           <Tabs
@@ -383,7 +407,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo 
 
 export async function getServerSideProps(context) {
   // Fetch data from external API
-  const [countryInfoRes, countryNewsInfoRes, countryCSCInfoRes, citiesInfoRes] = await Promise.all([
+  const [countryInfoRes, countryNewsInfoRes, countryCSCInfoRes, citiesInfoRes, travelAdvisoryRes] = await Promise.all([
     // fetch(`https://restcountries.com/v3.1/alpha/${context.params.countryId}`),
     // fetch(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`)
     axios.get(`https://restcountries.com/v3.1/alpha/${context.params.countryId.toUpperCase()}`),
@@ -397,14 +421,15 @@ export async function getServerSideProps(context) {
       headers: {
         'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
       }
-    })
-    // axios.get('https://archive-api.open-meteo.com/v1/era5?latitude=52.52&longitude=13.41&start_date=2021-12-09&end_date=2022-12-09&daily=temperature_2m_max&timezone=auto')
+    }),
+    axios.get(`https://www.travel-advisory.info/widget-no-js?countrycode=${context.params.countryId.toUpperCase()}`)
   ])
-  const [countryInfo, countryNews, countryCSCInfo, citiesInfo] = await Promise.all([
+  const [countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory] = await Promise.all([
     countryInfoRes.data,
     countryNewsInfoRes.data,
     countryCSCInfoRes.data,
-    citiesInfoRes.data
+    citiesInfoRes.data,
+    travelAdvisoryRes.data
   ])
   // Pass data to the page via props
   return { props: {
@@ -412,7 +437,8 @@ export async function getServerSideProps(context) {
     countryInfo: countryInfo[0],
     countryNews,
     countryCSCInfo,
-    citiesInfo
+    citiesInfo,
+    travelAdvisory
   } }
 }
 
