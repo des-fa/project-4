@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import { Image } from 'react-bootstrap'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
-import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
 import useCountryReviews from '@/hooks/countries/country-reviews'
@@ -11,10 +11,11 @@ import useCountryPlans from '@/hooks/countries/country-plans'
 import FormCountrySearch from '@/forms/CountryCitySearch'
 import WeatherChart from '../WeatherChart'
 
-function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
+function CountryTabs({ countryIso2, countryNews, citiesOptions, weatherInfo }) {
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
-  const [cityName, setCityName] = useState('')
+  const [reviewsArray, setReviewsArray] = useState(null)
+  const [showCitySearchMsg, setShowCitySearchMsg] = useState(false)
 
   const newsArticles = countryNews?.articles?.length > 0 ? (
     <>
@@ -59,34 +60,64 @@ function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
   const tips = countryReviews?.reviews.map((review) => (
     review.tips.map((tip, i) => (
       <div key={i} className="mb-2">
-        <h6 className="mb-1 fw-semibold">{tip.city}</h6>
+        <h6 className="mb-1 fw-semibold">{tip.city}, {tip.stateName}</h6>
         <p>{tip.content}</p>
       </div>
     ))
   ))
 
   const handleChange = async (value) => {
-    setCityName(value?.value)
-    console.log(cityName)
+    // console.log(value?.value)
+    await axios({
+      method: 'GET',
+      url: `/api/countries/${countryIso2}/reviews`,
+      params: { q: value?.value }
+    })
+      .then((resp) => {
+        if (resp?.data?.reviews) {
+          setReviewsArray(resp?.data?.reviews)
+        }
+        if (resp?.data?.reviews?.length === 0) {
+          setShowCitySearchMsg(true)
+        } else {
+          setShowCitySearchMsg(false)
+        }
+      }
+      )
   }
 
   let reviews
+
+  useEffect(() => {
+    if (countryReviews?.reviews?.length !== 0) {
+      setReviewsArray(countryReviews?.reviews)
+      // console.log('reviews array', reviewsArray)
+    }
+  }, [countryReviews])
+
   if (isLoadingReviews) {
     reviews = <h3 className="text-muted fw-light m-4">Loading...</h3>
   }
   if (countryReviews?.reviews?.length === 0) {
     reviews = <h3 className="text-muted fw-light m-4">No reviews have been made yet.</h3>
   } else {
+    // console.log('OG', countryReviews?.reviews)
     reviews = (
       <>
         <h3 className="text-muted fw-light mb-3 ms-5">Users&apos; thoughts</h3>
 
-        <div className="d-flex flex-row justify-content-center w-75 ms-5 my-3">
+        <div className="d-flex flex-column justify-content-center w-75 ms-5 my-4">
+          <h6>Search reviews by city:</h6>
           <FormCountrySearch options={citiesOptions} handleChange={handleChange} />
         </div>
 
+        <h6
+          className="fw-light ms-5 my-4"
+          style={{ display: showCitySearchMsg ? '' : 'none' }}
+        >No reviews were found. Please enter another city to try again!</h6>
+
         <div className="d-flex flex-column justify-content-center py-2 px-5">
-          {countryReviews?.reviews.map((review, i) => (
+          {reviewsArray?.map((review, i) => (
             <div key={i} className="card mb-3 w-100">
               <div className="d-flex flex-lg-row flex-column gap-2 p-4">
                 <div className="col-md-3 text-center m-2">
@@ -156,40 +187,38 @@ function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
       <>
         <h3 className="text-muted fw-light mb-3 ms-5">Current travel plans</h3>
 
-        <div className="d-flex flex-row justify-content-center py-2">
+        <div className="d-flex flex-column justify-content-center align-items-center py-2">
           {publicPlans?.plans.map((plan, i) => (
-            <div key={i} className="card mb-3 w-75" style={{ maxWidth: '450px' }}>
-              <div className="row g-0">
-                <div className="col-md-4 text-center">
+            <div key={i} className="card mb-3 w-100" style={{ maxWidth: '550px', maxHeight: '100px' }}>
+              <div className="row g-0 h-100">
+                <div className="col-2 text-center">
                   <Image
                     src={plan?.user?.profile?.avatar}
-                    className="p-2 rounded"
-                    style={{ maxHeight: '150px' }}
+                    className="p-2 rounded img-fluid"
+                    style={{ maxHeight: '100px' }}
                     alt="user-profile-pic"
                   />
                 </div>
-                <div className="col-md-8 py-2 ps-3 bg-light">
-                  <div className="card-body">
-                    <a href={`/users/${plan?.userId}`} className="text-decoration-none link-dark">
-                      <h5 className="action-title card-title fw-semibold text-uppercase mb-3">{plan?.user?.profile?.fullName}</h5>
-                    </a>
-                    <p className="card-text text-muted">
-                      <Image
-                        className="me-2"
-                        src="/images/calendar.png"
-                        alt="calendar-icon"
-                        width="20"
-                      />
-                      {plan?.month} / {plan?.year}
-                    </p>
-                    <div className="d-flex flex-row justify-content-end me-2">
+                <div className="col-10 px-4 py-3 bg-light h-100">
+                  <a href={`/users/${plan?.userId}`} className="text-decoration-none link-dark">
+                    <h5 className="action-title card-title fw-semibold text-uppercase mb-3">{plan?.user?.profile?.fullName}</h5>
+                  </a>
+                  <p className="text-muted mb-0">
+                    <Image
+                      className="me-2"
+                      src="/images/calendar.png"
+                      alt="calendar-icon"
+                      width="20"
+                    />
+                    {plan?.month} / {plan?.year}
+                  </p>
+                  {/* <div className="d-flex flex-row justify-content-end me-2">
                       <a href={`/users/${plan?.userId}`} className="text-decoration-none link-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="action-btn bi bi-arrow-right-square" viewBox="0 0 16 16">
                           <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
                         </svg>
                       </a>
-                    </div>
-                  </div>
+                    </div> */}
                 </div>
               </div>
             </div>
@@ -201,8 +230,8 @@ function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-      <Row className="gap-5 h-100">
-        <Col sm={1} className="mb-4">
+      <div className="gap-5 h-100 d-flex flex-lg-row flex-column justify-content-center">
+        <Col lg={1} className="mb-4">
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
               <Nav.Link eventKey="first">Weather</Nav.Link>
@@ -221,7 +250,7 @@ function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
             </Nav.Item>
           </Nav>
         </Col>
-        <Col sm={10} className="border border-gray rounded p-4 h-100">
+        <Col lg={10} className="border border-gray rounded p-4 h-100">
           <Tab.Content>
             <Tab.Pane eventKey="first">
               <WeatherChart weatherInfo={weatherInfo} />
@@ -240,7 +269,7 @@ function CountryTabs({ countryNews, citiesOptions, weatherInfo }) {
             </Tab.Pane>
           </Tab.Content>
         </Col>
-      </Row>
+      </div>
     </Tab.Container>
   )
 }

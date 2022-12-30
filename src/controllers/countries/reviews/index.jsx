@@ -10,16 +10,39 @@ const controllersCountriesReviewsIndex = async (req, res) => {
     const { query: { countryId } } = req
     // console.log(countryId)
 
+    // Filters
+    const q = req.query.q || ''
+    // console.log('query', req.query)
+
     // Pagination
     const take = 5
     const page = Number(req.query.page || '1')
     const skip = (page - 1) * take
 
     // Common Where Query
-    const where = {
-      iso2: countryId.toUpperCase(),
-      NOT: {
-        userId: session.user.id
+    let where = {}
+
+    if (q.length >= 1) {
+      where = {
+        iso2: countryId.toUpperCase(),
+        tips: {
+          some: {
+            city: {
+              contains: q,
+              mode: 'insensitive'
+            }
+          }
+        },
+        NOT: {
+          userId: session.user.id
+        }
+      }
+    } else {
+      where = {
+        iso2: countryId.toUpperCase(),
+        NOT: {
+          userId: session.user.id
+        }
       }
     }
 

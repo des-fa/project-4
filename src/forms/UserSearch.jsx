@@ -30,9 +30,6 @@ function FormsUserSearch(props) {
               className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
               name="q"
               placeholder="Search by name or country"
-              // onChange={(event) => {
-              //   setFieldValue('q', event.target.value)
-              // }}
             />
             {/* <ErrorMessage
                 className="invalid-feedback"

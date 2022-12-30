@@ -29,9 +29,9 @@ export function UsersSearch() {
           <FormsUserSearch setData={setData} handleSubmit={handleSubmit} />
         </div>
 
-        <div className="users-search-result d-flex flex-row justify-content-start rounded ms-4 w-50">
+        <div className="d-flex flex-column justify-content-start rounded ms-4 w-50">
           {data.map((user, index) => (
-            <div key={index} className="w-100">
+            <div key={index} className="users-search-result w-100 mb-3">
               <a href={`/users/${user?.id}`} className="text-decoration-none link-dark w-100">
                 <div className="d-flex flex-lg-row align-items-center border rounded px-3 py-2 gap-2 w-100">
                   <div className="text-center">

@@ -12,7 +12,7 @@ import useMySavedCountries from '@/hooks/my/saved-countries'
 import countriesData from '../../data/countries.json'
 
 function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory }) {
-  const [capitalInfo, setCapitalInfo] = useState(null)
+  const [capitalInfo, setCapitalInfo] = useState([])
   const [weatherInfo, setWeatherInfo] = useState(null)
 
   const saveIcon = (
@@ -41,35 +41,18 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
   // console.log(Object.values(countryInfo?.capital))
   // console.log('options', options)
 
-  //   const capitalInfoArray = async () => {
-  //   await Promise.all(capitalNames.map(async (name) => {
-  //     const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
-  //     // const result = response.data[0]
-  //     console.log(response.data[0])
-  //     // return result
-  //     return response.data[0]
-  //   }))
-  // }
-
-  // useEffect(async () => {
-  //   if (capitalNames) {
-  //     const resp = await capitalInfoArray()
-  //     console.log('array', resp)
-  //     setCapitalInfo(resp)
-  //   }
-  // }, [countryInfo])
-
   useEffect(async () => {
-    try {
-      const capitalInfoArray = await Promise.all(capitalNames.map(async (name) => {
-        const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
-        const result = response.data[0]
-        return result
-      }))
-      console.log('array', capitalInfoArray)
+    const capitalInfoArray = await Promise.all(capitalNames?.map(async (name) => {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
+      const result = response.data[0] ? (response.data[0]) : (null)
+      return result
+    }))
+
+    if (!capitalInfoArray[0]) {
+      // console.log('array', capitalInfoArray)
+      setCapitalInfo([])
+    } else {
       setCapitalInfo(capitalInfoArray)
-    } catch (e) {
-      console.log(e)
     }
   }, [countryInfo])
 
@@ -212,7 +195,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
       </div>
 
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3 pb-5">
-        <div className="col-md-3 mx-4">
+        <div className="col-lg-3 mx-4">
           <div className="col w-100 mb-4">
             <Map lat={countryResult?.latitude} long={countryResult?.longitude} capitalCoordinates={capitalCoordinates} />
           </div>
@@ -398,7 +381,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
           </Tabs>
         </div>
         <div className="col-md-8">
-          <CountryTabs countryNews={countryNews} citiesOptions={options} weatherInfo={weatherInfo} />
+          <CountryTabs countryIso2={id} countryNews={countryNews} citiesOptions={options} weatherInfo={weatherInfo} />
         </div>
       </div>
     </>

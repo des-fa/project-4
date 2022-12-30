@@ -61,7 +61,7 @@ function UserProfileTabs({ userVisitedCountries, userPlans }) {
                   </div>
 
                   <div className="col">
-                    <h5>{tip?.city}</h5>
+                    <h5>{tip?.city}, {tip?.stateName}</h5>
                     <p>{tip?.content}</p>
                   </div>
                 </div>
