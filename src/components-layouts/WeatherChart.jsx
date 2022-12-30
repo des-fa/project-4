@@ -15,7 +15,12 @@ function WeatherChart({ weatherInfo }) {
 
   const options = {
     title: {
-      text: 'A Year of Weather Data'
+      text: 'A Year of Weather Data',
+      align: 'left'
+    },
+    subtitle: {
+      text: 'Source: Open-Meteo.com',
+      align: 'left'
     },
     xAxis: [{
       categories: months,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Router from 'next/router'
+// import Router from 'next/router'
 import axios from 'axios'
 import { Image } from 'react-bootstrap'
 import parse from 'html-react-parser'
@@ -79,22 +79,25 @@ function Home(countryInfo) {
     }
   }
 
-  const handleSubmit = () => {
-    const { pathname } = Router
-    if (pathname !== `/countries/${countryIso.toUpperCase()}`) {
-      Router.push(`/countries/${countryIso.toUpperCase()}`)
-    }
-  }
+  // const handleSubmit = () => {
+  //   const { pathname } = Router
+  //   if (pathname !== `/countries/${countryIso.toUpperCase()}`) {
+  //     Router.push(`/countries/${countryIso.toUpperCase()}`)
+  //   }
+  // }
 
   return (
-    <div className="container px-2">
-      <div className="d-flex flex-lg-row flex-column my-5 gap-5">
+    <div className="container px-4 pb-5">
+      <div className="mt-4">
+        <h3 className="text-muted fw-light">Search for countries</h3>
+      </div>
 
-        <div className="col-lg-3 col-md-12 me-4">
+      <div className="d-flex flex-lg-row flex-column my-4 gap-5">
+        <div className="col-lg-3 col-md-12">
           <div className="d-flex flex-row justify-content-center w-100">
             <FormCountrySearch options={options} handleChange={handleChange} />
 
-            <button
+            {/* <button
               className="btn btn-outline-secondary ms-2"
               type="submit"
               onClick={handleSubmit}
@@ -106,7 +109,7 @@ function Home(countryInfo) {
               viewBox="0 0 16 16"
             >
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-            </svg></button>
+            </svg></button> */}
           </div>
 
           {wikiExtract ? (
@@ -126,16 +129,16 @@ function Home(countryInfo) {
             </div>
           ) : null}
 
-          <div className="mb-4 mt-2 mx-auto text-center" style={{ minHeight: 100 }}>
-            {wikiExtract ? (
+          {wikiExtract ? (
+            <div className="mb-4 mt-2 mx-auto text-center" style={{ minHeight: 100 }}>
               <Image
                 alt="country-flag"
                 src={`https://countryflagsapi.com/svg/${countryIso}`}
                 width={250}
                 crossOrigin="anonymous"
               />
-            ) : null}
-          </div>
+            </div>
+          ) : null}
 
           <div className="mt-2">
             {wikiExtract}
@@ -166,7 +169,6 @@ function Home(countryInfo) {
         <div className="col w-100">
           <Map lat={lat} long={long} />
         </div>
-
       </div>
     </div>
   )

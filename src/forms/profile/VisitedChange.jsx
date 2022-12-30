@@ -52,9 +52,16 @@ const cityInfoApi = async (country, state) => {
 const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field, form: { setFieldValue }
   // , ...props
 }) => {
-  const countryOptions = countryInfo?.map((country) => (
-    { value: country.iso2, label: country.name }
-  ))
+  let countryOptions
+  if (countryInfo?.length > 0) {
+    countryOptions = countryInfo?.map((country) => (
+      { value: country.iso2, label: country.name }
+    ))
+  }
+  // else {
+  //   countryOptions = { value: countryInfo?.iso2, label: countryInfo?.name }
+  // }
+
   return (
     <>
       <label htmlFor={field.name}>Country</label>

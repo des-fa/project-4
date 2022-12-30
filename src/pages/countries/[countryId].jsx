@@ -9,9 +9,12 @@ import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/tabs/CountryTabs'
 // import { City } from 'country-state-city'
 import useMySavedCountries from '@/hooks/my/saved-countries'
+import FormsProfileVisitedChangeModal from '@/forms/profile/VisitedChange'
 import countriesData from '../../data/countries.json'
 
 function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory }) {
+  const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
+  console.log(countryCSCInfo)
   const [capitalInfo, setCapitalInfo] = useState([])
   const [weatherInfo, setWeatherInfo] = useState(null)
 
@@ -37,6 +40,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
   const options = citiesInfo?.map((city) => (
     { value: city.name, label: city.name }
   ))
+
   const capitalNames = Object.values(countryInfo?.capital)
   // console.log(Object.values(countryInfo?.capital))
   // console.log('options', options)
@@ -183,6 +187,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
         <button
           type="button"
           className="btn btn-sm btn-light text-black p-2"
+          onClick={() => setCreateVisitedModalShow(true)}
         >
           <span>Add</span>
           <Image
@@ -192,6 +197,8 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
             className="ms-2"
           />
         </button>
+
+        <FormsProfileVisitedChangeModal countryInfo={countryCSCInfo} show={createVisitedModalShow} onHide={() => setCreateVisitedModalShow(false)} />
       </div>
 
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3 pb-5">
