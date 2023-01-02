@@ -25,19 +25,21 @@ for (let index = 0; index <= 10; index += 1) {
 }
 // console.log(yearOptions)
 
-const countrySearchOptions = ({ countryInfo, field,
+const countrySearchOptions = ({ countryNameInitialValue, countryInfo, field,
   form: { setFieldValue }
-  // , ...props
+  // ...props
 }) => {
   const options = countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
+  // console.log(countryNameInitialValue)
+
   return (
     <>
       <label htmlFor={field.name}>Country</label>
       <FormCountrySearch
         // className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
-        // {...field}
+        countryNameInitialValue={countryNameInitialValue}
         options={options}
         handleChange={
           async (value) => {
@@ -57,7 +59,7 @@ const countrySearchOptions = ({ countryInfo, field,
 }
 
 function FormsProfilePlansChangeModal(props) {
-  // console.log(props?.countryInfo)
+  // console.log('initial', props?.initialValues)
 
   const { createMyPlans, updateMyPlans } = useMyPlans()
 
@@ -143,8 +145,14 @@ function FormsProfilePlansChangeModal(props) {
               <div className="mb-3">
                 <Field
                   name="countryName"
+                  countryNameInitialValue={props?.initialValues?.iso2}
                   countryInfo={props?.countryInfo}
                   component={countrySearchOptions}
+                />
+                <ErrorMessage
+                  className="invalid-feedback"
+                  name="countryName"
+                  component="div"
                 />
               </div>
 

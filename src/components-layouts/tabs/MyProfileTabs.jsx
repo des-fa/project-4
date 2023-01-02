@@ -18,9 +18,11 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
   // console.log(countryInfo)
   const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
   const [editVisitedModalShow, setEditVisitedModalShow] = useState(false)
+  const [editVisitedModalValues, setEditVisitedModalValues] = useState(null)
 
   const [createPlansModalShow, setCreatePlansModalShow] = useState(false)
   const [editPlansModalShow, setEditPlansModalShow] = useState(false)
+  const [editPlansModalValues, setEditPlansModalValues] = useState(null)
 
   const [deleteModalShow, setDeleteModalShow] = useState(false)
   const [deleteData, setDeleteData] = useState('')
@@ -83,6 +85,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 <Dropdown.Item
                   onClick={() => {
                     setEditVisitedModalShow(true)
+                    setEditVisitedModalValues(country)
                     console.log(country)
                   }}
                 >Edit</Dropdown.Item>
@@ -96,7 +99,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
             </Dropdown>
 
             <FormsProfileVisitedChangeModal
-              initialValues={country}
+              initialValues={editVisitedModalValues}
               countryInfo={countryInfo}
               show={editVisitedModalShow}
               onHide={() => setEditVisitedModalShow(false)}
@@ -239,7 +242,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                 <Dropdown.Item
                   onClick={() => {
                     setEditPlansModalShow(true)
-                    console.log(plan)
+                    setEditPlansModalValues(plan)
                   }}
                 >Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {
@@ -252,7 +255,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
             </Dropdown>
 
             <FormsProfilePlansChangeModal
-              initialValues={plan}
+              initialValues={editPlansModalValues}
               countryInfo={countryInfo}
               show={editPlansModalShow}
               onHide={() => setEditPlansModalShow(false)}

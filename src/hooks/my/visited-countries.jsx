@@ -10,7 +10,7 @@ export default function useMyVisitedCountries() {
   const { data, error, mutate } = useSWR(isReady ? '/api/my/visited-countries' : null, fetcher)
 
   const createMyVisitedCountries = async (values) => {
-    console.log('hook', values)
+    // console.log('hook', values)
     await axios({
       method: 'POST',
       url: '/api/my/visited-countries',

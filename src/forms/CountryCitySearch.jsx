@@ -1,7 +1,8 @@
 import React from 'react'
 import Select from 'react-select'
 
-function FormCountrySearch({ options, handleChange }) {
+function FormCountrySearch({ countryNameInitialValue, options, handleChange }) {
+  console.log('name', countryNameInitialValue)
   return (
     <div className="w-100">
       <Select
@@ -20,6 +21,7 @@ function FormCountrySearch({ options, handleChange }) {
         name="countryName"
         placeholder="Select or Search"
         noOptionsMessage={() => 'No results'}
+        defaultValue={options?.find(({ value }) => value === countryNameInitialValue)}
         options={options}
         onChange={handleChange}
       />

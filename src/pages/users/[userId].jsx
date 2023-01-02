@@ -97,8 +97,11 @@ function UserProfile({ profile, currentUser, mutate }) {
   )
 
   return (
-    <>
-      <div className="d-flex flex-row justify-content-end me-4 py-2 gap-3">
+    <div
+      className="d-flex flex-column pb-5"
+      style={{ minHeight: '100vh' }}
+    >
+      <div className="d-flex flex-row justify-content-end me-4 mb-2 py-2 gap-3">
         <button
           type="button"
           className="d-flex flex-row gap-2 align-items-center btn btn-sm btn-dark text-white px-3"
@@ -122,16 +125,22 @@ function UserProfile({ profile, currentUser, mutate }) {
         </button>
       </div>
 
-      <div className="d-flex flex-row justify-content-end me-4 mb-2">
+      <div
+        className="d-flex flex-row justify-content-end me-4 mb-2"
+        style={{ display: showFollowsYouText ? '' : 'none' }}
+      >
         <small
           className="text-muted text-decoration-underline"
-          style={{ visibility: showFollowsYouText ? 'visible' : 'hidden' }}
+          style={{ display: showFollowsYouText ? '' : 'none' }}
         >
           Follows you
         </small>
       </div>
 
-      <div className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4">
+      <div
+        className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4"
+        style={{ minHeight: '100vh' }}
+      >
         <div className="card col-lg-3 col-md-3">
           <Image
             className="card-profile-picture img-fluid rounded-top"
@@ -155,7 +164,7 @@ function UserProfile({ profile, currentUser, mutate }) {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

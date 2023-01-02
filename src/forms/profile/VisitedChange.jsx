@@ -131,7 +131,9 @@ const citySearchOptions = ({ cityList, field, form: { setFieldValue }
 }
 
 function FormsProfileVisitedChangeModal(props) {
-  // console.log(props?.countryInfo)
+  console.log('initial', props?.initialValues)
+  console.log('countryiso2', props?.countryNameInitialValue)
+
   const [countryIso2, setCountryIso2] = useState('')
   const [stateList, setStateList] = useState([])
   const [cityList, setCityList] = useState([])
@@ -230,6 +232,7 @@ function FormsProfileVisitedChangeModal(props) {
               <div className="mb-3">
                 <Field
                   name="countryName"
+                  countryNameInitialValue={props?.countryNameInitialValue}
                   countryInfo={props?.countryInfo}
                   setCountryIso2={setCountryIso2}
                   setStateList={setStateList}
