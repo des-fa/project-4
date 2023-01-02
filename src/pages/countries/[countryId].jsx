@@ -14,7 +14,7 @@ import countriesData from '../../data/countries.json'
 
 function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory }) {
   const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
-  console.log(countryCSCInfo)
+  const [visitedModalCountryInfo, setVisitedModalCountryInfo] = useState([])
   const [capitalInfo, setCapitalInfo] = useState([])
   const [weatherInfo, setWeatherInfo] = useState(null)
 
@@ -187,7 +187,10 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
         <button
           type="button"
           className="btn btn-sm btn-light text-black p-2"
-          onClick={() => setCreateVisitedModalShow(true)}
+          onClick={() => {
+            setCreateVisitedModalShow(true)
+            setVisitedModalCountryInfo([countryCSCInfo])
+          }}
         >
           <span>Add</span>
           <Image
@@ -198,7 +201,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
           />
         </button>
 
-        <FormsProfileVisitedChangeModal countryInfo={countryCSCInfo} show={createVisitedModalShow} onHide={() => setCreateVisitedModalShow(false)} />
+        <FormsProfileVisitedChangeModal countryInfo={visitedModalCountryInfo} show={createVisitedModalShow} onHide={() => setCreateVisitedModalShow(false)} />
       </div>
 
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3 pb-5">

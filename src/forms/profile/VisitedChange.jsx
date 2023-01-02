@@ -52,14 +52,11 @@ const cityInfoApi = async (country, state) => {
 const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field, form: { setFieldValue }
   // , ...props
 }) => {
-  let countryOptions
-  if (countryInfo?.length > 0) {
-    countryOptions = countryInfo?.map((country) => (
-      { value: country.iso2, label: country.name }
-    ))
-  }
-  // else {
-  //   countryOptions = { value: countryInfo?.iso2, label: countryInfo?.name }
+  // let countryOptions
+  // if (countryInfo?.length > 0) {
+  const countryOptions = countryInfo?.map((country) => (
+    { value: country.iso2, label: country.name }
+  ))
   // }
 
   return (
