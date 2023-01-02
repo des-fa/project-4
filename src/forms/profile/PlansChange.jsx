@@ -39,7 +39,7 @@ const countrySearchOptions = ({ countryNameInitialValue, countryInfo, field,
       <label htmlFor={field.name}>Country</label>
       <FormCountrySearch
         // className={`form-control ${e?.[field.name] && t?.[field.name] && 'is-invalid'}`}
-        countryNameInitialValue={countryNameInitialValue}
+        initialValue={countryNameInitialValue}
         options={options}
         handleChange={
           async (value) => {
@@ -67,7 +67,7 @@ function FormsProfilePlansChangeModal(props) {
     async (values) => {
       await updateMyPlans(values)
         .then(() => {
-          console.log(values)
+          // console.log(values)
           props.setEditPlansModalShow(false)
         })
     }

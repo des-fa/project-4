@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
@@ -49,20 +49,27 @@ const cityInfoApi = async (country, state) => {
   return resp.data
 }
 
-const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field, form: { setFieldValue }
+const CountrySearchOptions = ({ countryInitialIso2, countryInitialName, countryInfo, setCountryIso2, setStateList, field, form: { setFieldValue }
   // , ...props
 }) => {
-  // let countryOptions
-  // if (countryInfo?.length > 0) {
   const countryOptions = countryInfo?.map((country) => (
     { value: country.iso2, label: country.name }
   ))
-  // }
+
+  useEffect(() => {
+    if (countryInitialIso2) {
+      setCountryIso2(countryInitialIso2)
+      setFieldValue('iso2', countryInitialIso2)
+      setFieldValue('countryName', countryInitialName)
+      stateInfoApi(countryInitialIso2).then((resp) => setStateList(resp))
+    }
+  }, [countryInitialIso2])
 
   return (
     <>
       <label htmlFor={field.name}>Country</label>
       <FormCountrySearch
+        initialValue={countryInitialIso2}
         options={countryOptions}
         handleChange={
           async (value) => {
@@ -80,17 +87,30 @@ const countrySearchOptions = ({ countryInfo, setCountryIso2, setStateList, field
   )
 }
 
-const stateSearchOptions = ({ countryIso2, stateList, index, setCityList, field, form: { setFieldValue }
+const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, stateList, index, setCityList, field, form: { setFieldValue }
 }) => {
   const stateOptions = stateList?.map((state) => (
     // console.log(state)
     { value: state.iso2, label: state.name }
   ))
+  console.log(stateInitialIso2)
+  // console.log(stateInitialName)
+  console.log('country', countryIso2)
+
+  useEffect(() => {
+    if (stateInitialIso2) {
+      setFieldValue(field.name, stateInitialName)
+      setFieldValue(`tips[${index}].stateIso2`, stateInitialIso2)
+      console.log('country', countryIso2)
+      // cityInfoApi(countryIso2, stateInitialIso2).then((resp) => setCityList(resp))
+    }
+  }, [stateInitialIso2])
 
   return (
     <>
       <label htmlFor={field.name}>State/Province/County</label>
       <FormCountrySearch
+        initialValue={stateInitialIso2}
         options={stateOptions}
         handleChange={
           async (value) => {
@@ -107,7 +127,7 @@ const stateSearchOptions = ({ countryIso2, stateList, index, setCityList, field,
   )
 }
 
-const citySearchOptions = ({ cityList, field, form: { setFieldValue }
+const citySearchOptions = ({ cityNameInitialValue, cityList, field, form: { setFieldValue }
 }) => {
   const cityOptions = cityList?.map((city) => (
     // console.log(city)
@@ -118,6 +138,7 @@ const citySearchOptions = ({ cityList, field, form: { setFieldValue }
     <>
       <label htmlFor={field.name}>City</label>
       <FormCountrySearch
+        initialValue={cityNameInitialValue}
         options={cityOptions}
         handleChange={
           async (value) => {
@@ -131,8 +152,8 @@ const citySearchOptions = ({ cityList, field, form: { setFieldValue }
 }
 
 function FormsProfileVisitedChangeModal(props) {
-  console.log('initial', props?.initialValues)
-  console.log('countryiso2', props?.countryNameInitialValue)
+  // console.log('initial', props?.initialValues)
+  // console.log('countryiso2', props?.countryNameInitialValue)
 
   const [countryIso2, setCountryIso2] = useState('')
   const [stateList, setStateList] = useState([])
@@ -149,7 +170,6 @@ function FormsProfileVisitedChangeModal(props) {
     }
   ) : (
     async (values) => {
-      console.log(values)
       await createMyVisitedCountries(values)
         .then(() => {
           // console.log(values)
@@ -188,7 +208,7 @@ function FormsProfileVisitedChangeModal(props) {
       </Modal.Header>
 
       <Formik
-        initialValues={props.initialValues || initialValues}
+        initialValues={props?.initialValues || initialValues}
         onSubmit={
           // (values) => {
           //   console.log(values)
@@ -232,11 +252,12 @@ function FormsProfileVisitedChangeModal(props) {
               <div className="mb-3">
                 <Field
                   name="countryName"
-                  countryNameInitialValue={props?.countryNameInitialValue}
+                  countryInitialIso2={props?.countryInitialIso2 || props?.initialValues?.iso2}
+                  countryInitialName={props?.countryInitialName || props?.initialValues?.countryName}
                   countryInfo={props?.countryInfo}
                   setCountryIso2={setCountryIso2}
                   setStateList={setStateList}
-                  component={countrySearchOptions}
+                  component={CountrySearchOptions}
                 />
               </div>
 
@@ -326,14 +347,18 @@ function FormsProfileVisitedChangeModal(props) {
                             <button className="btn btn-danger btn-sm py-0" type="button" onClick={() => remove(i)}>x</button>
                           </div>
 
+                          {/* {console.log('tip', props?.initialValues?.tips[i])} */}
+
                           <div className="mb-3">
                             <Field
                               name={`tips[${i}].stateName`}
                               index={i}
                               countryIso2={countryIso2}
+                              stateInitialIso2={props?.initialValues?.tips[i]?.stateIso2}
+                              stateInitialName={props?.initialValues?.tips[i]?.stateName}
                               stateList={stateList}
                               setCityList={setCityList}
-                              component={stateSearchOptions}
+                              component={StateSearchOptions}
                             />
                           </div>
 
@@ -346,7 +371,6 @@ function FormsProfileVisitedChangeModal(props) {
                           </div>
 
                           <div className="mb-3">
-                            {/* <label>Details</label> */}
                             <Field
                               className={`form-control ${e?.tips?.[i]?.content && t?.tips?.[i]?.content && 'is-invalid'}`}
                               name={`tips[${i}].content`}

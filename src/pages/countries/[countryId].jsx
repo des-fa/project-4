@@ -181,7 +181,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
           onClick={() => {
             setCreateVisitedModalShow(true)
             setVisitedModalCountryInfo([countryCSCInfo])
-            console.log(countryCSCInfo)
+            // console.log(countryCSCInfo)
           }}
         >
           <span>Add</span>
@@ -194,7 +194,8 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
         </button>
 
         <FormsProfileVisitedChangeModal
-          countryNameInitialValue={countryCSCInfo?.iso2}
+          countryInitialIso2={countryCSCInfo?.iso2}
+          countryInitialName={countryCSCInfo?.name}
           countryInfo={visitedModalCountryInfo}
           show={createVisitedModalShow}
           onHide={() => setCreateVisitedModalShow(false)}

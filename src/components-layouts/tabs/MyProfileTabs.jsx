@@ -86,7 +86,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                   onClick={() => {
                     setEditVisitedModalShow(true)
                     setEditVisitedModalValues(country)
-                    console.log(country)
+                    // console.log('country', country)
                   }}
                 >Edit</Dropdown.Item>
                 <Dropdown.Item onClick={() => {

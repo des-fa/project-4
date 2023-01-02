@@ -19,7 +19,7 @@ export default function useMyPlans() {
   }
 
   const updateMyPlans = async (values) => {
-    console.log('hook', values)
+    // console.log('hook', values)
     await axios({
       method: 'PUT',
       url: `/api/my/plans/${values.id}`,
