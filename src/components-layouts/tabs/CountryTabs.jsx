@@ -11,9 +11,10 @@ import useCountryPlans from '@/hooks/countries/country-plans'
 import FormCountrySearch from '@/forms/CountryCitySearch'
 import WeatherChart from '../WeatherChart'
 
-function CountryTabs({ countryIso2, countryNews, citiesOptions, weatherInfo }) {
+function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinates, weatherInfo }) {
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
+
   const [reviewsArray, setReviewsArray] = useState(null)
   const [showCitySearchMsg, setShowCitySearchMsg] = useState(false)
 
@@ -56,12 +57,41 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, weatherInfo }) {
     <h3 className="text-muted fw-light m-4">No recent news was found.</h3>
   )
 
+  const handleClickTipCity = async (city) => {
+    const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${city}&countrycode=${countryIso2.toLowerCase()}&format=json`)
+    const result = response.data[0] ? (response.data[0]) : (null)
+
+    if (result) {
+      setCityCoordinates({ lat: result?.lat, long: result?.lon, name: result?.display_name })
+    }
+  }
+
   // console.log('reviews', countryReviews?.reviews)
   const tips = countryReviews?.reviews.map((review) => (
     review.tips.map((tip, i) => (
       <div key={i} className="mb-2">
-        <h6 className="mb-1 fw-semibold">{tip.city}, {tip.stateName}</h6>
-        <p>{tip.content}</p>
+        <div className="d-flex flex-row">
+          <div className="d-flex flex-column me-2">
+            <Image
+              src="/images/pin.png"
+              alt="pin-icon"
+              height="20"
+            />
+          </div>
+
+          <div className="col">
+            <a href="#" className="text-decoration-none link-dark">
+              <h6
+                className="action-title mb-1 fw-semibold"
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleClickTipCity(tip.city)
+                }}
+              >{tip.city}, {tip.stateName}</h6>
+            </a>
+            <p>{tip.content}</p>
+          </div>
+        </div>
       </div>
     ))
   ))
@@ -150,13 +180,6 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, weatherInfo }) {
                       <p className="text-muted mb-0">{review?.month} / {review?.year}</p>
                     </div>
                   </div>
-
-                  {/* <div className="d-flex flex-row px-2">
-                    <p className="text-left">
-                      <Image src="/images/star.png" alt="star" />
-                      <span className="text-muted ms-2">{review?.rating}.0</span>
-                    </p>
-                  </div> */}
                 </div>
               </div>
 
@@ -168,7 +191,6 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, weatherInfo }) {
               ) : (
                 null
               )}
-
             </div>
           ))}
         </div>

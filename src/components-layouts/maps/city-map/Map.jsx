@@ -10,7 +10,15 @@ const capitalIcon = L.icon({
   iconSize: [25, 25]
 })
 
-function Markers({ capitalCoordinates }) {
+const cityIcon = L.icon({
+  iconUrl: '/images/city-location.png',
+  iconRetinaUrl: '/images/city-location.png',
+  iconAnchor: [5, 25],
+  popupAnchor: [10, -44],
+  iconSize: [25, 25]
+})
+
+function CapitalMarker({ capitalCoordinates }) {
   const map = useMap()
   return (
     capitalCoordinates?.length > 0
@@ -36,8 +44,34 @@ function Markers({ capitalCoordinates }) {
   )
 }
 
-function CityMap({ lat, long, capitalCoordinates }) {
-  // console.log(capitalCoordinates)
+function CityMarker({ cityCoordinates }) {
+  const map = useMap()
+  return (
+    cityCoordinates
+    && (
+    <Marker
+      eventHandlers={{
+        click: () => {
+          map.setView(
+            [cityCoordinates?.lat, cityCoordinates?.long],
+            12
+          )
+        }
+      }}
+      position={[cityCoordinates?.lat, cityCoordinates?.long]}
+      icon={cityIcon}
+    >
+      <Popup>
+        <p className="p-1">{cityCoordinates?.name}</p>
+      </Popup>
+    </Marker>
+    )
+  )
+}
+
+function CityMap({ lat, long, capitalCoordinates, cityCoordinates }) {
+  // console.log('city', cityCoordinates)
+
   return (
     <MapContainer className="home-map" style={{ height: 350 }} center={[lat, long]} zoom={3} scrollWheelZoom>
       <TileLayer
@@ -45,7 +79,15 @@ function CityMap({ lat, long, capitalCoordinates }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <Markers capitalCoordinates={capitalCoordinates} />
+      <CapitalMarker capitalCoordinates={capitalCoordinates} />
+
+      {
+        Object.keys(cityCoordinates).length > 0 ? (
+          <CityMarker cityCoordinates={cityCoordinates} />
+        ) : (
+          null
+        )
+      }
 
     </MapContainer>
   )

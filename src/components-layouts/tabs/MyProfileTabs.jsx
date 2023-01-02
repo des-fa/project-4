@@ -125,6 +125,12 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
           <p className="mb-0">{country?.month} / {country?.year}</p>
         </div>
 
+        { country?.tips?.length > 0 ? (
+          <h5 className="my-3 text-muted">Visited Cities</h5>
+        ) : (
+          null
+        )}
+
         {
           country?.tips ? (
             country?.tips?.map((tip, index) => (
@@ -139,7 +145,7 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
                   </div>
 
                   <div className="col">
-                    <h5>{tip?.city}, {tip?.stateName}</h5>
+                    <h6>{tip?.city}, {tip?.stateName}</h6>
                     <p>{tip?.content}</p>
                   </div>
                 </div>

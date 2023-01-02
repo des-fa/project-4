@@ -16,6 +16,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
   const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
   const [visitedModalCountryInfo, setVisitedModalCountryInfo] = useState([])
   const [capitalInfo, setCapitalInfo] = useState([])
+  const [cityCoordinates, setCityCoordinates] = useState({})
   const [weatherInfo, setWeatherInfo] = useState(null)
 
   const saveIcon = (
@@ -118,6 +119,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
 
   const countryResult = countriesData.find((country) => country.iso2.toLowerCase() === id.toLowerCase())
 
+  // set data needed to get weather info
   const d = new Date()
   const today = moment(d).format('YYYY-MM-DD')
   const yearAgo = moment(d).subtract(365, 'days').format('YYYY-MM-DD')
@@ -142,17 +144,6 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
   // console.log(data?.currencies[currencyKey].name)
   // console.log(data?.currencies[currencyKey].symbol)
   // console.log('entries', Object.entries(data?.currencies[currencyKey]))
-
-  // useEffect(async () => {
-  //   try {
-  //     const res = await fetch(`https://newsapi.org/v2/top-headlines?country=${id}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`)
-  //     const data = await res.json()
-  //     console.log(data)
-  //     console.log('news', data)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }, [])
 
   return (
     <>
@@ -207,7 +198,12 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3 pb-5">
         <div className="col-lg-3 mx-4">
           <div className="col w-100 mb-4">
-            <Map lat={countryResult?.latitude} long={countryResult?.longitude} capitalCoordinates={capitalCoordinates} />
+            <Map
+              lat={countryResult?.latitude}
+              long={countryResult?.longitude}
+              capitalCoordinates={capitalCoordinates}
+              cityCoordinates={cityCoordinates}
+            />
           </div>
 
           <div className="d-flex flex-row justify-content-center mb-4">
@@ -391,7 +387,13 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
           </Tabs>
         </div>
         <div className="col-md-8">
-          <CountryTabs countryIso2={id} countryNews={countryNews} citiesOptions={options} weatherInfo={weatherInfo} />
+          <CountryTabs
+            countryIso2={id}
+            countryNews={countryNews}
+            citiesOptions={options}
+            setCityCoordinates={setCityCoordinates}
+            weatherInfo={weatherInfo}
+          />
         </div>
       </div>
     </>
