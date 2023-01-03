@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { ref, onValue } from 'firebase/database'
-import { database } from '@/services/firebaseconfig'
+import React from 'react'
+// import React, { useState, useEffect } from 'react'
+// import { ref, onValue } from 'firebase/database'
+// import { database } from '@/services/firebaseconfig'
 
 export function Home() {
-  const [state, setState] = useState(null)
+  // const [state, setState] = useState(null)
 
-  const readData = () => {
-    const starCountRef = ref(database, 'users')
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val()
-      setState(data)
-    })
-  }
+  // const readData = () => {
+  //   const starCountRef = ref(database, 'users')
+  //   onValue(starCountRef, (snapshot) => {
+  //     const data = snapshot.val()
+  //     setState(data)
+  //   })
+  // }
 
-  useEffect(() => {
-    readData()
-  }, [])
+  // useEffect(() => {
+  //   readData()
+  // }, [])
 
-  console.log(state)
+  // console.log(state)
 
   return (
     <div className="container">

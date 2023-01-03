@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select'
 
 function FormCountrySearch({ initialValue, options, handleChange }) {
   // console.log('initial', initialValue)
+  // const [selectedValue, setSelectedValue] = useState(null)
 
   return (
     <div className="w-100">
@@ -23,7 +24,10 @@ function FormCountrySearch({ initialValue, options, handleChange }) {
         noOptionsMessage={() => 'No results'}
         value={initialValue ? (options?.find(({ value }) => value === initialValue)) : (null)}
         options={options}
-        onChange={handleChange}
+        onChange={(value) => {
+          setValue(value)
+          handleChange()
+        }}
       />
     </div>
   )

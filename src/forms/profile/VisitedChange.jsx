@@ -87,7 +87,7 @@ const CountrySearchOptions = ({ countryInitialIso2, countryInitialName, countryI
   )
 }
 
-const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, stateList, index, setCityList, field, form: { setFieldValue }
+const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, stateList, index, cityList, setCityList, field, form: { setFieldValue }
 }) => {
   const stateOptions = stateList?.map((state) => (
     // console.log(state)
@@ -100,8 +100,12 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
       setFieldValue(`tips[${index}].stateIso2`, stateInitialIso2)
     }
 
-    if (countryIso2 && stateInitialIso2) {
-      cityInfoApi(countryIso2, stateInitialIso2).then((resp) => setCityList(resp))
+    if (countryIso2 && stateInitialIso2 && stateInitialName) {
+      cityInfoApi(countryIso2, stateInitialIso2)
+        .then((resp) => setCityList({
+          ...cityList,
+          [stateInitialName]: resp
+        }))
     }
   }, [stateInitialIso2, countryIso2, stateList])
 
@@ -113,7 +117,7 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
         options={stateOptions}
         handleChange={
           async (value) => {
-            // console.log(value)
+            console.log(value)
             if (value) {
               setFieldValue(field.name, value?.label)
               setFieldValue(`tips[${index}].stateIso2`, value?.value)
@@ -126,13 +130,22 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
   )
 }
 
-const CitySearchOptions = ({ cityInitialName, cityList, field, form: { setFieldValue }
+const CitySearchOptions = ({ stateInitialName, cityInitialName, cityList, field, form: { setFieldValue }
 }) => {
-  const cityOptions = cityList?.map((city) => (
-    // console.log(city)
-    { value: city.name, label: city.name }
-  ))
+  const cityOptions = stateInitialName && cityList ? (
+    cityList[stateInitialName]?.map((city) => (
+      { value: city.name, label: city.name }
+    ))
+  ) : (
+    cityList?.map((city) => (
+      // console.log(city)
+      { value: city.name, label: city.name }
+    ))
+  )
+
   // console.log('cities', cityList)
+  // console.log('city options', cityOptions)
+  // console.log('state', stateInitialName, cityOptions)
 
   useEffect(() => {
     if (cityInitialName) {
@@ -363,6 +376,7 @@ function FormsProfileVisitedChangeModal(props) {
                               stateInitialIso2={props?.initialValues?.tips[i]?.stateIso2}
                               stateInitialName={props?.initialValues?.tips[i]?.stateName}
                               stateList={stateList}
+                              cityList={cityList}
                               setCityList={setCityList}
                               component={StateSearchOptions}
                             />
@@ -371,6 +385,7 @@ function FormsProfileVisitedChangeModal(props) {
                           <div className="mb-3">
                             <Field
                               name={`tips[${i}].city`}
+                              stateInitialName={props?.initialValues?.tips[i]?.stateName}
                               cityInitialName={props?.initialValues?.tips[i]?.city}
                               cityList={cityList}
                               component={CitySearchOptions}
