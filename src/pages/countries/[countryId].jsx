@@ -1,5 +1,6 @@
 import withAuth from '@/hoc/withAuth'
 import React, { useEffect, useState } from 'react'
+import https from 'https'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -408,10 +409,12 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
 }
 
 export async function getServerSideProps(context) {
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  })
+
   // Fetch data from external API
   const [countryInfoRes, countryNewsInfoRes, countryCSCInfoRes, citiesInfoRes, travelAdvisoryRes] = await Promise.all([
-    // fetch(`https://restcountries.com/v3.1/alpha/${context.params.countryId}`),
-    // fetch(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`)
     axios.get(`https://restcountries.com/v3.1/alpha/${context.params.countryId.toUpperCase()}`),
     axios.get(`https://newsapi.org/v2/top-headlines?country=${context.params.countryId.toUpperCase()}&category=general&apiKey=93393b53981d48379d78d297e6d27d82`),
     axios.get(`https://api.countrystatecity.in/v1/countries/${context.params.countryId.toUpperCase()}`, {
@@ -424,7 +427,7 @@ export async function getServerSideProps(context) {
         'X-CSCAPI-KEY': 'VU1VSFd6Znc3MkZqTVF5aUxJTkJQeHBidlBsUDYybjlkS0haMm1pTQ=='
       }
     }),
-    axios.get(`https://www.travel-advisory.info/widget-no-js?countrycode=${context.params.countryId.toUpperCase()}`)
+    axios.get(`https://www.travel-advisory.info/widget-no-js?countrycode=${context.params.countryId.toUpperCase()}`, { httpsAgent: agent })
   ])
   const [countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory] = await Promise.all([
     countryInfoRes.data,

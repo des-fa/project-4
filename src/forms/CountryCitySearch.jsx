@@ -18,11 +18,10 @@ function FormCountrySearch({ initialValue, options, handleChange }) {
         isClearable="true"
         isSearchable="true"
             // isLoading={isLoading}
-            // isDisabled={isDisabled}
         name="countryName"
         placeholder="Select or Search"
         noOptionsMessage={() => 'No results'}
-        defaultValue={options?.find(({ value }) => value === initialValue)}
+        value={initialValue ? (options?.find(({ value }) => value === initialValue)) : (null)}
         options={options}
         onChange={handleChange}
       />

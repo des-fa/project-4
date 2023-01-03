@@ -69,7 +69,7 @@ const CountrySearchOptions = ({ countryInitialIso2, countryInitialName, countryI
     <>
       <label htmlFor={field.name}>Country</label>
       <FormCountrySearch
-        initialValue={countryInitialIso2}
+        initialValue={countryInitialIso2 || ('')}
         options={countryOptions}
         handleChange={
           async (value) => {
@@ -93,24 +93,23 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
     // console.log(state)
     { value: state.iso2, label: state.name }
   ))
-  console.log(stateInitialIso2)
-  // console.log(stateInitialName)
-  console.log('country', countryIso2)
 
   useEffect(() => {
     if (stateInitialIso2) {
       setFieldValue(field.name, stateInitialName)
       setFieldValue(`tips[${index}].stateIso2`, stateInitialIso2)
-      console.log('country', countryIso2)
-      // cityInfoApi(countryIso2, stateInitialIso2).then((resp) => setCityList(resp))
     }
-  }, [stateInitialIso2])
+
+    if (countryIso2 && stateInitialIso2) {
+      cityInfoApi(countryIso2, stateInitialIso2).then((resp) => setCityList(resp))
+    }
+  }, [stateInitialIso2, countryIso2, stateList])
 
   return (
     <>
       <label htmlFor={field.name}>State/Province/County</label>
       <FormCountrySearch
-        initialValue={stateInitialIso2}
+        initialValue={stateInitialIso2 || ('')}
         options={stateOptions}
         handleChange={
           async (value) => {
@@ -127,18 +126,25 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
   )
 }
 
-const citySearchOptions = ({ cityNameInitialValue, cityList, field, form: { setFieldValue }
+const CitySearchOptions = ({ cityInitialName, cityList, field, form: { setFieldValue }
 }) => {
   const cityOptions = cityList?.map((city) => (
     // console.log(city)
     { value: city.name, label: city.name }
   ))
+  // console.log('cities', cityList)
+
+  useEffect(() => {
+    if (cityInitialName) {
+      setFieldValue(field.name, cityInitialName)
+    }
+  }, [cityInitialName, cityList])
 
   return (
     <>
       <label htmlFor={field.name}>City</label>
       <FormCountrySearch
-        initialValue={cityNameInitialValue}
+        initialValue={cityInitialName || ('')}
         options={cityOptions}
         handleChange={
           async (value) => {
@@ -164,7 +170,7 @@ function FormsProfileVisitedChangeModal(props) {
     async (values) => {
       await updateMyVisitedCountries(values)
         .then(() => {
-          console.log(values)
+          // console.log(values)
           props.setEditVisitedModalShow(false)
         })
     }
@@ -365,8 +371,9 @@ function FormsProfileVisitedChangeModal(props) {
                           <div className="mb-3">
                             <Field
                               name={`tips[${i}].city`}
+                              cityInitialName={props?.initialValues?.tips[i]?.city}
                               cityList={cityList}
-                              component={citySearchOptions}
+                              component={CitySearchOptions}
                             />
                           </div>
 

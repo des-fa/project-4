@@ -22,7 +22,7 @@ export default function useMyVisitedCountries() {
   }
 
   const updateMyVisitedCountries = async (values) => {
-    console.log('hook', values)
+    // console.log('hook', values)
     await axios({
       method: 'PUT',
       url: `/api/my/visited-countries/${values.id}`,
