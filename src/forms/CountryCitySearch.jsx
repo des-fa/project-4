@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 
 function FormCountrySearch({ initialValue, options, handleChange }) {
   // console.log('initial', initialValue)
-  // const [selectedValue, setSelectedValue] = useState(null)
+  const [selectedValue, setSelectedValue] = useState(null)
+
+  useEffect(() => {
+    if (initialValue) {
+      setSelectedValue(initialValue)
+    }
+  }, [initialValue])
 
   return (
     <div className="w-100">
@@ -22,11 +28,12 @@ function FormCountrySearch({ initialValue, options, handleChange }) {
         name="countryName"
         placeholder="Select or Search"
         noOptionsMessage={() => 'No results'}
-        value={initialValue ? (options?.find(({ value }) => value === initialValue)) : (null)}
+        value={options?.find(({ value }) => value === selectedValue)}
         options={options}
-        onChange={(value) => {
-          setValue(value)
-          handleChange()
+        onChange={(e) => {
+          // console.log('change', e?.value)
+          setSelectedValue(e?.value)
+          handleChange(e)
         }}
       />
     </div>

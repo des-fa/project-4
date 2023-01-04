@@ -21,6 +21,7 @@ function Home(countryInfo) {
   ))
 
   const handleChange = async (value) => {
+    // console.log(value)
     setCountryIso(value?.value.toUpperCase() || '')
     // setCountryName(value?.label || '')
     // console.log(value)

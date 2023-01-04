@@ -87,7 +87,7 @@ const CountrySearchOptions = ({ countryInitialIso2, countryInitialName, countryI
   )
 }
 
-const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, stateList, index, cityList, setCityList, field, form: { setFieldValue }
+const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, setStateName, stateList, index, cityList, setCityList, field, form: { setFieldValue }
 }) => {
   const stateOptions = stateList?.map((state) => (
     // console.log(state)
@@ -96,6 +96,7 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
 
   useEffect(() => {
     if (stateInitialIso2) {
+      setStateName('')
       setFieldValue(field.name, stateInitialName)
       setFieldValue(`tips[${index}].stateIso2`, stateInitialIso2)
     }
@@ -117,11 +118,17 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
         options={stateOptions}
         handleChange={
           async (value) => {
-            console.log(value)
+            // console.log(value)
             if (value) {
+              setStateName(value?.label)
               setFieldValue(field.name, value?.label)
               setFieldValue(`tips[${index}].stateIso2`, value?.value)
-              cityInfoApi(countryIso2, value?.value).then((resp) => setCityList(resp))
+              cityInfoApi(countryIso2, value?.value).then((resp) => {
+                setCityList({
+                  ...cityList,
+                  [value?.label]: resp
+                })
+              })
             }
           }
         }
@@ -130,18 +137,19 @@ const StateSearchOptions = ({ stateInitialIso2, stateInitialName, countryIso2, s
   )
 }
 
-const CitySearchOptions = ({ stateInitialName, cityInitialName, cityList, field, form: { setFieldValue }
+const CitySearchOptions = ({ stateName, stateInitialName, cityInitialName, cityList, field, form: { setFieldValue }
 }) => {
-  const cityOptions = stateInitialName && cityList ? (
-    cityList[stateInitialName]?.map((city) => (
-      { value: city.name, label: city.name }
-    ))
-  ) : (
-    cityList?.map((city) => (
+  const cityOptions = stateName && cityList
+    ? (
+      cityList[stateName]?.map((city) => (
       // console.log(city)
-      { value: city.name, label: city.name }
-    ))
-  )
+        { value: city.name, label: city.name }
+      ))
+    ) : (
+      cityList[stateInitialName]?.map((city) => (
+        { value: city.name, label: city.name }
+      ))
+    )
 
   // console.log('cities', cityList)
   // console.log('city options', cityOptions)
@@ -151,7 +159,7 @@ const CitySearchOptions = ({ stateInitialName, cityInitialName, cityList, field,
     if (cityInitialName) {
       setFieldValue(field.name, cityInitialName)
     }
-  }, [cityInitialName, cityList])
+  }, [cityInitialName])
 
   return (
     <>
@@ -175,6 +183,7 @@ function FormsProfileVisitedChangeModal(props) {
   // console.log('countryiso2', props?.countryNameInitialValue)
 
   const [countryIso2, setCountryIso2] = useState('')
+  const [stateName, setStateName] = useState('')
   const [stateList, setStateList] = useState([])
   const [cityList, setCityList] = useState([])
   const { createMyVisitedCountries, updateMyVisitedCountries } = useMyVisitedCountries()
@@ -373,6 +382,7 @@ function FormsProfileVisitedChangeModal(props) {
                               name={`tips[${i}].stateName`}
                               index={i}
                               countryIso2={countryIso2}
+                              setStateName={setStateName}
                               stateInitialIso2={props?.initialValues?.tips[i]?.stateIso2}
                               stateInitialName={props?.initialValues?.tips[i]?.stateName}
                               stateList={stateList}
@@ -385,6 +395,7 @@ function FormsProfileVisitedChangeModal(props) {
                           <div className="mb-3">
                             <Field
                               name={`tips[${i}].city`}
+                              stateName={stateName}
                               stateInitialName={props?.initialValues?.tips[i]?.stateName}
                               cityInitialName={props?.initialValues?.tips[i]?.city}
                               cityList={cityList}
