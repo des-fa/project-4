@@ -5,8 +5,8 @@ import axios from 'axios'
 import { handleErrors, fetcher } from '@/hooks/_utils'
 
 export default function useMyPlans() {
-  const { isReady } = useRouter()
-  const { data, error, mutate } = useSWR(isReady ? '/api/my/plans' : null, fetcher)
+  const { query: { page }, isReady } = useRouter()
+  const { data, error, mutate } = useSWR(isReady ? ['/api/my/plans', { page: Number(page) || 1 }] : null, fetcher)
 
   const createMyPlans = async (values) => {
     await axios({

@@ -9,7 +9,7 @@ const controllersMySavedCountriesIndex = async (req, res) => {
     const session = await getSession({ req })
 
     // Pagination
-    const take = 5
+    const take = 10
     const page = Number(req.query.page || '1')
     const skip = (page - 1) * take
 

@@ -5,9 +5,8 @@ import axios from 'axios'
 import { handleErrors, fetcher } from '@/hooks/_utils'
 
 export default function useMyFollowing() {
-  const { isReady } = useRouter()
-
-  const { data, error, mutate } = useSWR(isReady ? '/api/my/following' : null, fetcher)
+  const { query: { page }, isReady } = useRouter()
+  const { data, error, mutate } = useSWR(isReady ? ['/api/my/following', { page: Number(page) || 1 }] : null, fetcher)
 
   const createFollowing = async (id) => {
     // console.log('hook', id)

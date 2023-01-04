@@ -159,6 +159,7 @@ function UserProfile({ profile, currentUser, mutate }) {
 
         <div className="col-lg-8 col-md-8 border border-gray rounded p-4">
           <UserProfileTabs
+            userId={profile?.userId}
             userVisitedCountries={userVisitedCountries}
             userPlans={userPlans}
           />

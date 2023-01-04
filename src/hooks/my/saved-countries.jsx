@@ -5,8 +5,8 @@ import { handleErrors, fetcher } from '@/hooks/_utils'
 import { useRouter } from 'next/router'
 
 export default function useMySavedCountries() {
-  const { isReady } = useRouter()
-  const { data, error, mutate } = useSWR(isReady ? '/api/my/saved-countries' : null, fetcher)
+  const { query: { page }, isReady } = useRouter()
+  const { data, error, mutate } = useSWR(isReady ? ['/api/my/saved-countries', { page: Number(page) || 1 }] : null, fetcher)
 
   const createMySavedCountries = async (values) => {
     await axios({

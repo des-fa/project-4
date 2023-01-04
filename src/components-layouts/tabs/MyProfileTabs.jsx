@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -16,6 +17,8 @@ import DeleteConfirmation from '../DeleteConfirmation'
 
 function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlans, myFollowing, myFollowers }) {
   // console.log(countryInfo)
+  const { push, replace } = useRouter()
+
   const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
   const [editVisitedModalShow, setEditVisitedModalShow] = useState(false)
   const [editVisitedModalValues, setEditVisitedModalValues] = useState(null)
@@ -357,7 +360,13 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
   )
 
   return (
-    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+    <Tab.Container
+      defaultActiveKey="visited"
+      onSelect={() => {
+        replace('/my/profile', undefined, { shallow: true })
+        // console.log(k)
+      }}
+    >
       <DeleteConfirmation
         data={deleteData}
         show={deleteModalShow}
@@ -369,25 +378,25 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
         <Col sm={3}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="first">Visited</Nav.Link>
+              <Nav.Link eventKey="visited">Visited</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="second">Saved</Nav.Link>
+              <Nav.Link eventKey="saved">Saved</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="third">Travel Plans</Nav.Link>
+              <Nav.Link eventKey="plans">Travel Plans</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="fourth">Following</Nav.Link>
+              <Nav.Link eventKey="following">Following</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="fifth">Followers</Nav.Link>
+              <Nav.Link eventKey="followers">Followers</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
           <Tab.Content>
-            <Tab.Pane eventKey="first">
+            <Tab.Pane eventKey="visited">
               <div className="d-flex flex-row justify-content-end mb-4">
                 <button
                   type="button"
@@ -401,12 +410,33 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </div>
               <div className="my-2 px-3">
                 {visited}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    myVisitedCountries?.meta?.currentPage >= 1 && myVisitedCountries?.meta?.currentPage < myVisitedCountries?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myVisitedCountries.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    myVisitedCountries?.meta?.currentPage !== 1 && myVisitedCountries?.meta?.currentPage <= myVisitedCountries?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myVisitedCountries.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
 
               <FormsProfileVisitedChangeModal countryInfo={countryInfo} show={createVisitedModalShow} onHide={() => setCreateVisitedModalShow(false)} />
             </Tab.Pane>
 
-            <Tab.Pane eventKey="second">
+            <Tab.Pane eventKey="saved">
               <div className="d-flex flex-row justify-content-end mb-4">
                 <Link href="/countries" passHref>
                   <button type="button" className="btn btn-sm btn-dark">
@@ -425,10 +455,31 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </div>
               <div className="my-2 px-3">
                 {saved}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    mySavedCountries?.meta?.currentPage >= 1 && mySavedCountries?.meta?.currentPage < mySavedCountries?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${mySavedCountries.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    mySavedCountries?.meta?.currentPage !== 1 && mySavedCountries?.meta?.currentPage <= mySavedCountries?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${mySavedCountries.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
             </Tab.Pane>
 
-            <Tab.Pane eventKey="third">
+            <Tab.Pane eventKey="plans">
               <div className="d-flex flex-row justify-content-end mb-4">
                 <button
                   type="button"
@@ -442,12 +493,33 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </div>
               <div className="my-2 px-3">
                 {plans}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    myPlans?.meta?.currentPage >= 1 && myPlans?.meta?.currentPage < myPlans?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myPlans.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    myPlans?.meta?.currentPage !== 1 && myPlans?.meta?.currentPage <= myPlans?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myPlans.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
 
               <FormsProfilePlansChangeModal countryInfo={countryInfo} show={createPlansModalShow} onHide={() => setCreatePlansModalShow(false)} />
             </Tab.Pane>
 
-            <Tab.Pane eventKey="fourth">
+            <Tab.Pane eventKey="following">
               <div className="d-flex flex-row justify-content-end mb-4">
                 <Link href="/users" passHref>
                   <button type="button" className="btn btn-sm btn-dark">
@@ -466,10 +538,31 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </div>
               <div className="my-2 px-3">
                 {following}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    myFollowing?.meta?.currentPage >= 1 && myFollowing?.meta?.currentPage < myFollowing?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myFollowing.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    myFollowing?.meta?.currentPage !== 1 && myFollowing?.meta?.currentPage <= myFollowing?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myFollowing.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
             </Tab.Pane>
 
-            <Tab.Pane eventKey="fifth">
+            <Tab.Pane eventKey="followers">
               <div className="d-flex flex-row justify-content-end mb-4">
                 <Link href="/users" passHref>
                   <button type="button" className="btn btn-sm btn-dark">
@@ -488,6 +581,27 @@ function ProfileTabs({ countryInfo, myVisitedCountries, mySavedCountries, myPlan
               </div>
               <div className="my-2 px-3">
                 {followers}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    myFollowers?.meta?.currentPage >= 1 && myFollowers?.meta?.currentPage < myFollowers?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myFollowers.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    myFollowers?.meta?.currentPage !== 1 && myFollowers?.meta?.currentPage <= myFollowers?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/my/profile/?page=${myFollowers.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
             </Tab.Pane>
           </Tab.Content>

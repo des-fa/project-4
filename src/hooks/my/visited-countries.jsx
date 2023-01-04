@@ -6,8 +6,8 @@ import axios from 'axios'
 import { handleErrors, fetcher } from '@/hooks/_utils'
 
 export default function useMyVisitedCountries() {
-  const { isReady } = useRouter()
-  const { data, error, mutate } = useSWR(isReady ? '/api/my/visited-countries' : null, fetcher)
+  const { query: { page }, isReady } = useRouter()
+  const { data, error, mutate } = useSWR(isReady ? ['/api/my/visited-countries', { page: Number(page) || 1 }] : null, fetcher)
 
   const createMyVisitedCountries = async (values) => {
     // console.log('hook', values)

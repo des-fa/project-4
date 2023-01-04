@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import { Image } from 'react-bootstrap'
@@ -6,7 +7,8 @@ import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
-function UserProfileTabs({ userVisitedCountries, userPlans }) {
+function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
+  const { push, replace } = useRouter()
   // console.log('visited', userVisitedCountries)
   // console.log('plans', userPlans)
 
@@ -108,29 +110,77 @@ function UserProfileTabs({ userVisitedCountries, userPlans }) {
   )
 
   return (
-    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+    <Tab.Container
+      defaultActiveKey="visited"
+      onSelect={() => {
+        replace(`/users/${userId}`, undefined, { shallow: true })
+        // console.log(k)
+      }}
+    >
       <Row>
         <Col sm={3}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="first">Visited</Nav.Link>
+              <Nav.Link eventKey="visited">Visited</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="second">Travel Plans</Nav.Link>
+              <Nav.Link eventKey="plans">Travel Plans</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
           <Tab.Content>
-            <Tab.Pane eventKey="first">
+            <Tab.Pane eventKey="visited">
               <div className="my-2 px-3">
                 {visited}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    userVisitedCountries?.meta?.currentPage >= 1 && userVisitedCountries?.meta?.currentPage < userVisitedCountries?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/users/${userId}/?page=${userVisitedCountries.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    userVisitedCountries?.meta?.currentPage !== 1 && userVisitedCountries?.meta?.currentPage <= userVisitedCountries?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/users/${userId}/?page=${userVisitedCountries.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
             </Tab.Pane>
 
-            <Tab.Pane eventKey="second">
+            <Tab.Pane eventKey="plans">
               <div className="my-2 px-3">
                 {plans}
+
+                <div className="d-flex flex-row justify-content-center mt-4">
+                  {
+                    userPlans?.meta?.currentPage >= 1 && userPlans?.meta?.currentPage < userPlans?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/users/${userId}/?page=${userPlans.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                  {
+                    userPlans?.meta?.currentPage !== 1 && userPlans?.meta?.currentPage <= userPlans?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/users/${userId}/?page=${userPlans.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+                </div>
               </div>
             </Tab.Pane>
 
