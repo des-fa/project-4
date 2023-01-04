@@ -1,10 +1,14 @@
-import withAuth from '@/hoc/withAuth'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 import React, { useEffect, useState } from 'react'
 import https from 'https'
 import axios from 'axios'
 import moment from 'moment'
 
 import { Accordion, Image, Tab, Tabs } from 'react-bootstrap'
+
+import { fetcher } from '@/hooks/_utils'
+import withAuth from '@/hoc/withAuth'
 
 import Map from '@/components-layouts/maps/city-map'
 import CountryTabs from '@/components-layouts/tabs/CountryTabs'
@@ -14,6 +18,8 @@ import FormsProfileVisitedChangeModal from '@/forms/profile/VisitedChange'
 import countriesData from '../../data/countries.json'
 
 function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory }) {
+  const { isReady } = useRouter()
+
   const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
   const [visitedModalCountryInfo, setVisitedModalCountryInfo] = useState([])
   const [capitalInfo, setCapitalInfo] = useState([])
@@ -34,31 +40,36 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
 
   const [saveText, setSaveText] = useState('Save')
   const [saveImg, setSaveImg] = useState(saveIcon)
-  const { mySavedCountries, createMySavedCountries, destroyMySavedCountries } = useMySavedCountries()
-  // console.log(mySavedCountries)
-  const savedCurrentCountry = mySavedCountries?.savedCountries?.filter((country) => country.iso2 === id)
+  const { data, mutate } = useSWR(isReady ? '/api/my/saved-countries' : null, fetcher)
+  const { createMySavedCountries, destroyMySavedCountries } = useMySavedCountries()
+  const savedCurrentCountry = data?.savedCountries?.filter((country) => country.iso2 === id)
 
   // const cities = City.getCitiesOfCountry(id.toUpperCase())
   const options = citiesInfo?.map((city) => (
     { value: city.name, label: city.name }
   ))
 
-  const capitalNames = Object.values(countryInfo?.capital)
+  const capitalNames = countryInfo?.capital ? (
+    Object.values(countryInfo?.capital)
+  ) : ([])
+  // console.log(countryInfo?.capital)
+
   // console.log(Object.values(countryInfo?.capital))
   // console.log('options', options)
 
   useEffect(async () => {
-    const capitalInfoArray = await Promise.all(capitalNames?.map(async (name) => {
-      const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
-      const result = response.data[0] ? (response.data[0]) : (null)
-      return result
-    }))
-
-    if (!capitalInfoArray[0]) {
-      // console.log('array', capitalInfoArray)
-      setCapitalInfo([])
-    } else {
-      setCapitalInfo(capitalInfoArray)
+    if (capitalNames) {
+      const capitalInfoArray = await Promise.all(capitalNames?.map(async (name) => {
+        const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${name}&countrycode=${id.toLowerCase()}&format=json`)
+        const result = response.data[0] ? (response.data[0]) : (null)
+        return result
+      }))
+      if (!capitalInfoArray[0]) {
+        // console.log('array', capitalInfoArray)
+        setCapitalInfo([])
+      } else {
+        setCapitalInfo(capitalInfoArray)
+      }
     }
   }, [countryInfo])
 
@@ -71,21 +82,23 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
       setSaveText('Save')
       setSaveImg(saveIcon)
     }
-  }, [mySavedCountries])
+  }, [data])
 
   const handleSaveCountry = savedCurrentCountry?.length !== 0 ? (
     async () => {
       await destroyMySavedCountries(id)
-      // .then(() => {
-      //   console.log('deleted')
-      // })
+        .then(() => {
+        // console.log('deleted')
+          mutate(data)
+        })
     }
   ) : (
     async () => {
       await createMySavedCountries({ iso2: id, countryName: countryCSCInfo?.name })
-      // .then(() => {
-      //   console.log('saved')
-      // })
+        .then(() => {
+        // console.log('saved')
+          mutate(data)
+        })
     }
   )
 
@@ -98,6 +111,31 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
       { lat: info?.lat, long: info?.lon, name: info?.display_name }
     ))
   ) : (null)
+
+  let capitals
+  if (countryInfo?.capital?.length === 1) {
+    capitals = (
+      <div className="ms-2 me-auto">
+        <div className="fw-bold">Capital</div>
+        <small>{countryInfo?.capital}</small>
+      </div>
+    )
+  } if (countryInfo?.capital?.length > 1) {
+    capitals = (
+      <div className="ms-2 me-auto">
+        <div className="fw-bold">Capitals</div>
+        <ul>
+          {
+            countryInfo?.capital.map((capital, i) => (
+              <li key={i}>
+                <small>{capital}</small>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    )
+  }
 
   const currencies = Object.keys(countryInfo?.currencies).map((k, i) => (
     // Object.entries(data?.currencies[key]).map(([k, v], i) => (
@@ -272,25 +310,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
                   </div>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-start">
-                  {
-                  countryInfo?.capital?.length === 1 ? (
-                    <div className="ms-2 me-auto">
-                      <div className="fw-bold">Capital</div>
-                      <small>{countryInfo?.capital}</small>
-                    </div>
-                  ) : (
-                    <div className="ms-2 me-auto">
-                      <div className="fw-bold">Capitals</div>
-                      <ul>
-                        {countryInfo?.capital.map((capital, i) => (
-                          <li key={i}>
-                            <small>{capital}</small>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )
-                }
+                  {capitals}
                 </li>
               </ul>
             </Tab>
@@ -429,6 +449,7 @@ export async function getServerSideProps(context) {
     }),
     axios.get(`https://www.travel-advisory.info/widget-no-js?countrycode=${context.params.countryId.toUpperCase()}`, { httpsAgent: agent })
   ])
+
   const [countryInfo, countryNews, countryCSCInfo, citiesInfo, travelAdvisory] = await Promise.all([
     countryInfoRes.data,
     countryNewsInfoRes.data,

@@ -63,7 +63,11 @@ const controllersCountriesReviewsIndex = async (req, res) => {
         }
       ],
       include: {
-        tips: true,
+        tips: {
+          orderBy: {
+            city: 'asc'
+          }
+        },
         user: {
           select: {
             profile: true

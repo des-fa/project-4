@@ -205,7 +205,7 @@ function ProfileTabs({ countryInfo }) {
                 className="text-decoration-none link-dark"
                 href={`/countries/${country?.iso2}`}
               >
-                <h4 className="action-title mb-0">{country?.countryName}</h4>
+                <h5 className="action-title mb-0">{country?.countryName}</h5>
               </a>
             </div>
 

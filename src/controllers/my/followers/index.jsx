@@ -24,7 +24,12 @@ const controllersMyFollowersIndex = async (req, res) => {
       skip,
       where,
       orderBy: {
-        followerId: 'asc'
+        // followerId: 'asc'
+        follower: {
+          profile: {
+            fullName: 'asc'
+          }
+        }
       },
       include: {
         follower: {

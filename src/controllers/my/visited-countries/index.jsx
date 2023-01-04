@@ -37,7 +37,7 @@ const controllersMyVisitedCountriesIndex = async (req, res) => {
       include: {
         tips: {
           orderBy: {
-            createdAt: 'desc'
+            city: 'asc'
           }
         }
       }
