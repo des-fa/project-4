@@ -1,3 +1,4 @@
+// import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Image } from 'react-bootstrap'
@@ -6,7 +7,10 @@ import FormsUserSearch from '@/forms/UserSearch'
 import withAuth from '@/hoc/withAuth'
 
 export function UsersSearch() {
+  // const { push, replace } = useRouter()
+
   const [data, setData] = useState([])
+  // const [meta, setMeta] = useState({})
   const [showResultsMessage, setShowResultsMessage] = useState(false)
   // console.log(data)
 
@@ -16,7 +20,11 @@ export function UsersSearch() {
       method: 'GET',
       url: '/api/users',
       params: values
-    }).then((resp) => setData(resp?.data?.users))
+    }).then((resp) => {
+      setData(resp?.data?.users)
+      // setMeta(resp?.data?.meta)
+      // console.log(meta)
+    })
       .then(() => setShowResultsMessage(true))
   }
 

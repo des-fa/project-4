@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -12,6 +13,8 @@ import FormCountrySearch from '@/forms/CountryCitySearch'
 import WeatherChart from '../WeatherChart'
 
 function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinates, weatherInfo }) {
+  const { push, replace } = useRouter()
+
   const { publicPlans, isLoadingPlans } = useCountryPlans()
   const { countryReviews, isLoadingReviews } = useCountryReviews()
 
@@ -67,34 +70,6 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
   }
 
   // console.log('reviews', countryReviews?.reviews)
-  const tips = countryReviews?.reviews.map((review) => (
-    review.tips.map((tip, i) => (
-      <div key={i} className="mb-2">
-        <div className="d-flex flex-row">
-          <div className="d-flex flex-column me-2">
-            <Image
-              src="/images/pin.png"
-              alt="pin-icon"
-              height="20"
-            />
-          </div>
-
-          <div className="col">
-            <a href="#" className="text-decoration-none link-dark">
-              <h6
-                className="action-title mb-1 fw-semibold"
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleClickTipCity(tip.city)
-                }}
-              >{tip.city}, {tip.stateName}</h6>
-            </a>
-            <p>{tip.content}</p>
-          </div>
-        </div>
-      </div>
-    ))
-  ))
 
   const handleChange = async (value) => {
     // console.log(value?.value)
@@ -183,14 +158,43 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                 </div>
               </div>
 
-              { review?.tips?.length > 0 ? (
-                <div className="row text-left px-4">
-                  <h5 className="my-3 text-muted">Visited Cities</h5>
-                  {tips}
-                </div>
-              ) : (
-                null
-              )}
+              <div
+                className="row text-left px-4"
+                style={{ display: review?.tips?.length > 0 ? '' : 'none' }}
+              >
+                <h5 className="my-3 text-muted">Visited Cities</h5>
+                {
+                  review?.tips?.length > 0 ? (
+                    review?.tips?.map((tip, index) => (
+                      <div key={index} className="mb-2">
+                        <div className="d-flex flex-row">
+                          <div className="d-flex flex-column me-2">
+                            <Image
+                              src="/images/pin.png"
+                              alt="pin-icon"
+                              height="20"
+                            />
+                          </div>
+                          <div className="col">
+                            <a href="#" className="text-decoration-none link-dark">
+                              <h6
+                                className="action-title mb-1 fw-semibold"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  handleClickTipCity(tip.city)
+                                }}
+                              >{tip.city}, {tip.stateName}</h6>
+                            </a>
+                            <p>{tip.content}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    null
+                  )
+                }
+              </div>
             </div>
           ))}
         </div>
@@ -251,43 +255,91 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
   }
 
   return (
-    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+    <Tab.Container
+      defaultActiveKey="weather"
+      onSelect={() => {
+        replace(`/countries/${countryIso2}`, undefined, { shallow: true })
+        // console.log(k)
+      }}
+    >
       <div className="gap-5 h-100 d-flex flex-lg-row flex-column justify-content-center">
         <Col lg={1} className="mb-4">
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="first">Weather</Nav.Link>
+              <Nav.Link eventKey="weather">Weather</Nav.Link>
             </Nav.Item>
             {/* <Nav.Item>
               <Nav.Link eventKey="second">Visas</Nav.Link>
             </Nav.Item> */}
             <Nav.Item>
-              <Nav.Link eventKey="third">News</Nav.Link>
+              <Nav.Link eventKey="news">News</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="fourth">Reviews</Nav.Link>
+              <Nav.Link eventKey="reviews">Reviews</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="fifth">Meet Up</Nav.Link>
+              <Nav.Link eventKey="plans">Meet Up</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
         <Col lg={10} className="border border-gray rounded p-4 h-100">
           <Tab.Content>
-            <Tab.Pane eventKey="first">
+            <Tab.Pane eventKey="weather">
               <WeatherChart weatherInfo={weatherInfo} />
             </Tab.Pane>
 
-            <Tab.Pane eventKey="third">
+            <Tab.Pane eventKey="news">
               {newsArticles}
             </Tab.Pane>
 
-            <Tab.Pane eventKey="fourth">
+            <Tab.Pane eventKey="reviews">
               {reviews}
+
+              <div className="d-flex flex-row justify-content-center mt-4">
+                {
+                    countryReviews?.meta?.currentPage >= 1 && countryReviews?.meta?.currentPage < countryReviews?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/countries/${countryIso2}/?page=${countryReviews.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                {
+                    countryReviews?.meta?.currentPage !== 1 && countryReviews?.meta?.currentPage <= countryReviews?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/countries/${countryIso2}/?page=${countryReviews.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+              </div>
             </Tab.Pane>
 
-            <Tab.Pane eventKey="fifth">
+            <Tab.Pane eventKey="plans">
               {meetUpPlans}
+
+              <div className="d-flex flex-row justify-content-center mt-4">
+                {
+                    publicPlans?.meta?.currentPage >= 1 && publicPlans?.meta?.currentPage < publicPlans?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/countries/${countryIso2}/?page=${publicPlans.meta.currentPage + 1}`)}
+                    >Next</button>
+                    )
+                  }
+                {
+                    publicPlans?.meta?.currentPage !== 1 && publicPlans?.meta?.currentPage <= publicPlans?.meta?.totalPages && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => push(`/countries/${countryIso2}/?page=${publicPlans.meta.currentPage - 1}`)}
+                    >Previous</button>
+                    )
+                  }
+              </div>
             </Tab.Pane>
           </Tab.Content>
         </Col>

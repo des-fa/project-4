@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import { fetcher } from '@/hooks/_utils'
 
 export default function useCountryReviews() {
-  const { query: { countryId } } = useRouter()
-  const { data, error } = useSWR(countryId ? `/api/countries/${countryId}/reviews` : null, fetcher)
+  const { query: { countryId, page } } = useRouter()
+  const { data, error } = useSWR(countryId ? [`/api/countries/${countryId}/reviews`, { page: Number(page) || 1 }] : null, fetcher)
 
   return {
     countryReviews: data,

@@ -5,22 +5,11 @@ import { Dropdown, Image } from 'react-bootstrap'
 
 import withAuth from '@/hoc/withAuth'
 import useMyProfile from '@/hooks/my/profile'
-import useMyVisitedCountries from '@/hooks/my/visited-countries'
-import useMySavedCountries from '@/hooks/my/saved-countries'
-import useMyPlans from '@/hooks/my/plans'
-import useMyFollowing from '@/hooks/my/following'
-import useMyFollowers from '@/hooks/my/followers'
 
 import ProfileTabs from '@/components-layouts/tabs/MyProfileTabs'
 import FormsProfileChangeModal from '@/forms/profile/ProfileChange'
 
 function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryInfo }) {
-  const { myVisitedCountries } = useMyVisitedCountries()
-  const { mySavedCountries } = useMySavedCountries()
-  const { myPlans } = useMyPlans()
-  const { myFollowing } = useMyFollowing()
-  const { myFollowers } = useMyFollowers()
-
   return (
     <div
       className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4 pb-5"
@@ -63,11 +52,6 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
       <div className="col-lg-8 col-md-8 border border-gray rounded p-4">
         <ProfileTabs
           countryInfo={countryInfo}
-          myVisitedCountries={myVisitedCountries}
-          mySavedCountries={mySavedCountries}
-          myPlans={myPlans}
-          myFollowing={myFollowing}
-          myFollowers={myFollowers}
         />
       </div>
     </div>
