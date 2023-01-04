@@ -29,10 +29,23 @@ export default NextAuth({
       clientSecret: process.env.FACEBOOK_SECRET
     })
   ],
+  pages: {
+    newUser: '/my/profile'
+  },
   callbacks: {
     async session({ session, user }) {
       session.user.id = user.id // eslint-disable-line
       return session
     }
+    // async redirect({ url, baseUrl }) {
+    //   console.log('url', url)
+    //   console.log('baseUrl', baseUrl)
+    //   // Allows relative callback URLs
+    //   if (url.startsWith('/')) return `${baseUrl}${url}`
+    //   // Allows callback URLs on the same origin
+    //   console.log(new URL(url).origin)
+    //   // if (new URL(url).origin === baseUrl) return url
+    //   return baseUrl
+    // }
   }
 })
