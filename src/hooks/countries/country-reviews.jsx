@@ -5,12 +5,13 @@ import { fetcher } from '@/hooks/_utils'
 
 export default function useCountryReviews() {
   const { query: { countryId, page } } = useRouter()
-  const { data, error } = useSWR(countryId ? [`/api/countries/${countryId}/reviews`, { page: Number(page) || 1 }] : null, fetcher)
+  const { data, error, mutate } = useSWR(countryId ? [`/api/countries/${countryId}/reviews`, { page: Number(page) || 1 }] : null, fetcher)
 
   return {
     countryReviews: data,
     isLoadingReviews: !error && !data,
     isError: error,
-    errorMessage: error?.response?.data?.message
+    errorMessage: error?.response?.data?.message,
+    mutate
   }
 }

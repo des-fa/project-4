@@ -2,11 +2,11 @@ import nc from '@/controllers/_helpers/nc'
 import prisma from '@/controllers/_helpers/prisma'
 import handleErrors from '@/controllers/_helpers/handleErrors'
 import authenticateUser from '@/controllers/_middlewares/authenticateUser'
-import { getSession } from 'next-auth/react'
+// import { getSession } from 'next-auth/react'
 
 const controllersCountriesReviewsIndex = async (req, res) => {
   try {
-    const session = await getSession({ req })
+    // const session = await getSession({ req })
     const { query: { countryId } } = req
     // console.log(countryId)
 
@@ -32,17 +32,17 @@ const controllersCountriesReviewsIndex = async (req, res) => {
               mode: 'insensitive'
             }
           }
-        },
-        NOT: {
-          userId: session.user.id
         }
+        // NOT: {
+        //   userId: session.user.id
+        // }
       }
     } else {
       where = {
-        iso2: countryId.toUpperCase(),
-        NOT: {
-          userId: session.user.id
-        }
+        iso2: countryId.toUpperCase()
+        // NOT: {
+        //   userId: session.user.id
+        // }
       }
     }
 

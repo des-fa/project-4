@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal'
 
 import FormCountrySearch from '@/forms/CountryCitySearch'
 import useMyVisitedCountries from '@/hooks/my/visited-countries'
+import useCountryReviews from '@/hooks/countries/country-reviews'
 
 const initialValues = {
   iso2: '',
@@ -187,6 +188,7 @@ function FormsProfileVisitedChangeModal(props) {
   const [stateList, setStateList] = useState([])
   const [cityList, setCityList] = useState([])
   const { createMyVisitedCountries, updateMyVisitedCountries } = useMyVisitedCountries()
+  const { countryReviews, mutate } = useCountryReviews()
 
   const handleSubmit = props.initialValues ? (
     async (values) => {
@@ -201,6 +203,7 @@ function FormsProfileVisitedChangeModal(props) {
       await createMyVisitedCountries(values)
         .then(() => {
           // console.log(values)
+          mutate(countryReviews)
           props.onHide()
         })
     }

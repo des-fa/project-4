@@ -60,10 +60,10 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
     <h3 className="text-muted fw-light m-4">No recent news was found.</h3>
   )
 
-  const handleClickTipCity = async (city) => {
-    const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${city}&countrycode=${countryIso2.toLowerCase()}&format=json`)
+  const handleClickTipCity = async (city, state) => {
+    const response = await axios.get(`https://nominatim.openstreetmap.org/?city=${city}&state=${state}&countrycode=${countryIso2.toLowerCase()}&limit=1&format=json`)
     const result = response.data[0] ? (response.data[0]) : (null)
-
+    // console.log(result)
     if (result) {
       setCityCoordinates({ lat: result?.lat, long: result?.lon, name: result?.display_name })
     }
@@ -181,7 +181,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                                 className="action-title mb-1 fw-semibold"
                                 onClick={(e) => {
                                   e.preventDefault()
-                                  handleClickTipCity(tip.city)
+                                  handleClickTipCity(tip.city, tip.stateName)
                                 }}
                               >{tip.city}, {tip.stateName}</h6>
                             </a>
