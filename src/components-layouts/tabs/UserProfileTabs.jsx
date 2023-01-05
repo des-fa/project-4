@@ -16,7 +16,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
     userVisitedCountries?.visitedCountries?.map((country, i) => (
       <div
         key={i}
-        className="border-bottom border-gray mb-3 px-3 py-2 mx-2"
+        className="border-bottom mb-3 px-3 py-2 mx-2"
       >
         <div className="d-flex flex-row  justify-content-between align-items-center">
           <div>
@@ -36,7 +36,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
             alt="calendar-icon"
             width="20"
           />
-          <p className="mb-0 fw-semibold text-black">{country?.rating}.0</p>
+          <p className="mb-0 fw-semibold semi-light-text">{country?.rating}.0</p>
         </div>
 
         <div className="d-flex flex-row align-items-center mb-4">
@@ -46,7 +46,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
             alt="calendar-icon"
             width="20"
           />
-          <p className="mb-0 gray-text">{country?.month} / {country?.year}</p>
+          <p className="mb-0 fw-bold gray-text">{country?.month} / {country?.year}</p>
         </div>
 
         {
@@ -81,7 +81,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
     userPlans?.plans?.map((plan, i) => (
       <div
         key={i}
-        className="border-bottom border-gray mb-3 px-3 py-2 mx-2"
+        className="border-bottom mb-3 px-3 py-2 mx-2"
       >
         <div className="d-flex flex-row  justify-content-between align-items-center mb-2">
           <div>
@@ -101,7 +101,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
             alt="calendar-icon"
             width="20"
           />
-          <p className="mb-0 gray-text">{plan?.month} / {plan?.year}</p>
+          <p className="mb-0 fw-bold gray-text">{plan?.month} / {plan?.year}</p>
         </div>
       </div>
     ))

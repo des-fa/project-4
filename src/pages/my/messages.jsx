@@ -13,7 +13,7 @@ export function MessagesPage() {
 
   return (
     <div className="container">
-      <h1>
+      <h1 className="text-white fw-light">
         Messages
       </h1>
 

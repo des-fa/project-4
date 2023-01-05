@@ -7,7 +7,7 @@ html, body {
 
 body {
   min-height: 100vh;
-    background-image: linear-gradient(to right, #28313B,#485461);
+  background-image: linear-gradient(to right, #303a46,#596877);
 }
 
 .container {
@@ -38,7 +38,16 @@ body {
 }
 
 .navbar {
-  background-color: #28313B;
+  background-color: #212932;
+  // background-color: rgba(0, 0, 0, 0.438) !important;
+  border-bottom: thick double white;
+}
+
+.offcanvas-end.show {
+  background-color: rgba(0, 0, 0, 0.832) !important;
+}
+
+.navbar .nav-link {
   color: #EEEEEE !important;
 }
 
@@ -157,7 +166,11 @@ body {
 }
 
 .gray-text {
-  color: #787A91;
+  color: black;
+}
+
+.semi-light-text {
+  color: #D8D8D8;
 }
 
 .light-text {

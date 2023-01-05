@@ -30,31 +30,34 @@ function SiteNavbar() {
     currentUser && pathname !== '/' && pathname !== '/signin' ? (
       <>
         {['md'].map((expand) => (
-          <Navbar key={expand} expand={expand} id="navbar" className="mb-3 py-3 text-white">
+          <Navbar key={expand} expand={expand} id="navbar" className="mb-5 py-3">
             <Container fluid>
               <Link href="/home" passHref>
                 <a><Image
                   src="/images/world.png"
                   alt="world-image"
                   className="my-2 mx-4"
-                  style={{ height: '40px', width: '40px' }}
+                  style={{ height: '45px', width: '45px' }}
                 />
                 </a>
               </Link>
-              <Navbar.Brand href="/home" className="text-white">At Your Fingertips</Navbar.Brand>
-              <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+              <Navbar.Brand href="/home" className="text-white fs-4">At Your Fingertips</Navbar.Brand>
+              <Navbar.Toggle
+                // className="bg-secondary border-secondary"
+                aria-controls={`offcanvasNavbar-expand-${expand}`}
+              />
               <Navbar.Offcanvas
                 id={`offcanvasNavbar-expand-${expand}`}
                 aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
                 placement="end"
               >
-                <Offcanvas.Header closeButton className="bg-gray text-black">
+                <Offcanvas.Header closeButton className="btn-close-white">
                   <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                     Menu
                   </Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Body className="bg-gray">
-                  <Nav className="justify-content-end flex-grow-1 pe-3 gap-2 text-white">
+                <Offcanvas.Body className="text-white">
+                  <Nav className="justify-content-end flex-grow-1 pe-3 gap-2">
                     <Nav.Link href="/home">Map</Nav.Link>
                     <Nav.Link href="/countries">Countries</Nav.Link>
                     <Nav.Link href="/users">Users</Nav.Link>

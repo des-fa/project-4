@@ -141,7 +141,7 @@ function UserProfile({ profile, currentUser, mutate }) {
         className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4"
         style={{ minHeight: '100vh' }}
       >
-        <div className="card border-white profile-card col-lg-3 col-md-3">
+        <div className="card border-dark profile-card col-lg-3 col-md-3">
           <Image
             className="card-profile-picture img-fluid rounded-top"
             src={profile?.avatar}
@@ -157,7 +157,7 @@ function UserProfile({ profile, currentUser, mutate }) {
           </div>
         </div>
 
-        <div className="col-lg-8 col-md-8 border border-gray rounded p-4">
+        <div className="col-lg-8 col-md-8 border border-dark rounded p-4">
           <UserProfileTabs
             userId={profile?.userId}
             userVisitedCountries={userVisitedCountries}

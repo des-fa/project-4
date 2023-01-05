@@ -137,7 +137,7 @@ function ProfileTabs({ countryInfo }) {
               alt="star-icon"
               width="20"
             />
-            <p className="mb-0 fw-semibold">{country?.rating}.0</p>
+            <p className="mb-0 fw-semibold semi-light-text">{country?.rating}.0</p>
           </div>
 
           <div className="d-flex flex-row align-items-center mb-4">
@@ -147,7 +147,7 @@ function ProfileTabs({ countryInfo }) {
               alt="calendar-icon"
               width="20"
             />
-            <p className="mb-0 gray-text">{country?.month} / {country?.year}</p>
+            <p className="mb-0 fw-bold gray-text">{country?.month} / {country?.year}</p>
           </div>
 
           { country?.tips?.length > 0 ? (
@@ -197,7 +197,7 @@ function ProfileTabs({ countryInfo }) {
       mySavedCountries?.savedCountries?.map((country, i) => (
         <div
           key={i}
-          className="border-bottom border-gray mb-3 px-3 mx-2"
+          className="border-bottom mb-3 px-3 mx-2"
         >
           <div className="d-flex flex-row  justify-content-between align-items-center mb-3">
             <div>
@@ -312,7 +312,7 @@ function ProfileTabs({ countryInfo }) {
               alt="calendar-icon"
               width="20"
             />
-            <p className="mb-0 gray-text">{plan?.month} / {plan?.year}</p>
+            <p className="mb-0 fw-bold gray-text">{plan?.month} / {plan?.year}</p>
           </div>
 
           <div className="d-flex flex-row align-items-center justify-content-start my-3">
