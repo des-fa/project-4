@@ -26,19 +26,21 @@ function FormsUserSearch(props) {
       ({ errors: e, touched: t, isSubmitting }) => (
         <Form>
           <div className="d-flex flex-row ms-4 gap-3 w-100">
-            <Field
-              className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
-              name="q"
-              placeholder="Search by name or country"
-            />
-            {/* <ErrorMessage
+            <div className="border rounded p-1 w-100">
+              <Field
+                className={`form-control ${e?.q && t?.q && 'is-invalid'}`}
+                name="q"
+                placeholder="Search by name or country"
+              />
+              {/* <ErrorMessage
                 className="invalid-feedback"
                 name="q"
                 component="div"
               /> */}
+            </div>
 
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-secondary"
               type="submit"
               disabled={isSubmitting}
             ><svg

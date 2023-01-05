@@ -30,7 +30,7 @@ function SiteNavbar() {
     currentUser && pathname !== '/' && pathname !== '/signin' ? (
       <>
         {['md'].map((expand) => (
-          <Navbar key={expand} bg="light" expand={expand} className="mb-3 py-3">
+          <Navbar key={expand} expand={expand} id="navbar" className="mb-3 py-3 text-white">
             <Container fluid>
               <Link href="/home" passHref>
                 <a><Image
@@ -41,7 +41,7 @@ function SiteNavbar() {
                 />
                 </a>
               </Link>
-              <Navbar.Brand href="/home">At Your Fingertips</Navbar.Brand>
+              <Navbar.Brand href="/home" className="text-white">At Your Fingertips</Navbar.Brand>
               <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <Navbar.Offcanvas
                 id={`offcanvasNavbar-expand-${expand}`}
@@ -54,7 +54,7 @@ function SiteNavbar() {
                   </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body className="bg-gray">
-                  <Nav className="justify-content-end flex-grow-1 pe-3 gap-2 text-black">
+                  <Nav className="justify-content-end flex-grow-1 pe-3 gap-2 text-white">
                     <Nav.Link href="/home">Map</Nav.Link>
                     <Nav.Link href="/countries">Countries</Nav.Link>
                     <Nav.Link href="/users">Users</Nav.Link>
@@ -78,6 +78,8 @@ function SiteNavbar() {
                     )}
                       id={`offcanvasNavbarDropdown-expand-${expand}`}
                       align="end"
+                      variant="dark"
+                      menuVariant="dark"
                     >
                       <NavDropdown.Item href="/my/profile">Profile</NavDropdown.Item>
                       {/* <NavDropdown.Item href="/my/settings">

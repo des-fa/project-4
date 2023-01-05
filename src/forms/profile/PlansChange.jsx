@@ -144,16 +144,17 @@ function FormsProfilePlansChangeModal(props) {
             <Modal.Body>
               <div className="mb-3">
                 <Field
+                 //  className={`form-control ${e?.countryName && t?.countryName && 'is-invalid'}`}
                   name="countryName"
                   countryNameInitialValue={props?.initialValues?.iso2}
                   countryInfo={props?.countryInfo}
                   component={countrySearchOptions}
                 />
-                <ErrorMessage
+                {/* <ErrorMessage
                   className="invalid-feedback"
                   name="countryName"
                   component="div"
-                />
+                /> */}
               </div>
 
               <div className="d-flex flex-row gap-3 mb-3">

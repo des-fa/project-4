@@ -173,7 +173,7 @@ function WeatherChart({ weatherInfo }) {
   }
 
   return (
-    <div>
+    <div className="border rounded p-2">
       <HighchartsReact
         highcharts={Highcharts}
         options={options}

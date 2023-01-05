@@ -24,19 +24,19 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
               className="text-decoration-none link-dark"
               href={`/countries/${country?.iso2}`}
             >
-              <h4 className="action-title text-decoration-underline">{country?.countryName}</h4>
+              <h4 className="action-title text-decoration-underline fw-light text-white">{country?.countryName}</h4>
             </a>
           </div>
         </div>
 
-        <div className="d-flex flex-row align-items-center mb-3 mt-1 text-muted">
+        <div className="d-flex flex-row align-items-center mb-3 mt-1">
           <Image
             className="me-2"
             src="/images/star.png"
             alt="calendar-icon"
             width="20"
           />
-          <p className="mb-0 fw-semibold">{country?.rating}.0</p>
+          <p className="mb-0 fw-semibold text-black">{country?.rating}.0</p>
         </div>
 
         <div className="d-flex flex-row align-items-center mb-4">
@@ -46,7 +46,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
             alt="calendar-icon"
             width="20"
           />
-          <p className="mb-0">{country?.month} / {country?.year}</p>
+          <p className="mb-0 gray-text">{country?.month} / {country?.year}</p>
         </div>
 
         {
@@ -63,8 +63,8 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
                   </div>
 
                   <div className="col">
-                    <h5>{tip?.city}, {tip?.stateName}</h5>
-                    <p>{tip?.content}</p>
+                    <h5 className="fw-light text-white dark-shadow-text">{tip?.city}, {tip?.stateName}</h5>
+                    <p className="light-text">{tip?.content}</p>
                   </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
       </div>
     ))
   ) : (
-    <h3 className="text-muted fw-light m-4">This user hasn&apos;t added any information about their past travels yet.</h3>
+    <h3 className="text-white fw-light m-4">This user hasn&apos;t added any information about their past travels yet.</h3>
   )
 
   const plans = userPlans?.plans?.length > 0 ? (
@@ -89,24 +89,24 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
               className="text-decoration-none link-dark"
               href={`/countries/${plan?.iso2}`}
             >
-              <h4 className="action-title text-decoration-underline">{plan?.countryName}</h4>
+              <h4 className="action-title text-decoration-underline fw-light text-white">{plan?.countryName}</h4>
             </a>
           </div>
         </div>
 
-        <div className="d-flex flex-row align-items-center">
+        <div className="d-flex flex-row align-items-center mb-2">
           <Image
             className="me-2"
             src="/images/calendar.png"
             alt="calendar-icon"
             width="20"
           />
-          <p className="mb-0">{plan?.month} / {plan?.year}</p>
+          <p className="mb-0 gray-text">{plan?.month} / {plan?.year}</p>
         </div>
       </div>
     ))
   ) : (
-    <h3 className="text-muted fw-light m-4">This user hasn&apos;t made any travel plans yet.</h3>
+    <h3 className="text-white fw-light m-4">This user hasn&apos;t made any travel plans yet.</h3>
   )
 
   return (
@@ -139,7 +139,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
                     userVisitedCountries?.meta?.currentPage >= 1 && userVisitedCountries?.meta?.currentPage < userVisitedCountries?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/users/${userId}/?page=${userVisitedCountries.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -166,7 +166,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
                     userPlans?.meta?.currentPage >= 1 && userPlans?.meta?.currentPage < userPlans?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/users/${userId}/?page=${userPlans.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -175,7 +175,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
                     userPlans?.meta?.currentPage !== 1 && userPlans?.meta?.currentPage <= userPlans?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/users/${userId}/?page=${userPlans.meta.currentPage - 1}`)}
                     >Previous</button>
                     )

@@ -71,7 +71,7 @@ function ProfileTabs({ countryInfo }) {
   if (isLoadingVisitedCountries) {
     visited = (
       <div>
-        <h5 className="text-muted fw-light m-4">Loading....</h5>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
       </div>
     )
   } if (myVisitedCountries?.visitedCountries?.length > 0) {
@@ -87,7 +87,7 @@ function ProfileTabs({ countryInfo }) {
                 className="text-decoration-none link-dark"
                 href={`/countries/${country?.iso2}`}
               >
-                <h4 className="action-title text-decoration-underline">{country?.countryName}</h4>
+                <h4 className="action-title text-decoration-underline text-white fw-light">{country?.countryName}</h4>
               </a>
             </div>
 
@@ -103,7 +103,7 @@ function ProfileTabs({ countryInfo }) {
                   </svg>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu>
+                <Dropdown.Menu variant="dark">
                   <Dropdown.Item
                     onClick={() => {
                       setEditVisitedModalShow(true)
@@ -130,7 +130,7 @@ function ProfileTabs({ countryInfo }) {
             </div>
           </div>
 
-          <div className="d-flex flex-row align-items-center mb-3 mt-1 text-muted">
+          <div className="d-flex flex-row align-items-center mb-3 mt-1 text-black">
             <Image
               className="me-2"
               src="/images/star.png"
@@ -147,11 +147,11 @@ function ProfileTabs({ countryInfo }) {
               alt="calendar-icon"
               width="20"
             />
-            <p className="mb-0">{country?.month} / {country?.year}</p>
+            <p className="mb-0 gray-text">{country?.month} / {country?.year}</p>
           </div>
 
           { country?.tips?.length > 0 ? (
-            <h5 className="my-3 text-muted">Visited Cities</h5>
+            <h5 className="my-3 dark-text">Visited Cities</h5>
           ) : (
             null
           )}
@@ -170,8 +170,8 @@ function ProfileTabs({ countryInfo }) {
                   </div>
 
                   <div className="col">
-                    <h6>{tip?.city}, {tip?.stateName}</h6>
-                    <p>{tip?.content}</p>
+                    <h6 className="text-white dark-shadow-text">{tip?.city}, {tip?.stateName}</h6>
+                    <p className="light-text">{tip?.content}</p>
                   </div>
                 </div>
               </div>
@@ -182,14 +182,14 @@ function ProfileTabs({ countryInfo }) {
       ))
     )
   } if (myVisitedCountries?.visitedCountries?.length === 0) {
-    visited = (<h3 className="text-muted fw-light m-4">You haven&apos;t added any information about your past travels yet.</h3>)
+    visited = (<h3 className="text-white fw-light m-4">You haven&apos;t added any information about your past travels yet.</h3>)
   }
 
   let saved
   if (isLoadingSavedCountries) {
     saved = (
       <div>
-        <h5 className="text-muted fw-light m-4">Loading....</h5>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
       </div>
     )
   } if (mySavedCountries?.savedCountries?.length > 0) {
@@ -205,7 +205,7 @@ function ProfileTabs({ countryInfo }) {
                 className="text-decoration-none link-dark"
                 href={`/countries/${country?.iso2}`}
               >
-                <h5 className="action-title mb-0">{country?.countryName}</h5>
+                <h5 className="action-title mb-0 text-white fw-light">{country?.countryName}</h5>
               </a>
             </div>
 
@@ -234,7 +234,7 @@ function ProfileTabs({ countryInfo }) {
   } if (mySavedCountries?.savedCountries?.length === 0) {
     saved = (
       <>
-        <h3 className="text-muted fw-light m-4">You don&apos;t any saved countries yet.</h3>
+        <h3 className="text-white fw-light m-4">You don&apos;t any saved countries yet.</h3>
 
         <h5 className="fw-light m-4">
           <Link href="/countries" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Search</a></Link> for countries to save!
@@ -247,7 +247,7 @@ function ProfileTabs({ countryInfo }) {
   if (isLoadingPlans) {
     plans = (
       <div>
-        <h5 className="text-muted fw-light m-4">Loading....</h5>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
       </div>
     )
   } if (myPlans?.plans?.length > 0) {
@@ -263,7 +263,7 @@ function ProfileTabs({ countryInfo }) {
                 className="text-decoration-none link-dark"
                 href={`/countries/${plan?.iso2}`}
               >
-                <h4 className="action-title text-decoration-underline">{plan?.countryName}</h4>
+                <h4 className="action-title text-decoration-underline text-white fw-light">{plan?.countryName}</h4>
               </a>
             </div>
 
@@ -279,7 +279,7 @@ function ProfileTabs({ countryInfo }) {
                   </svg>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu>
+                <Dropdown.Menu variant="dark">
                   <Dropdown.Item
                     onClick={() => {
                       setEditPlansModalShow(true)
@@ -312,7 +312,7 @@ function ProfileTabs({ countryInfo }) {
               alt="calendar-icon"
               width="20"
             />
-            <p className="mb-0">{plan?.month} / {plan?.year}</p>
+            <p className="mb-0 gray-text">{plan?.month} / {plan?.year}</p>
           </div>
 
           <div className="d-flex flex-row align-items-center justify-content-start my-3">
@@ -326,7 +326,7 @@ function ProfileTabs({ countryInfo }) {
     )
   } if (myPlans?.plans?.length === 0) {
     plans = (
-      <h3 className="text-muted fw-light m-4">You haven&apos;t made any travel plans yet.</h3>
+      <h3 className="text-white fw-light m-4">You haven&apos;t made any travel plans yet.</h3>
     )
   }
 
@@ -334,7 +334,7 @@ function ProfileTabs({ countryInfo }) {
   if (isLoadingFollowing) {
     following = (
       <div>
-        <h5 className="text-muted fw-light m-4">Loading....</h5>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
       </div>
     )
   } if (myFollowing?.following?.length > 0) {
@@ -344,7 +344,7 @@ function ProfileTabs({ countryInfo }) {
           key={i}
           className="d-flex flex-row  justify-content-start align-items-center border-bottom border-gray px-3 py-2 mx-2 mb-3"
         >
-          <div className="d-flex flex-column me-3">
+          <div className="d-flex flex-column me-3 mb-3">
             <Image
               className="img-fluid rounded-circle"
               src={user?.following?.profile?.avatar}
@@ -358,7 +358,7 @@ function ProfileTabs({ countryInfo }) {
               className="text-decoration-none link-dark"
               href={`/users/${user?.following?.id}`}
             >
-              <h5 className="action-title text-capitalize">{user?.following?.profile?.fullName}</h5>
+              <h5 className="action-title text-capitalize text-white fw-light">{user?.following?.profile?.fullName}</h5>
             </a>
           </div>
         </div>
@@ -367,10 +367,10 @@ function ProfileTabs({ countryInfo }) {
   } if (myFollowing?.following?.length === 0) {
     following = (
       <>
-        <h3 className="text-muted fw-light m-4">You aren&apos;t following anyone yet.</h3>
+        <h3 className="text-white fw-light m-4">You aren&apos;t following anyone yet.</h3>
 
-        <h5 className="fw-light m-4">
-          <Link href="/users" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
+        <h5 className="fw-light m-4 text-black">
+          <Link href="/users" passHref><a className="action-title text-decoration-none link-dark text-black fw-semibold">Connect</a></Link> with other users!
         </h5>
       </>
     )
@@ -380,7 +380,7 @@ function ProfileTabs({ countryInfo }) {
   if (isLoadingFollowers) {
     followers = (
       <div>
-        <h5 className="text-muted fw-light m-4">Loading....</h5>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
       </div>
     )
   } if (myFollowers?.followers?.length > 0) {
@@ -390,7 +390,7 @@ function ProfileTabs({ countryInfo }) {
           key={i}
           className="d-flex flex-row  justify-content-start align-items-center border-bottom border-gray px-3 py-2 mx-2 mb-3"
         >
-          <div className="d-flex flex-column me-3">
+          <div className="d-flex flex-column me-3 mb-3">
             <Image
               className="img-fluid rounded-circle"
               src={user?.follower?.profile?.avatar}
@@ -404,7 +404,7 @@ function ProfileTabs({ countryInfo }) {
               className="text-decoration-none link-dark"
               href={`/users/${user?.follower?.id}`}
             >
-              <h5 className="action-title text-capitalize">{user?.follower?.profile?.fullName}</h5>
+              <h5 className="action-title text-capitalize text-white fw-light">{user?.follower?.profile?.fullName}</h5>
             </a>
           </div>
         </div>
@@ -413,10 +413,10 @@ function ProfileTabs({ countryInfo }) {
   } if (myFollowers?.followers?.length === 0) {
     followers = (
       <>
-        <h3 className="text-muted fw-light m-4">You don&apos;t have any followers yet.</h3>
+        <h3 className="text-white fw-light m-4">You don&apos;t have any followers yet.</h3>
 
-        <h5 className="fw-light m-4">
-          <Link href="/users" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Connect</a></Link> with other users!
+        <h5 className="fw-light m-4 text-black">
+          <Link href="/users" passHref><a className="action-title text-decoration-none link-dark text-black fw-semibold">Connect</a></Link> with other users!
         </h5>
       </>
     )
@@ -479,7 +479,7 @@ function ProfileTabs({ countryInfo }) {
                     myVisitedCountries?.meta?.currentPage >= 1 && myVisitedCountries?.meta?.currentPage < myVisitedCountries?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/my/profile/?page=${myVisitedCountries.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -488,7 +488,7 @@ function ProfileTabs({ countryInfo }) {
                     myVisitedCountries?.meta?.currentPage !== 1 && myVisitedCountries?.meta?.currentPage <= myVisitedCountries?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/my/profile/?page=${myVisitedCountries.meta.currentPage - 1}`)}
                     >Previous</button>
                     )
@@ -524,7 +524,7 @@ function ProfileTabs({ countryInfo }) {
                     mySavedCountries?.meta?.currentPage >= 1 && mySavedCountries?.meta?.currentPage < mySavedCountries?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/my/profile/?page=${mySavedCountries.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -533,7 +533,7 @@ function ProfileTabs({ countryInfo }) {
                     mySavedCountries?.meta?.currentPage !== 1 && mySavedCountries?.meta?.currentPage <= mySavedCountries?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/my/profile/?page=${mySavedCountries.meta.currentPage - 1}`)}
                     >Previous</button>
                     )
@@ -562,7 +562,7 @@ function ProfileTabs({ countryInfo }) {
                     myPlans?.meta?.currentPage >= 1 && myPlans?.meta?.currentPage < myPlans?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/my/profile/?page=${myPlans.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -571,7 +571,7 @@ function ProfileTabs({ countryInfo }) {
                     myPlans?.meta?.currentPage !== 1 && myPlans?.meta?.currentPage <= myPlans?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/my/profile/?page=${myPlans.meta.currentPage - 1}`)}
                     >Previous</button>
                     )
@@ -607,7 +607,7 @@ function ProfileTabs({ countryInfo }) {
                     myFollowing?.meta?.currentPage >= 1 && myFollowing?.meta?.currentPage < myFollowing?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/my/profile/?page=${myFollowing.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -616,7 +616,7 @@ function ProfileTabs({ countryInfo }) {
                     myFollowing?.meta?.currentPage !== 1 && myFollowing?.meta?.currentPage <= myFollowing?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/my/profile/?page=${myFollowing.meta.currentPage - 1}`)}
                     >Previous</button>
                     )
@@ -650,7 +650,7 @@ function ProfileTabs({ countryInfo }) {
                     myFollowers?.meta?.currentPage >= 1 && myFollowers?.meta?.currentPage < myFollowers?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/my/profile/?page=${myFollowers.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -659,7 +659,7 @@ function ProfileTabs({ countryInfo }) {
                     myFollowers?.meta?.currentPage !== 1 && myFollowers?.meta?.currentPage <= myFollowers?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/my/profile/?page=${myFollowers.meta.currentPage - 1}`)}
                     >Previous</button>
                     )

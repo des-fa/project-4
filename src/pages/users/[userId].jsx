@@ -116,7 +116,7 @@ function UserProfile({ profile, currentUser, mutate }) {
         <button
           type="button"
           // className="btn btn-sm btn-dark text-white px-3"
-          className={followButton ? 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-dark text-white px-3' : 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-outline-secondary px-3'}
+          className={followButton ? 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-dark text-white px-3' : 'd-flex flex-row gap-2 align-items-center btn btn-sm btn-secondary px-3'}
           onClick={handleClick}
 
         >
@@ -130,7 +130,7 @@ function UserProfile({ profile, currentUser, mutate }) {
         style={{ display: showFollowsYouText ? '' : 'none' }}
       >
         <small
-          className="text-muted text-decoration-underline"
+          className="text-white text-decoration-underline"
           style={{ display: showFollowsYouText ? '' : 'none' }}
         >
           Follows you
@@ -141,7 +141,7 @@ function UserProfile({ profile, currentUser, mutate }) {
         className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4"
         style={{ minHeight: '100vh' }}
       >
-        <div className="card col-lg-3 col-md-3">
+        <div className="card border-white profile-card col-lg-3 col-md-3">
           <Image
             className="card-profile-picture img-fluid rounded-top"
             src={profile?.avatar}
@@ -149,11 +149,11 @@ function UserProfile({ profile, currentUser, mutate }) {
             style={{ maxHeight: '250px' }}
           />
           <div className="card-body my-2">
-            <div className="d-flex flex-row justify-content-between mb-2">
-              <h4 className="fw-semibold text-capitalize">{profile?.fullName}</h4>
-            </div>
+            <div className="d-flex flex-column justify-content-center gap-2 mb-2 p-2">
+              <h4 className="fw-semibold text-capitalize text-white">{profile?.fullName}</h4>
 
-            <h6>{profile?.about}</h6>
+              <h6 className="text-white fw-light">{profile?.about}</h6>
+            </div>
           </div>
         </div>
 
@@ -198,14 +198,14 @@ export function UserPage() {
   if (isLoadingUserProfile) {
     content = (
       <div>
-        <h3 className="text-muted fw-light m-4">Loading....</h3>
+        <h3 className="text-white fw-light m-4">Loading....</h3>
       </div>
     )
   }
   if (isError) {
     content = (
       <div>
-        <h3 className="text-muted fw-light m-4">{errorMessage}</h3>
+        <h3 className="text-white fw-light m-4">{errorMessage}</h3>
       </div>
     )
   }

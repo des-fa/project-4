@@ -4,6 +4,14 @@ import L from 'leaflet'
 import { MapContainer, Marker, Polygon, Popup, Rectangle, TileLayer, useMap, useMapEvent } from 'react-leaflet'
 import { useEventHandlers } from '@react-leaflet/core'
 
+const polygonStyle = {
+  fillColor: 'red',
+  fillOpacity: 0.5,
+  weight: 0,
+  color: 'transparent',
+  opacity: 0
+}
+
 const capitalIcon = L.icon({
   iconUrl: '/images/capital-star.png',
   iconRetinaUrl: '/images/capital-star.png',
@@ -160,19 +168,16 @@ function CityMap({ countryPolygonCoordinates, lat, long, capitalCoordinates, cit
     if (countryPolygonCoordinates?.length > 1) {
       countryPolygonCoordinates?.map((data) => (
         data?.map((coord) => (
-          setPolygonCoordinates(coord)
+          setPolygonCoordinates([coord[1], coord[0]])
         ))
       ))
-      // console.log('polycoords', polygonCoordinates)
-      // console.log('polycoordslength', polygonCoordinates)
     } else {
       countryPolygonCoordinates?.map((data) => (
         setPolygonCoordinates(data)
 
       ))
-      // console.log('polycoords', polygonCoordinates)
     }
-  }, [])
+  }, [countryPolygonCoordinates])
 
   return (
     <MapContainer className="home-map" style={{ height: 350 }} center={[lat, long]} zoom={3} scrollWheelZoom>
@@ -194,12 +199,13 @@ function CityMap({ countryPolygonCoordinates, lat, long, capitalCoordinates, cit
       }
 
       {
-        polygonCoordinates?.length > 0 ? (
-          <Polygon color="purple" positions={polygonCoordinates} />
+        polygonCoordinates ? (
+          <Polygon pathOptions={polygonStyle} positions={polygonCoordinates} />
         ) : (
           null
         )
       }
+
     </MapContainer>
   )
 }

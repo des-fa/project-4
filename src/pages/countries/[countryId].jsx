@@ -22,7 +22,7 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
 
   const [createVisitedModalShow, setCreateVisitedModalShow] = useState(false)
   const [visitedModalCountryInfo, setVisitedModalCountryInfo] = useState([])
-  const [countryPolygonCoordinates, setCountryPolygonCoordinates] = useState(null)
+  // const [countryPolygonCoordinates, setCountryPolygonCoordinates] = useState(null)
   const [capitalInfo, setCapitalInfo] = useState([])
   const [cityCoordinates, setCityCoordinates] = useState({})
   const [weatherInfo, setWeatherInfo] = useState(null)
@@ -73,15 +73,15 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
     }
   )
 
-  useEffect(() => {
-    const fetchBBoxData = async () => {
-      const resp = await axios.get(`https://nominatim.openstreetmap.org/search?q=${countryInfo?.name?.common}&polygon_geojson=1&limit=1&format=json`)
-      setCountryPolygonCoordinates(resp.data[0].geojson.coordinates)
-      // console.log(resp.data[0])
-    }
-    fetchBBoxData()
-      .catch(console.error)
-  }, [countryInfo])
+  // useEffect(() => {
+  //   const fetchBBoxData = async () => {
+  //     const resp = await axios.get(`https://nominatim.openstreetmap.org/search?q=${countryInfo?.name?.common}&polygon_geojson=1&limit=1&format=json`)
+  //     setCountryPolygonCoordinates(resp.data[0].geojson.coordinates)
+  //     // console.log(resp.data[0])
+  //   }
+  //   fetchBBoxData()
+  //     .catch(console.error)
+  // }, [countryInfo])
 
   const options = citiesInfo?.map((city) => (
     { value: city.name, label: city.name }
@@ -253,9 +253,9 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
 
       <div className="d-flex flex-lg-row flex-column justify-content-center gap-5 mx-5 my-3 pb-5">
         <div className="col-lg-3 mx-4">
-          <div className="col w-100 mb-4">
+          <div className="col w-100 mb-4 border rounded p-2">
             <Map
-              countryPolygonCoordinates={countryPolygonCoordinates}
+              // countryPolygonCoordinates={countryPolygonCoordinates}
               lat={countryResult?.latitude}
               long={countryResult?.longitude}
               capitalCoordinates={capitalCoordinates}

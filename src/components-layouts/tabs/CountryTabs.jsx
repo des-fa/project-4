@@ -23,12 +23,12 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
 
   const newsArticles = countryNews?.articles?.length > 0 ? (
     <>
-      <h3 className="text-muted fw-light mb-3 ms-4">Latest headlines</h3>
+      <h3 className="text-white fw-light mb-3 ms-4">Latest headlines</h3>
 
       <div className="row row-cols-1 row-cols-lg-2 g-3 px-3 py-2">
         {countryNews?.articles.map((article, i) => (
           <div key={i} className="d-flex flex-column align-items-center mb-1">
-            <div key={i} className="card h-100" style={{ width: '18rem' }}>
+            <div key={i} className="card country-card h-100" style={{ width: '18rem' }}>
               <Image className="card-img-top" src={article?.urlToImage || '/images/news.png'} alt="news-article-img" width={100} />
 
               <div className="card-body h-100">
@@ -57,7 +57,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
       </div>
     </>
   ) : (
-    <h3 className="text-muted fw-light m-4">No recent news was found.</h3>
+    <h3 className="text-white fw-light m-4">No recent news was found.</h3>
   )
 
   const handleClickTipCity = async (city, state) => {
@@ -101,29 +101,31 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
   }, [countryReviews])
 
   if (isLoadingReviews) {
-    reviews = <h3 className="text-muted fw-light m-4">Loading...</h3>
+    reviews = <h3 className="text-white fw-light m-4">Loading...</h3>
   }
   if (countryReviews?.reviews?.length === 0) {
-    reviews = <h3 className="text-muted fw-light m-4">No reviews have been made yet.</h3>
+    reviews = <h3 className="text-white fw-light m-4">No reviews have been made yet.</h3>
   } else {
     // console.log('OG', countryReviews?.reviews)
     reviews = (
       <>
-        <h3 className="text-muted fw-light mb-3 ms-5">Users&apos; thoughts</h3>
+        <h3 className="text-white fw-light mb-3 ms-5">Users&apos; thoughts</h3>
 
-        <div className="d-flex flex-column justify-content-center w-75 ms-5 my-4">
+        <div className="d-flex flex-column justify-content-center w-75 ms-5 my-4 text-dark">
           <h6>Search reviews by city:</h6>
-          <FormCountrySearch options={citiesOptions} handleChange={handleChange} />
+          <div className="border rounded p-2">
+            <FormCountrySearch options={citiesOptions} handleChange={handleChange} />
+          </div>
         </div>
 
         <h6
-          className="fw-light ms-5 my-4"
+          className="fw-light text-white ms-5 my-4"
           style={{ display: showCitySearchMsg ? '' : 'none' }}
         >No reviews were found. Please enter another city to try again!</h6>
 
         <div className="d-flex flex-column justify-content-center py-2 px-5">
           {reviewsArray?.map((review, i) => (
-            <div key={i} className="card mb-3 w-100">
+            <div key={i} className="card country-card mb-3 w-100">
               <div className="d-flex flex-lg-row flex-column gap-2 p-4">
                 <div className="col-md-3 text-center m-2">
                   <Image
@@ -204,18 +206,18 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
 
   let meetUpPlans
   if (isLoadingPlans) {
-    meetUpPlans = <h3 className="text-muted fw-light m-4">Loading...</h3>
+    meetUpPlans = <h3 className="text-white fw-light m-4">Loading...</h3>
   }
   if (publicPlans?.plans?.length === 0) {
-    meetUpPlans = <h3 className="text-muted fw-light m-4">No travel plans have been shared yet.</h3>
+    meetUpPlans = <h3 className="text-white fw-light m-4">No travel plans have been shared yet.</h3>
   } else {
     meetUpPlans = (
       <>
-        <h3 className="text-muted fw-light mb-3 ms-5">Current travel plans</h3>
+        <h3 className="text-white fw-light mb-3 ms-5">Current travel plans</h3>
 
         <div className="d-flex flex-column justify-content-center align-items-center py-2">
           {publicPlans?.plans.map((plan, i) => (
-            <div key={i} className="card mb-3 w-100" style={{ maxWidth: '550px', maxHeight: '100px' }}>
+            <div key={i} className="card country-card mb-3 w-100" style={{ maxWidth: '550px', maxHeight: '100px' }}>
               <div className="row g-0 h-100">
                 <div className="col-2 text-center">
                   <Image
@@ -225,7 +227,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     alt="user-profile-pic"
                   />
                 </div>
-                <div className="col-10 px-4 py-3 bg-light h-100">
+                <div className="col-10 px-4 py-3 h-100">
                   <a href={`/users/${plan?.userId}`} className="text-decoration-none link-dark">
                     <h5 className="action-title card-title fw-semibold text-uppercase mb-3">{plan?.user?.profile?.fullName}</h5>
                   </a>
@@ -238,13 +240,6 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     />
                     {plan?.month} / {plan?.year}
                   </p>
-                  {/* <div className="d-flex flex-row justify-content-end me-2">
-                      <a href={`/users/${plan?.userId}`} className="text-decoration-none link-dark">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="action-btn bi bi-arrow-right-square" viewBox="0 0 16 16">
-                          <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
-                        </svg>
-                      </a>
-                    </div> */}
                 </div>
               </div>
             </div>
@@ -264,13 +259,13 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
     >
       <div className="gap-5 h-100 d-flex flex-lg-row flex-column justify-content-center">
         <Col lg={1} className="mb-4">
-          <Nav variant="pills" className="flex-column">
+          <Nav
+            variant="pills"
+            className="d-flex flex-column text-center"
+          >
             <Nav.Item>
               <Nav.Link eventKey="weather">Weather</Nav.Link>
             </Nav.Item>
-            {/* <Nav.Item>
-              <Nav.Link eventKey="second">Visas</Nav.Link>
-            </Nav.Item> */}
             <Nav.Item>
               <Nav.Link eventKey="news">News</Nav.Link>
             </Nav.Item>
@@ -282,7 +277,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
             </Nav.Item>
           </Nav>
         </Col>
-        <Col lg={10} className="border border-gray rounded p-4 h-100">
+        <Col lg={10} className="p-4 h-100">
           <Tab.Content>
             <Tab.Pane eventKey="weather">
               <WeatherChart weatherInfo={weatherInfo} />
@@ -300,7 +295,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     countryReviews?.meta?.currentPage >= 1 && countryReviews?.meta?.currentPage < countryReviews?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/countries/${countryIso2}/?page=${countryReviews.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -309,7 +304,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     countryReviews?.meta?.currentPage !== 1 && countryReviews?.meta?.currentPage <= countryReviews?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/countries/${countryIso2}/?page=${countryReviews.meta.currentPage - 1}`)}
                     >Previous</button>
                     )
@@ -325,7 +320,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     publicPlans?.meta?.currentPage >= 1 && publicPlans?.meta?.currentPage < publicPlans?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-dark px-3 py-2 me-3"
                       onClick={() => push(`/countries/${countryIso2}/?page=${publicPlans.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -334,7 +329,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     publicPlans?.meta?.currentPage !== 1 && publicPlans?.meta?.currentPage <= publicPlans?.meta?.totalPages && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-secondary"
+                      className="btn btn-sm btn-secondary px-3 py-2"
                       onClick={() => push(`/countries/${countryIso2}/?page=${publicPlans.meta.currentPage - 1}`)}
                     >Previous</button>
                     )

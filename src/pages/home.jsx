@@ -90,27 +90,13 @@ function Home(countryInfo) {
   return (
     <div className="container px-4 pb-5">
       <div className="mt-4">
-        <h3 className="text-muted fw-light">Search for countries</h3>
+        <h3 className="text-white fw-light">Search for countries</h3>
       </div>
 
       <div className="d-flex flex-lg-row flex-column my-4 gap-5">
         <div className="col-lg-3 col-md-12">
-          <div className="d-flex flex-row justify-content-center w-100">
+          <div className="d-flex flex-row justify-content-center w-100 p-2 border rounded">
             <FormCountrySearch options={options} handleChange={handleChange} />
-
-            {/* <button
-              className="btn btn-outline-secondary ms-2"
-              type="submit"
-              onClick={handleSubmit}
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="18"
-              fill="currentColor"
-              className="bi bi-search"
-              viewBox="0 0 16 16"
-            >
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-            </svg></button> */}
           </div>
 
           {wikiExtract ? (
@@ -120,7 +106,7 @@ function Home(countryInfo) {
                   xmlns="http://www.w3.org/2000/svg"
                   width="28"
                   height="28"
-                  fill="currentColor"
+                  fill="#000000"
                   className="bi bi-info-circle-fill"
                   viewBox="0 0 16 16"
                 >
@@ -141,7 +127,7 @@ function Home(countryInfo) {
             </div>
           ) : null}
 
-          <div className="mt-2">
+          <div className="mt-2 text-white">
             {wikiExtract}
             {wikiExtract ? (
               <div className="d-flex flex-row justify-content-end">
@@ -155,7 +141,7 @@ function Home(countryInfo) {
                     xmlns="http://www.w3.org/2000/svg"
                     width="40"
                     height="40"
-                    fill="currentColor"
+                    fill="#000000"
                     className="action-btn bi bi-eyeglasses"
                     viewBox="0 0 16 16"
                   >
@@ -167,7 +153,7 @@ function Home(countryInfo) {
           </div>
         </div>
 
-        <div className="col w-100">
+        <div className="col w-100 p-2 border rounded">
           <Map lat={lat} long={long} />
         </div>
       </div>

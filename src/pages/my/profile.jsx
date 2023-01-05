@@ -15,7 +15,7 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
       className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4 pb-5"
       style={{ minHeight: '100vh' }}
     >
-      <div className="card col-lg-3 col-md-3">
+      <div className="card border-white profile-card col-lg-3 col-md-3">
         <Image
           className="card-profile-picture img-fluid"
           src={profile?.avatar}
@@ -23,29 +23,31 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
           style={{ maxHeight: '250px' }}
         />
         <div className="card-body my-2">
-          <div className="d-flex flex-row justify-content-between mb-2">
-            <h4 className="fw-semibold text-capitalize">{profile?.fullName}</h4>
+          <div className="d-flex flex-column justify-content-center gap-2 mb-2 px-2">
+            <div className="d-flex flex-row justify-content-end">
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="outline-dark"
+                  size="sm"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-three-dots" viewBox="0 0 16 16">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                  </svg>
+                </Dropdown.Toggle>
+                <Dropdown.Menu variant="dark">
+                  <Dropdown.Item onClick={onClick}>
+                    Edit
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
 
-            <Dropdown>
-              <Dropdown.Toggle
-                variant="outline-dark"
-                size="sm"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-three-dots" viewBox="0 0 16 16">
-                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                </svg>
-              </Dropdown.Toggle>
-              <Dropdown.Menu variant="dark">
-                <Dropdown.Item onClick={onClick}>
-                  Edit
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+              <FormsProfileChangeModal initialValues={profile} show={show} onHide={onHide} setEditModalShow={setEditModalShow} />
+            </div>
 
-            <FormsProfileChangeModal initialValues={profile} show={show} onHide={onHide} setEditModalShow={setEditModalShow} />
+            <h4 className="fw-semibold text-capitalize text-white">{profile?.fullName}</h4>
+
+            <h6 className="text-white fw-light">{profile?.about}</h6>
           </div>
-
-          <h6>{profile?.about}</h6>
         </div>
       </div>
 
@@ -55,7 +57,6 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
         />
       </div>
     </div>
-
   )
 }
 

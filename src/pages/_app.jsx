@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }) {
         draggable
         pauseOnHover
       />
-      <ScrollToTop smooth className="scroll-btn" style={{ right: 30, bottom: 100 }} />
+      <ScrollToTop smooth className="scroll-btn" style={{ right: 20, bottom: 30 }} />
     </SSRProvider>
   )
 }
