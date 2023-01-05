@@ -75,7 +75,6 @@ function CountryPage({ id, countryInfo, countryNews, countryCSCInfo, citiesInfo,
 
   useEffect(() => {
     const fetchBBoxData = async () => {
-      // console.log(countryInfo?.name?.common)
       const resp = await axios.get(`https://nominatim.openstreetmap.org/search?q=${countryInfo?.name?.common}&polygon_geojson=1&limit=1&format=json`)
       setCountryPolygonCoordinates(resp.data[0].geojson.coordinates)
       // console.log(resp.data[0])

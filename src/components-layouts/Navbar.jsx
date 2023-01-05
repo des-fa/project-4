@@ -27,7 +27,7 @@ function SiteNavbar() {
   }, [])
 
   return (
-    currentUser && pathname !== '/' ? (
+    currentUser && pathname !== '/' && pathname !== '/signin' ? (
       <>
         {['md'].map((expand) => (
           <Navbar key={expand} bg="light" expand={expand} className="mb-3 py-3">

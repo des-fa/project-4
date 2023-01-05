@@ -20,8 +20,6 @@ const cityIcon = L.icon({
   iconSize: [25, 25]
 })
 
-const purpleOptions = { fillColor: 'purple' }
-
 const POSITION_CLASSES = {
   bottomleft: 'leaflet-bottom leaflet-left',
   bottomright: 'leaflet-bottom leaflet-right',
@@ -156,16 +154,25 @@ function CityMarker({ cityCoordinates }) {
 function CityMap({ countryPolygonCoordinates, lat, long, capitalCoordinates, cityCoordinates }) {
   const [polygonCoordinates, setPolygonCoordinates] = useState(null)
 
-  console.log('polygon', countryPolygonCoordinates)
+  // console.log('polygon', countryPolygonCoordinates)
 
   useEffect(() => {
-    if (countryPolygonCoordinates) {
+    if (countryPolygonCoordinates?.length > 1) {
+      countryPolygonCoordinates?.map((data) => (
+        data?.map((coord) => (
+          setPolygonCoordinates(coord)
+        ))
+      ))
+      // console.log('polycoords', polygonCoordinates)
+      // console.log('polycoordslength', polygonCoordinates)
+    } else {
       countryPolygonCoordinates?.map((data) => (
         setPolygonCoordinates(data)
+
       ))
-      console.log('polycoords', polygonCoordinates)
+      // console.log('polycoords', polygonCoordinates)
     }
-  }, [countryPolygonCoordinates])
+  }, [])
 
   return (
     <MapContainer className="home-map" style={{ height: 350 }} center={[lat, long]} zoom={3} scrollWheelZoom>
@@ -187,8 +194,8 @@ function CityMap({ countryPolygonCoordinates, lat, long, capitalCoordinates, cit
       }
 
       {
-        polygonCoordinates ? (
-          <Polygon pathOptions={purpleOptions} positions={polygonCoordinates} />
+        polygonCoordinates?.length > 0 ? (
+          <Polygon color="purple" positions={polygonCoordinates} />
         ) : (
           null
         )

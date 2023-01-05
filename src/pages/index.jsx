@@ -69,7 +69,7 @@ export function Home() {
                 type="button"
                 className="btn btn-dark px-4 me-md-2"
                 onClick={() => {
-                  push('/api/auth/signin')
+                  push('/signin')
                 }}
               >Go</button>
             </div>

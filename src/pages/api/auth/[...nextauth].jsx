@@ -30,6 +30,7 @@ export default NextAuth({
     })
   ],
   pages: {
+    signIn: '/signin',
     newUser: '/my/profile'
   },
   callbacks: {
@@ -37,15 +38,5 @@ export default NextAuth({
       session.user.id = user.id // eslint-disable-line
       return session
     }
-    // async redirect({ url, baseUrl }) {
-    //   console.log('url', url)
-    //   console.log('baseUrl', baseUrl)
-    //   // Allows relative callback URLs
-    //   if (url.startsWith('/')) return `${baseUrl}${url}`
-    //   // Allows callback URLs on the same origin
-    //   console.log(new URL(url).origin)
-    //   // if (new URL(url).origin === baseUrl) return url
-    //   return baseUrl
-    // }
   }
 })
