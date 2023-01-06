@@ -316,10 +316,17 @@ function ProfileTabs({ countryInfo }) {
           </div>
 
           <div className="d-flex flex-row align-items-center justify-content-start mt-3 ps-3">
-            <small className="border rounded border-dark px-2 py-1 mb-0 bg-secondary text-white">{
-              plan?.isPublic ? ('PUBLIC') : ('PRIVATE')
-              }
-            </small>
+            {
+              plan?.isPublic ? (
+                <small className="border rounded border-dark px-2 py-1 mb-0 bg-black text-white">
+                  PUBLIC
+                </small>
+              ) : (
+                <small className="border rounded border-dark px-2 py-1 mb-0 bg-secondary text-white">
+                  PRIVATE
+                </small>
+              )
+            }
           </div>
         </div>
       ))
