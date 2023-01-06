@@ -80,7 +80,7 @@ export function ProfilePage({ countryInfo }) {
     if (!myProfile && !createModalShow) {
       setTimeout(() => {
         setCreateModalShow(true)
-      }, 2000)
+      }, 3000)
     }
     if (myProfile && createModalShow) {
       setCreateModalShow(false)
