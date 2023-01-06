@@ -79,15 +79,15 @@ function ProfileTabs({ countryInfo }) {
       myVisitedCountries?.visitedCountries?.map((country, i) => (
         <div
           key={i}
-          className="border-bottom border-gray mb-3 px-3 py-2 mx-2"
+          className="profile-tabs-card rounded mb-3 px-3 py-3 mx-2"
         >
           <div className="d-flex flex-row  justify-content-between align-items-center">
-            <div>
+            <div className="ps-3">
               <a
                 className="text-decoration-none link-dark"
                 href={`/countries/${country?.iso2}`}
               >
-                <h4 className="action-title text-decoration-underline text-white fw-light">{country?.countryName}</h4>
+                <h4 className="action-title text-decoration-underline text-black fw-light">{country?.countryName}</h4>
               </a>
             </div>
 
@@ -130,28 +130,28 @@ function ProfileTabs({ countryInfo }) {
             </div>
           </div>
 
-          <div className="d-flex flex-row align-items-center mb-3 mt-1 text-black">
+          <div className="d-flex flex-row align-items-center mb-3 mt-1 ps-3">
             <Image
               className="me-2"
               src="/images/star.png"
               alt="star-icon"
               width="20"
             />
-            <p className="mb-0 fw-semibold semi-light-text">{country?.rating}.0</p>
+            <p className="mb-0 fw-semibold text-muted">{country?.rating}.0</p>
           </div>
 
-          <div className="d-flex flex-row align-items-center mb-4">
+          <div className="d-flex flex-row align-items-center mb-4 ps-3">
             <Image
               className="me-2"
               src="/images/calendar.png"
               alt="calendar-icon"
               width="20"
             />
-            <p className="mb-0 fw-bold gray-text">{country?.month} / {country?.year}</p>
+            <p className="mb-0 fw-bold">{country?.month} / {country?.year}</p>
           </div>
 
           { country?.tips?.length > 0 ? (
-            <h5 className="my-3 dark-text">Visited Cities</h5>
+            <h5 className="my-3 ps-3 text-muted">Visited Cities</h5>
           ) : (
             null
           )}
@@ -159,7 +159,7 @@ function ProfileTabs({ countryInfo }) {
           {
           country?.tips ? (
             country?.tips?.map((tip, index) => (
-              <div key={index} className="my-2">
+              <div key={index} className="my-2 ps-3">
                 <div className="d-flex flex-row">
                   <div className="d-flex flex-column me-2">
                     <Image
@@ -170,8 +170,8 @@ function ProfileTabs({ countryInfo }) {
                   </div>
 
                   <div className="col">
-                    <h6 className="text-white dark-shadow-text">{tip?.city}, {tip?.stateName}</h6>
-                    <p className="light-text">{tip?.content}</p>
+                    <h6 className="fw-semibold">{tip?.city}, {tip?.stateName}</h6>
+                    <p>{tip?.content}</p>
                   </div>
                 </div>
               </div>
@@ -236,8 +236,8 @@ function ProfileTabs({ countryInfo }) {
       <>
         <h3 className="text-white fw-light m-4">You don&apos;t any saved countries yet.</h3>
 
-        <h5 className="fw-light m-4">
-          <Link href="/countries" passHref><a className="action-title text-decoration-none link-dark fw-semibold">Search</a></Link> for countries to save!
+        <h5 className="fw-light m-4 text-black">
+          <Link href="/countries" passHref><a className="action-title text-decoration-none link-dark fw-semibold text-black">Search</a></Link> for countries to save!
         </h5>
       </>
     )
@@ -255,15 +255,15 @@ function ProfileTabs({ countryInfo }) {
       myPlans?.plans?.map((plan, i) => (
         <div
           key={i}
-          className="border-bottom border-gray mb-3 px-3 py-2 mx-2"
+          className="profile-tabs-card rounded mb-3 px-3 py-3 mx-2"
         >
-          <div className="d-flex flex-row  justify-content-between align-items-center mb-2">
-            <div>
+          <div className="d-flex flex-row justify-content-between align-items-center mb-3">
+            <div className="ps-3">
               <a
                 className="text-decoration-none link-dark"
                 href={`/countries/${plan?.iso2}`}
               >
-                <h4 className="action-title text-decoration-underline text-white fw-light">{plan?.countryName}</h4>
+                <h4 className="action-title text-decoration-underline fw-light mb-0">{plan?.countryName}</h4>
               </a>
             </div>
 
@@ -305,17 +305,17 @@ function ProfileTabs({ countryInfo }) {
             </div>
           </div>
 
-          <div className="d-flex flex-row align-items-center">
+          <div className="d-flex flex-row align-items-center ps-3">
             <Image
               className="me-2"
               src="/images/calendar.png"
               alt="calendar-icon"
               width="20"
             />
-            <p className="mb-0 fw-bold gray-text">{plan?.month} / {plan?.year}</p>
+            <p className="mb-0 fw-bold">{plan?.month} / {plan?.year}</p>
           </div>
 
-          <div className="d-flex flex-row align-items-center justify-content-start my-3">
+          <div className="d-flex flex-row align-items-center justify-content-start mt-3 ps-3">
             <small className="border rounded border-dark px-2 py-1 mb-0 bg-secondary text-white">{
               plan?.isPublic ? ('PUBLIC') : ('PRIVATE')
               }
@@ -438,7 +438,7 @@ function ProfileTabs({ countryInfo }) {
       />
 
       <Row>
-        <Col sm={3}>
+        <Col sm={3} className="mb-3">
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
               <Nav.Link eventKey="visited">Visited</Nav.Link>

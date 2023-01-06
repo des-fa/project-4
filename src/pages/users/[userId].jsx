@@ -13,8 +13,8 @@ import useUserPlans from '@/hooks/users/plans'
 import useMyFollowing from '@/hooks/my/following'
 
 function UserProfile({ profile, currentUser, mutate }) {
-  const { userVisitedCountries } = useUserVisitedCountries()
-  const { userPlans } = useUserPlans()
+  const { userVisitedCountries, isLoadingVisitedCountries } = useUserVisitedCountries()
+  const { userPlans, isLoadingPlans } = useUserPlans()
   const { createFollowing, destroyFollowing } = useMyFollowing()
   const profileId = profile?.userId
   // console.log(profile?.userId)
@@ -141,7 +141,7 @@ function UserProfile({ profile, currentUser, mutate }) {
         className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4"
         style={{ minHeight: '100vh' }}
       >
-        <div className="card border-dark profile-card col-lg-3 col-md-3">
+        <div className="card border-light profile-card col-lg-3 col-md-3">
           <Image
             className="card-profile-picture img-fluid rounded-top"
             src={profile?.avatar}
@@ -157,11 +157,13 @@ function UserProfile({ profile, currentUser, mutate }) {
           </div>
         </div>
 
-        <div className="col-lg-8 col-md-8 border border-dark rounded p-4">
+        <div className="col-lg-8 col-md-8 border border-light rounded p-4">
           <UserProfileTabs
             userId={profile?.userId}
             userVisitedCountries={userVisitedCountries}
+            isLoadingVisitedCountries={isLoadingVisitedCountries}
             userPlans={userPlans}
+            isLoadingPlans={isLoadingPlans}
           />
         </div>
       </div>

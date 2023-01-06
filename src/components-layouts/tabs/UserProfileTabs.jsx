@@ -7,52 +7,60 @@ import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row'
 import Tab from 'react-bootstrap/Tab'
 
-function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
+function UserProfileTabs({ userId, userVisitedCountries, isLoadingVisitedCountries, userPlans, isLoadingPlans }) {
   const { push, replace } = useRouter()
   // console.log('visited', userVisitedCountries)
   // console.log('plans', userPlans)
 
-  const visited = userVisitedCountries?.visitedCountries?.length > 0 ? (
-    userVisitedCountries?.visitedCountries?.map((country, i) => (
-      <div
-        key={i}
-        className="border-bottom mb-3 px-3 py-2 mx-2"
-      >
-        <div className="d-flex flex-row  justify-content-between align-items-center">
-          <div>
-            <a
-              className="text-decoration-none link-dark"
-              href={`/countries/${country?.iso2}`}
-            >
-              <h4 className="action-title text-decoration-underline fw-light text-white">{country?.countryName}</h4>
-            </a>
+  let visited
+  if (isLoadingVisitedCountries) {
+    visited = (
+      <div>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
+      </div>
+    )
+  } if (userVisitedCountries?.visitedCountries?.length > 0) {
+    visited = (
+      userVisitedCountries?.visitedCountries?.map((country, i) => (
+        <div
+          key={i}
+          className="profile-tabs-card rounded mb-3 px-3 pt-4 pb-3 mx-2"
+        >
+          <div className="d-flex flex-row  justify-content-between align-items-center">
+            <div className="ps-3">
+              <a
+                className="text-decoration-none link-dark"
+                href={`/countries/${country?.iso2}`}
+              >
+                <h4 className="action-title text-decoration-underline fw-light">{country?.countryName}</h4>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <div className="d-flex flex-row align-items-center mb-3 mt-1">
-          <Image
-            className="me-2"
-            src="/images/star.png"
-            alt="calendar-icon"
-            width="20"
-          />
-          <p className="mb-0 fw-semibold semi-light-text">{country?.rating}.0</p>
-        </div>
+          <div className="d-flex flex-row align-items-center mb-3 mt-1 ps-3">
+            <Image
+              className="me-2"
+              src="/images/star.png"
+              alt="calendar-icon"
+              width="20"
+            />
+            <p className="mb-0 fw-semibold text-muted">{country?.rating}.0</p>
+          </div>
 
-        <div className="d-flex flex-row align-items-center mb-4">
-          <Image
-            className="me-2"
-            src="/images/calendar.png"
-            alt="calendar-icon"
-            width="20"
-          />
-          <p className="mb-0 fw-bold gray-text">{country?.month} / {country?.year}</p>
-        </div>
+          <div className="d-flex flex-row align-items-center mb-4 ps-3">
+            <Image
+              className="me-2"
+              src="/images/calendar.png"
+              alt="calendar-icon"
+              width="20"
+            />
+            <p className="mb-0 fw-bold">{country?.month} / {country?.year}</p>
+          </div>
 
-        {
+          {
           country?.tips ? (
             country?.tips?.map((tip, index) => (
-              <div key={index} className="my-2">
+              <div key={index} className="my-2 ps-3">
                 <div className="d-flex flex-row">
                   <div className="d-flex flex-column me-2">
                     <Image
@@ -63,51 +71,65 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
                   </div>
 
                   <div className="col">
-                    <h5 className="fw-light text-white dark-shadow-text">{tip?.city}, {tip?.stateName}</h5>
-                    <p className="light-text">{tip?.content}</p>
+                    <h5>{tip?.city}, {tip?.stateName}</h5>
+                    <p>{tip?.content}</p>
                   </div>
                 </div>
               </div>
             ))
           ) : (null)
         }
-      </div>
-    ))
-  ) : (
-    <h3 className="text-white fw-light m-4">This user hasn&apos;t added any information about their past travels yet.</h3>
-  )
+        </div>
+      ))
+    )
+  } if (userVisitedCountries?.visitedCountries?.length === 0) {
+    visited = (
+      <h3 className="text-white fw-light m-4">This user hasn&apos;t added any information about their past travels yet.</h3>
+    )
+  }
 
-  const plans = userPlans?.plans?.length > 0 ? (
-    userPlans?.plans?.map((plan, i) => (
-      <div
-        key={i}
-        className="border-bottom mb-3 px-3 py-2 mx-2"
-      >
-        <div className="d-flex flex-row  justify-content-between align-items-center mb-2">
-          <div>
-            <a
-              className="text-decoration-none link-dark"
-              href={`/countries/${plan?.iso2}`}
-            >
-              <h4 className="action-title text-decoration-underline fw-light text-white">{plan?.countryName}</h4>
-            </a>
+  let plans
+  if (isLoadingPlans) {
+    plans = (
+      <div>
+        <h5 className="text-white fw-light m-4">Loading....</h5>
+      </div>
+    )
+  } if (userPlans?.plans?.length > 0) {
+    plans = (
+      userPlans?.plans?.map((plan, i) => (
+        <div
+          key={i}
+          className="profile-tabs-card rounded mb-3 px-3 py-3 mx-2"
+        >
+          <div className="d-flex flex-row  justify-content-between align-items-center mb-2">
+            <div className="ps-3">
+              <a
+                className="text-decoration-none link-dark"
+                href={`/countries/${plan?.iso2}`}
+              >
+                <h4 className="action-title text-decoration-underline fw-light">{plan?.countryName}</h4>
+              </a>
+            </div>
+          </div>
+
+          <div className="d-flex flex-row align-items-center mb-1 ps-3">
+            <Image
+              className="me-2"
+              src="/images/calendar.png"
+              alt="calendar-icon"
+              width="20"
+            />
+            <p className="mb-0 fw-bold">{plan?.month} / {plan?.year}</p>
           </div>
         </div>
-
-        <div className="d-flex flex-row align-items-center mb-2">
-          <Image
-            className="me-2"
-            src="/images/calendar.png"
-            alt="calendar-icon"
-            width="20"
-          />
-          <p className="mb-0 fw-bold gray-text">{plan?.month} / {plan?.year}</p>
-        </div>
-      </div>
-    ))
-  ) : (
-    <h3 className="text-white fw-light m-4">This user hasn&apos;t made any travel plans yet.</h3>
-  )
+      ))
+    )
+  } if (userPlans?.plans?.length === 0) {
+    plans = (
+      <h3 className="text-white fw-light m-4">This user hasn&apos;t made any travel plans yet.</h3>
+    )
+  }
 
   return (
     <Tab.Container
@@ -118,7 +140,7 @@ function UserProfileTabs({ userId, userVisitedCountries, userPlans }) {
       }}
     >
       <Row>
-        <Col sm={3}>
+        <Col sm={3} className="mb-3">
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
               <Nav.Link eventKey="visited">Visited</Nav.Link>

@@ -72,7 +72,10 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
   // console.log('reviews', countryReviews?.reviews)
 
   const handleChange = async (value) => {
-    // console.log(value?.value)
+    if (!value) {
+      replace(`/countries/${countryIso2}`, undefined, { shallow: true })
+    }
+
     await axios({
       method: 'GET',
       url: `/api/countries/${countryIso2}/reviews`,
@@ -81,6 +84,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
       .then((resp) => {
         if (resp?.data?.reviews) {
           setReviewsArray(resp?.data?.reviews)
+          console.log(resp?.data?.reviews)
         }
         if (resp?.data?.reviews?.length === 0) {
           setShowCitySearchMsg(true)
@@ -296,6 +300,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     <button
                       type="button"
                       className="btn btn-sm btn-dark px-3 py-2 me-3"
+                      style={{ display: reviewsArray?.length > 1 ? '' : 'none' }}
                       onClick={() => push(`/countries/${countryIso2}/?page=${countryReviews.meta.currentPage + 1}`)}
                     >Next</button>
                     )
@@ -305,6 +310,7 @@ function CountryTabs({ countryIso2, countryNews, citiesOptions, setCityCoordinat
                     <button
                       type="button"
                       className="btn btn-sm btn-secondary px-3 py-2"
+                      style={{ display: reviewsArray?.length > 1 ? '' : 'none' }}
                       onClick={() => push(`/countries/${countryIso2}/?page=${countryReviews.meta.currentPage - 1}`)}
                     >Previous</button>
                     )

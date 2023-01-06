@@ -15,7 +15,7 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
       className="d-flex flex-lg-row flex-md-row flex-column justify-content-evenly gap-4 pb-5"
       style={{ minHeight: '100vh' }}
     >
-      <div className="card border-dark profile-card col-lg-3 col-md-3">
+      <div className="card border-white profile-card col-lg-3 col-md-3">
         <Image
           className="card-profile-picture img-fluid"
           src={profile?.avatar}
@@ -51,7 +51,7 @@ function MyProfile({ profile, show, onClick, onHide, setEditModalShow, countryIn
         </div>
       </div>
 
-      <div className="col-lg-8 col-md-8 border border-dark rounded p-4">
+      <div className="col-lg-8 col-md-8 border border-light rounded p-4">
         <ProfileTabs
           countryInfo={countryInfo}
         />
